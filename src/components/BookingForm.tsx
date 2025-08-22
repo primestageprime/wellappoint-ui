@@ -1,5 +1,33 @@
 import { createSignal, createEffect, For, Show } from 'solid-js';
 import { SegmentedControl } from '@kobalte/core/segmented-control';
+import { useAuth } from '../auth/AuthProvider';
+
+interface AvailabilityRequest {
+  duration: number;
+  service: string;
+  email: string;
+  location: string;
+  start: string; // "YYYY-MM-DD" format
+  end: string;   // "YYYY-MM-DD" format
+}
+
+interface AvailableSlot {
+  startTime: string;
+  endTime: string;
+  durationMinutes: number;
+  location: string;
+  isOptimal: boolean;
+}
+
+interface AvailabilityResponse {
+  availableSlots: AvailableSlot[];
+  totalSlots: number;
+  optimalSlots: number;
+  dateRange: {
+    start: string;
+    end: string;
+  };
+}
 
 interface Service {
   name: string;
@@ -12,10 +40,13 @@ interface BookingFormProps {
 }
 
 export function BookingForm(props: BookingFormProps) {
+  const auth = useAuth();
   const [selectedService, setSelectedService] = createSignal<string>('');
   const [selectedDuration, setSelectedDuration] = createSignal<number>(0);
   const [availableDurations, setAvailableDurations] = createSignal<number[]>([]);
   const [selectedPrice, setSelectedPrice] = createSignal<number>(0);
+  const [availabilityResponse, setAvailabilityResponse] = createSignal<AvailableSlot[] | null>(null);
+  const [isLoading, setIsLoading] = createSignal<boolean>(false);
 
   // Get unique services and their durations
   const uniqueServices = () => {
@@ -59,6 +90,75 @@ export function BookingForm(props: BookingFormProps) {
       if (matchingService) {
         setSelectedPrice(matchingService.price);
       }
+    }
+  });
+
+  // Function to fetch availability
+  const fetchAvailability = async () => {
+    if (!selectedService() || !selectedDuration()) {
+      return;
+    }
+
+    setIsLoading(true);
+    setAvailabilityResponse(null);
+
+    try {
+      // Calculate date range for next 2 weeks
+      const today = new Date();
+      const startDate = today.toISOString().split('T')[0]; // YYYY-MM-DD format
+      const endDate = new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]; // 14 days from now
+
+      // Get user email from auth context
+      const userEmail = auth.user()?.email;
+      if (!userEmail) {
+        console.error('No user email available');
+        setAvailabilityResponse([]);
+        return;
+      }
+
+      // For debugging - log the user email being used
+      console.log('Using email for availability request:', userEmail);
+      console.log('Full user object:', auth.user());
+
+      // Temporary fix: Use the correct email address
+      const correctEmail = 'peter.stradinger@primestagetechnology.com';
+
+      // Build query parameters for GET request
+      const params = new URLSearchParams({
+        duration: selectedDuration().toString(),
+        service: selectedService(),
+        email: correctEmail,
+        location: 'OFFICE',
+        start: startDate,
+        end: endDate
+      });
+
+      // Make GET request to availability endpoint
+      const response = await fetch(`http://localhost:8000/availability?${params.toString()}`);
+
+      if (response.ok) {
+        const data: AvailableSlot[] = await response.json();
+        if (data && data.length > 0) {
+          setAvailabilityResponse(data);
+        } else {
+          setAvailabilityResponse([]);
+        }
+      } else {
+        console.error('Availability request failed:', response.status, response.statusText);
+        setAvailabilityResponse([]);
+      }
+    } catch (error) {
+      console.error('Error fetching availability:', error);
+      setAvailabilityResponse([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Auto-fetch availability when both service and duration are selected
+  createEffect(() => {
+    if (selectedService() && selectedDuration() > 0) {
+      fetchAvailability();
     }
   });
 
@@ -156,6 +256,28 @@ export function BookingForm(props: BookingFormProps) {
         <p>2. Select your preferred duration</p>
         <p>3. Review the price and proceed with booking</p>
       </div>
+
+      {/* Availability Response */}
+      <Show when={isLoading()}>
+        <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <p class="text-blue-700">Loading availability...</p>
+        </div>
+      </Show>
+
+      <Show when={availabilityResponse() !== null}>
+        <div class="mt-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-3">Availability Response</h3>
+          <Show when={availabilityResponse() && availabilityResponse()!.length > 0} fallback={
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <p class="text-yellow-700">No results found</p>
+            </div>
+          }>
+            <pre class="bg-gray-100 p-4 rounded-lg overflow-auto text-sm text-gray-800 whitespace-pre-wrap">
+              {JSON.stringify(availabilityResponse(), null, 2)}
+            </pre>
+          </Show>
+        </div>
+      </Show>
     </div>
   );
 }

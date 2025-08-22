@@ -1,5 +1,6 @@
 import { createSignal, createEffect, Show } from 'solid-js';
 import { AuthProvider, useAuth } from './auth/AuthProvider';
+import { BookingForm } from './components/BookingForm';
 
 interface Service {
   name: string;
@@ -92,10 +93,8 @@ function ServicesPage() {
               )}
 
               {!loading() && !error() && (
-                <div class="bg-gray-50 rounded-lg p-4">
-                  <pre class="text-sm text-gray-800 whitespace-pre-wrap overflow-auto">
-                    {JSON.stringify(services(), null, 2)}
-                  </pre>
+                <div class="flex justify-center">
+                  <BookingForm services={services()} />
                 </div>
               )}
             </div>

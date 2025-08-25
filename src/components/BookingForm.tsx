@@ -123,21 +123,18 @@ export function BookingForm(props: BookingFormProps) {
       console.log('Using email for availability request:', userEmail);
       console.log('Full user object:', auth.user());
 
-      // Temporary fix: Use the correct email address
-      const correctEmail = 'peter.stradinger@primestagetechnology.com';
-
       // Build query parameters for GET request
       const params = new URLSearchParams({
         duration: selectedDuration().toString(),
         service: selectedService(),
-        email: correctEmail,
+        email: userEmail,
         location: 'OFFICE',
         start: startDate,
         end: endDate
       });
 
       // Make GET request to availability endpoint
-      const response = await fetch(`http://localhost:8000/availability?${params.toString()}`);
+      const response = await fetch(`/api/availability?${params.toString()}`);
 
       if (response.ok) {
         const data: AvailableSlot[] = await response.json();
@@ -188,11 +185,11 @@ export function BookingForm(props: BookingFormProps) {
         service: selectedService(),
         duration: selectedDuration(),
         location: 'OFFICE',
-        email: 'peter.stradinger@primestagetechnology.com',
+        email: userEmail,
         start: formattedStart
       };
 
-      const response = await fetch('http://localhost:8000/appointment_request', {
+      const response = await fetch('/api/appointment_request', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

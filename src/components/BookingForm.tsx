@@ -126,18 +126,31 @@ export function BookingForm(props: BookingFormProps) {
       console.log('Using email for availability request:', userEmail);
       console.log('Full user object:', auth.user());
 
-      // Build query parameters for GET request
-      const params = new URLSearchParams({
-        duration: selectedDuration().toString(),
+      // Prepare request body with user profile data
+      const requestBody = {
+        duration: selectedDuration(),
         service: selectedService(),
         email: userEmail,
         location: 'OFFICE',
         start: startDate,
-        end: endDate
-      });
+        end: endDate,
+        userProfile: auth.user() ? {
+          name: auth.user()?.name,
+          given_name: auth.user()?.given_name,
+          family_name: auth.user()?.family_name,
+          nickname: auth.user()?.nickname,
+          phone_number: auth.user()?.phone_number
+        } : undefined
+      };
 
-      // Make GET request to availability endpoint
-      const response = await fetch(`/api/availability?${params.toString()}`);
+      // Make POST request to availability endpoint
+      const response = await fetch('/api/availability', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody)
+      });
 
       if (response.ok) {
         const data: AvailableSlot[] = await response.json();
@@ -196,7 +209,14 @@ export function BookingForm(props: BookingFormProps) {
         duration: selectedDuration(),
         location: 'OFFICE',
         email: userEmail,
-        start: formattedStart
+        start: formattedStart,
+        userProfile: auth.user() ? {
+          name: auth.user()?.name,
+          given_name: auth.user()?.given_name,
+          family_name: auth.user()?.family_name,
+          nickname: auth.user()?.nickname,
+          phone_number: auth.user()?.phone_number
+        } : undefined
       };
 
       const response = await fetch('/api/appointment_request', {

@@ -165,7 +165,7 @@ export function BookingForm(props: BookingFormProps) {
     }
   });
 
-  // Function to submit appointment request
+  // Function to book appointment
   const submitAppointmentRequest = async () => {
     if (!selectedSlot() || !selectedService() || !selectedDuration()) {
       return;
@@ -209,16 +209,16 @@ export function BookingForm(props: BookingFormProps) {
 
       if (response.ok) {
         const result = await response.json();
-        setSubmitMessage('Appointment request submitted successfully!');
-        console.log('Appointment request result:', result);
+        setSubmitMessage('Appointment booked successfully!');
+        console.log('Appointment result:', result);
       } else {
         const errorData = await response.json();
-        setSubmitMessage(`Error: ${errorData.error || 'Failed to submit appointment request'}`);
-        console.error('Appointment request failed:', errorData);
+        setSubmitMessage(`Error: ${errorData.error || 'Failed to book appointment'}`);
+        console.error('Appointment booking failed:', errorData);
       }
     } catch (error) {
-      console.error('Error submitting appointment request:', error);
-      setSubmitMessage('Error: Failed to submit appointment request');
+      console.error('Error booking appointment:', error);
+      setSubmitMessage('Error: Failed to book appointment');
     } finally {
       setIsSubmitting(false);
     }
@@ -312,10 +312,10 @@ export function BookingForm(props: BookingFormProps) {
         </div>
       </Show>
 
-      {/* Appointment Request Form - Only show if price is displayed and slot is selected */}
+      {/* Appointment Form - Only show if price is displayed and slot is selected */}
       <Show when={selectedService() && selectedDuration() > 0 && selectedPrice() > 0 && selectedSlot()}>
         <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <h3 class="text-lg font-semibold text-blue-900 mb-3">Request Appointment</h3>
+          <h3 class="text-lg font-semibold text-blue-900 mb-3">Book Appointment</h3>
           <div class="mb-4">
             <p class="text-sm text-blue-700 mb-2">
               <strong>Selected Time:</strong> {new Date(selectedSlot()!.startTime).toLocaleString()}
@@ -330,7 +330,7 @@ export function BookingForm(props: BookingFormProps) {
             disabled={isSubmitting()}
             class="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200"
           >
-            {isSubmitting() ? 'Submitting...' : 'Submit Appointment Request'}
+            {isSubmitting() ? 'Booking...' : 'Book Appointment'}
           </button>
           
           <Show when={submitMessage()}>

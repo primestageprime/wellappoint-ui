@@ -47,6 +47,9 @@ export function BookingForm(props: BookingFormProps) {
   const [selectedPrice, setSelectedPrice] = createSignal<number>(0);
   const [availabilityResponse, setAvailabilityResponse] = createSignal<AvailableSlot[] | null>(null);
   const [isLoading, setIsLoading] = createSignal<boolean>(false);
+  const [selectedSlot, setSelectedSlot] = createSignal<AvailableSlot | null>(null);
+  const [isSubmitting, setIsSubmitting] = createSignal<boolean>(false);
+  const [submitMessage, setSubmitMessage] = createSignal<string>('');
 
   // Get unique services and their durations
   const uniqueServices = () => {
@@ -162,6 +165,58 @@ export function BookingForm(props: BookingFormProps) {
     }
   });
 
+  // Function to submit appointment request
+  const submitAppointmentRequest = async () => {
+    if (!selectedSlot() || !selectedService() || !selectedDuration()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitMessage('');
+
+    try {
+      // Convert ISO timestamp to YYYY-MM-DD HH:mm format (Pacific time)
+      const startDate = new Date(selectedSlot()!.startTime);
+      const year = startDate.getFullYear();
+      const month = String(startDate.getMonth() + 1).padStart(2, '0');
+      const day = String(startDate.getDate()).padStart(2, '0');
+      const hours = String(startDate.getHours()).padStart(2, '0');
+      const minutes = String(startDate.getMinutes()).padStart(2, '0');
+      const formattedStart = `${year}-${month}-${day} ${hours}:${minutes}`;
+
+      const request = {
+        service: selectedService(),
+        duration: selectedDuration(),
+        location: 'OFFICE',
+        email: 'peter.stradinger@primestagetechnology.com',
+        start: formattedStart
+      };
+
+      const response = await fetch('http://localhost:8000/appointment_request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(request)
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setSubmitMessage('Appointment request submitted successfully!');
+        console.log('Appointment request result:', result);
+      } else {
+        const errorData = await response.json();
+        setSubmitMessage(`Error: ${errorData.error || 'Failed to submit appointment request'}`);
+        console.error('Appointment request failed:', errorData);
+      }
+    } catch (error) {
+      console.error('Error submitting appointment request:', error);
+      setSubmitMessage('Error: Failed to submit appointment request');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div class="w-2/3 mx-auto bg-white p-6 rounded-lg shadow-md border border-gray-200">
       <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Book Your Appointment</h2>
@@ -250,6 +305,39 @@ export function BookingForm(props: BookingFormProps) {
         </div>
       </Show>
 
+      {/* Appointment Request Form - Only show if price is displayed and slot is selected */}
+      <Show when={selectedService() && selectedDuration() > 0 && selectedPrice() > 0 && selectedSlot()}>
+        <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h3 class="text-lg font-semibold text-blue-900 mb-3">Request Appointment</h3>
+          <div class="mb-4">
+            <p class="text-sm text-blue-700 mb-2">
+              <strong>Selected Time:</strong> {new Date(selectedSlot()!.startTime).toLocaleString()}
+            </p>
+            <p class="text-sm text-blue-700">
+              <strong>Service:</strong> {selectedService()} - {selectedDuration()} minutes
+            </p>
+          </div>
+          
+          <button
+            onClick={submitAppointmentRequest}
+            disabled={isSubmitting()}
+            class="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200"
+          >
+            {isSubmitting() ? 'Submitting...' : 'Submit Appointment Request'}
+          </button>
+          
+          <Show when={submitMessage()}>
+            <div class={`mt-3 p-3 rounded-md text-sm ${
+              submitMessage().includes('Error') 
+                ? 'bg-red-100 text-red-700 border border-red-200' 
+                : 'bg-green-100 text-green-700 border border-green-200'
+            }`}>
+              {submitMessage()}
+            </div>
+          </Show>
+        </div>
+      </Show>
+
       {/* Instructions */}
       <div class="mt-6 text-sm text-gray-600">
         <p>1. Choose your service from the options above</p>
@@ -266,15 +354,42 @@ export function BookingForm(props: BookingFormProps) {
 
       <Show when={availabilityResponse() !== null}>
         <div class="mt-6">
-          <h3 class="text-lg font-semibold text-gray-900 mb-3">Availability Response</h3>
+          <h3 class="text-lg font-semibold text-gray-900 mb-3">Available Time Slots</h3>
           <Show when={availabilityResponse() && availabilityResponse()!.length > 0} fallback={
             <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
               <p class="text-yellow-700">No results found</p>
             </div>
           }>
-            <pre class="bg-gray-100 p-4 rounded-lg overflow-auto text-sm text-gray-800 whitespace-pre-wrap">
-              {JSON.stringify(availabilityResponse(), null, 2)}
-            </pre>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+              <For each={availabilityResponse()}>
+                {(slot) => (
+                  <button
+                    onClick={() => setSelectedSlot(slot)}
+                    class={`p-3 rounded-lg border-2 transition-colors duration-200 text-left ${
+                      selectedSlot()?.startTime === slot.startTime
+                        ? 'border-blue-500 bg-blue-50'
+                        : 'border-gray-200 hover:border-gray-300 bg-white'
+                    }`}
+                  >
+                    <div class="font-medium text-gray-900">
+                      {new Date(slot.startTime).toLocaleDateString()}
+                    </div>
+                    <div class="text-sm text-gray-600">
+                      {new Date(slot.startTime).toLocaleTimeString([], { 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                      })} - {new Date(slot.endTime).toLocaleTimeString([], { 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                      })}
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">
+                      {slot.isOptimal ? 'Optimal time' : 'Available time'}
+                    </div>
+                  </button>
+                )}
+              </For>
+            </div>
           </Show>
         </div>
       </Show>

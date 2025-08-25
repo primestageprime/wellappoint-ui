@@ -48,7 +48,22 @@ function ServicesPage() {
             </div>
             <div class="flex items-center space-x-4">
               <div class="text-sm text-gray-700">
-                {auth.user() ? `Welcome, ${auth.user().name || auth.user().email}` : 'Services Dashboard'}
+                {auth.user() ? (
+                  <div class="flex items-center space-x-2">
+                    {auth.user()?.picture && (
+                      <img 
+                        src={auth.user().picture} 
+                        alt="Profile" 
+                        class="w-6 h-6 rounded-full"
+                      />
+                    )}
+                    <span>
+                      Welcome, {auth.user().nickname || auth.user().given_name || auth.user().name || auth.user().email}
+                    </span>
+                  </div>
+                ) : (
+                  'Services Dashboard'
+                )}
               </div>
               {auth.user() && (
                 <button

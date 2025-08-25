@@ -228,6 +228,35 @@ export function BookingForm(props: BookingFormProps) {
     <div class="w-2/3 mx-auto bg-white p-6 rounded-lg shadow-md border border-gray-200">
       <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Book Your Appointment</h2>
       
+      {/* User Profile Information */}
+      <Show when={auth.user()}>
+        <div class="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+          <h3 class="text-sm font-medium text-gray-700 mb-2">Booking for:</h3>
+          <div class="flex items-center space-x-3">
+            {auth.user()?.picture && (
+              <img 
+                src={auth.user()!.picture} 
+                alt="Profile" 
+                class="w-10 h-10 rounded-full"
+              />
+            )}
+            <div class="flex-1">
+              <div class="text-sm font-medium text-gray-900">
+                {auth.user()?.nickname || auth.user()?.given_name || auth.user()?.name || 'Unknown Name'}
+              </div>
+              <div class="text-sm text-gray-600">
+                {auth.user()?.email}
+              </div>
+              {auth.user()?.phone_number && (
+                <div class="text-sm text-gray-600">
+                  📞 {auth.user()!.phone_number}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </Show>
+      
       {/* Service Selection */}
       <div class="mb-6">
         <SegmentedControl 

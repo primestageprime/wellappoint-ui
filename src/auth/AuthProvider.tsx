@@ -19,9 +19,23 @@ declare global {
   }
 }
 
+export interface UserProfile {
+  sub: string;
+  email: string;
+  email_verified: boolean;
+  name: string;
+  given_name?: string;
+  family_name?: string;
+  nickname?: string;
+  picture?: string;
+  phone_number?: string;
+  phone_number_verified?: boolean;
+  updated_at: string;
+}
+
 type AuthContextType = {
   isAuthenticated: () => boolean;
-  user: () => any;
+  user: () => UserProfile | null;
   login: () => Promise<void>;
   logout: () => void;
   loading: () => boolean;
@@ -46,7 +60,7 @@ function getRuntimeEnv() {
 export function AuthProvider(props: AuthProviderProps) {
   const [client, setClient] = createSignal<Auth0Client>();
   const [isAuthenticated, setIsAuthenticated] = createSignal(false);
-  const [user, setUser] = createSignal<any>(null);
+  const [user, setUser] = createSignal<UserProfile | null>(null);
   const [loading, setLoading] = createSignal(true);
   const [error, setError] = createSignal<string | null>(null);
   const [auth0Config, setAuth0Config] = createSignal<any | null>(null);
@@ -60,7 +74,7 @@ export function AuthProvider(props: AuthProviderProps) {
         clientId: env.AUTH0_CLIENT_ID,
         authorizationParams: {
           redirect_uri: window.location.origin,
-          scope: "openid profile email offline_access",
+          scope: "openid profile email phone offline_access", // Includes: name, given_name, family_name, nickname, picture, phone_number
           response_type: "code",
           ...(env.AUTH0_AUDIENCE && { audience: env.AUTH0_AUDIENCE }),
         },
@@ -81,7 +95,9 @@ export function AuthProvider(props: AuthProviderProps) {
           // Set auth state after successful callback handling
           setIsAuthenticated(true);
           const userProfile = await auth0.getUser();
-          setUser(userProfile);
+          if (userProfile) {
+            setUser(userProfile as UserProfile);
+          }
         } catch (e) {
           setError(
             e instanceof Error ? e.message : "Failed to handle login redirect"
@@ -110,7 +126,9 @@ export function AuthProvider(props: AuthProviderProps) {
           if (isAuth) {
             setIsAuthenticated(isAuth);
             const userProfile = await auth0.getUser();
-            setUser(userProfile);
+            if (userProfile) {
+              setUser(userProfile as UserProfile);
+            }
           } else {
             setIsAuthenticated(false);
             setUser(null);
@@ -139,6 +157,7 @@ export function AuthProvider(props: AuthProviderProps) {
         authorizationParams: {
           connection: "google-oauth2",
           redirect_uri: window.location.origin,
+          scope: "openid profile email phone offline_access",
           prompt: "login",
         },
       });

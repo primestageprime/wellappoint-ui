@@ -108,7 +108,10 @@ export function BookingForm(props: BookingFormProps) {
     try {
       // Calculate date range for next 2 weeks
       const today = new Date();
-      const startDate = today.toISOString().split('T')[0]; // YYYY-MM-DD format
+      const now = new Date();
+      
+      // Start from today - the backend will filter out slots that are too soon based on minimum delay
+      const startDate = today.toISOString().split('T')[0]; // Today
       const endDate = new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]; // 14 days from now
 
       // Get user email from auth context

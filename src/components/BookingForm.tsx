@@ -172,6 +172,13 @@ export function BookingForm(props: BookingFormProps) {
     setSubmitMessage('');
 
     try {
+      // Get user email from auth context
+      const userEmail = auth.user()?.email;
+      if (!userEmail) {
+        setSubmitMessage('Error: No user email available');
+        return;
+      }
+
       // Convert ISO timestamp to YYYY-MM-DD HH:mm format (Pacific time)
       const startDate = new Date(selectedSlot()!.startTime);
       const year = startDate.getFullYear();

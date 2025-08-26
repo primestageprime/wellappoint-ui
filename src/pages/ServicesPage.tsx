@@ -1,4 +1,8 @@
-import { createSignal, createEffect, Show } from 'solid-js';
+import { createSignal, createEffect } from 'solid-js';
+import { useAuth } from '../auth/AuthProvider';
+import { BookingForm } from '../components/BookingForm';
+import { WellAppointLogo } from '../components/WellAppointLogo';
+import { LogOut, User } from 'lucide-solid';
 
 interface Service {
   name: string;
@@ -6,7 +10,8 @@ interface Service {
   price: number;
 }
 
-function ServicesPage() {
+export function ServicesPage() {
+  const auth = useAuth();
   const [services, setServices] = createSignal<Service[]>([]);
   const [loading, setLoading] = createSignal(true);
   const [error, setError] = createSignal<string | null>(null);
@@ -35,19 +40,27 @@ function ServicesPage() {
   });
 
   return (
-    <div class="min-h-screen bg-gray-50">
+    <div class="min-h-screen bg-background">
       {/* Header */}
-      <header class="bg-white shadow">
+      <header class="bg-background border-b border-border/20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex justify-between items-center py-6">
-            <div class="flex items-center">
-              <h1 class="text-3xl font-bold text-gray-900">Appointed</h1>
-            </div>
-            <div class="flex items-center space-x-4">
-              <div class="text-sm text-gray-700">
-                Services Dashboard
+          <div class="flex justify-between items-center py-4">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                <User class="w-4 h-4 text-primary" />
+              </div>
+              <div>
+                <p class="text-sm text-primary">Welcome back,</p>
+                <p class="text-primary">{auth.user()?.nickname || auth.user()?.given_name || auth.user()?.name || auth.user()?.email}</p>
               </div>
             </div>
+            <button
+              onClick={auth.logout}
+              class="flex items-center gap-2 text-primary hover:text-primary/80 hover:bg-primary/5 px-3 py-1.5 rounded text-sm font-medium"
+            >
+              <LogOut class="w-4 h-4" />
+              Logout
+            </button>
           </div>
         </div>
       </header>
@@ -55,39 +68,45 @@ function ServicesPage() {
       {/* Main Content */}
       <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div class="px-4 py-6 sm:px-0">
-          <div class="bg-white shadow rounded-lg">
+          {/* Logo and Title */}
+          <div class="flex justify-center mb-8">
+            <div class="flex items-center">
+              <WellAppointLogo className="mr-3 text-card-foreground" />
+              <h1 class="text-3xl font-bold text-card-foreground">WellAppoint</h1>
+            </div>
+          </div>
+          
+          <div class="bg-card shadow rounded-lg">
             <div class="px-4 py-5 sm:p-6">
-              <h2 class="text-lg leading-6 font-medium text-gray-900 mb-4">
+              <h2 class="text-lg leading-6 font-medium text-card-foreground mb-4">
                 Available Services
               </h2>
               
-              <Show when={loading()}>
+              {loading() && (
                 <div class="text-center py-8">
-                  <div class="text-gray-500">Loading services...</div>
+                  <div class="text-muted-foreground">Loading services...</div>
                 </div>
-              </Show>
+              )}
 
-              <Show when={error()}>
-                <div class="bg-red-50 border border-red-200 rounded-md p-4 mb-4">
-                  <div class="text-red-700">
+              {error() && (
+                <div class="bg-destructive/10 border border-destructive/20 rounded-md p-4 mb-4">
+                  <div class="text-destructive">
                     Error: {error()}
                   </div>
                   <button
                     onClick={fetchServices}
-                    class="mt-2 text-red-600 hover:text-red-800 underline"
+                    class="mt-2 text-destructive hover:text-destructive/80 underline"
                   >
                     Try again
                   </button>
                 </div>
-              </Show>
+              )}
 
-              <Show when={!loading() && !error()}>
-                <div class="bg-gray-50 rounded-lg p-4">
-                  <pre class="text-sm text-gray-800 whitespace-pre-wrap overflow-auto">
-                    {JSON.stringify(services(), null, 2)}
-                  </pre>
+              {!loading() && !error() && (
+                <div class="flex justify-center">
+                  <BookingForm services={services()} />
                 </div>
-              </Show>
+              )}
             </div>
           </div>
         </div>
@@ -95,5 +114,3 @@ function ServicesPage() {
     </div>
   );
 }
-
-export default ServicesPage;

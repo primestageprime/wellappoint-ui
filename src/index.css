@@ -118,6 +118,15 @@ body {
 /* Hover utilities */
 .hover\:bg-gray-50:hover { background-color: #f9fafb; }
 
+/* Paper background metaphor */
+.paper-background {
+  background-color: #fefefe;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(139, 69, 19, 0.1);
+}
+
 /* Responsive utilities */
 @media (min-width: 640px) {
   .sm\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }

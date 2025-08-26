@@ -10,7 +10,6 @@ export function WellAppointLogo({ className = "" }: WellAppointLogoProps) {
       viewBox="0 0 100 100" 
       class={`${className}`}
       width={80}
-      fill="none" 
       xmlns="http://www.w3.org/2000/svg"
     >
       {/* Peaked Roof */}

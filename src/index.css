@@ -2,6 +2,90 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom CSS variables to match the design */
+:root {
+  --background: #faf7f2;
+  --foreground: #3d2914;
+  --card: #ffffff;
+  --card-foreground: #3d2914;
+  --primary: #8b4513;
+  --primary-foreground: #faf7f2;
+  --secondary: #d2b48c;
+  --secondary-foreground: #3d2914;
+  --muted: #e8dcc0;
+  --muted-foreground: #6b5b3f;
+  --accent: #daa520;
+  --accent-foreground: #3d2914;
+  --destructive: #cd853f;
+  --destructive-foreground: #ffffff;
+  --border: rgba(139, 69, 19, 0.2);
+  --input: transparent;
+  --input-background: #f5f0e8;
+  --ring: #8b4513;
+  --radius: 0.75rem;
+}
+
+/* Override Tailwind's default colors with our custom ones */
+.text-foreground {
+  color: var(--foreground) !important;
+}
+
+.text-card-foreground {
+  color: var(--card-foreground) !important;
+}
+
+.text-muted-foreground {
+  color: var(--muted-foreground) !important;
+}
+
+.text-primary {
+  color: var(--primary) !important;
+}
+
+.text-primary-foreground {
+  color: var(--primary-foreground) !important;
+}
+
+.bg-primary {
+  background-color: var(--primary) !important;
+}
+
+.bg-primary\/90 {
+  background-color: color-mix(in srgb, var(--primary) 90%, transparent) !important;
+}
+
+.bg-card {
+  background-color: var(--card) !important;
+}
+
+.bg-background {
+  background-color: var(--background) !important;
+}
+
+.bg-destructive {
+  background-color: var(--destructive) !important;
+}
+
+.bg-destructive\/90 {
+  background-color: color-mix(in srgb, var(--destructive) 90%, transparent) !important;
+}
+
+.bg-destructive\/10 {
+  background-color: color-mix(in srgb, var(--destructive) 10%, transparent) !important;
+}
+
+.border-destructive\/20 {
+  border-color: color-mix(in srgb, var(--destructive) 20%, transparent) !important;
+}
+
+.text-destructive {
+  color: var(--destructive) !important;
+}
+
+.text-destructive\/80 {
+  color: color-mix(in srgb, var(--destructive) 80%, transparent) !important;
+}
+
 /* Basic styles for the app */
 body {
   margin: 0;
@@ -10,5 +94,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #fafafa;
+  background-color: var(--background);
+  color: var(--foreground);
+  background-image: radial-gradient(circle at 20% 50%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(218, 165, 32, 0.03) 0%, transparent 50%),
+                    radial-gradient(circle at 40% 80%, rgba(143, 188, 143, 0.03) 0%, transparent 50%);
 }

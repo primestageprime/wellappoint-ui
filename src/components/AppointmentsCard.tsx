@@ -11,7 +11,7 @@ export function AppointmentsCard() {
   ];
 
   return (
-    <Card className="mb-6">
+    <div class="bg-card border border-border/20 rounded-lg shadow-sm mb-6">
       <div class="px-4 py-5 sm:p-6">
         <h3 class="text-lg leading-6 font-medium text-card-foreground mb-4">
           Your Appointments
@@ -39,6 +39,6 @@ export function AppointmentsCard() {
           </div>
         )}
       </div>
-    </Card>
+    </div>
   );
 }

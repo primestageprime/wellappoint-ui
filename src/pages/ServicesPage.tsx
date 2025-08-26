@@ -43,8 +43,8 @@ export function ServicesPage() {
 
   return (
     <div class="min-h-screen bg-background">
-      {/* Header */}
-      <header class="bg-background border-b border-border/20">
+      {/* Header with rounded background */}
+      <header class="bg-card rounded-b-lg shadow-sm border-b border-border/20 mb-6">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="flex justify-between items-center py-4">
             <div class="flex items-center gap-3">
@@ -67,9 +67,9 @@ export function ServicesPage() {
         </div>
       </header>
 
-      {/* Main Content */}
-      <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div class="px-4 py-6 sm:px-0">
+      {/* Main Content with white page background */}
+      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-card rounded-lg shadow-sm border border-border/20 p-6 sm:p-8">
           {/* Logo and Title */}
           <div class="flex justify-center mb-8">
             <div class="flex items-center flex-col">
@@ -84,6 +84,7 @@ export function ServicesPage() {
           {/* Appointments Card */}
           <AppointmentsCard />
           
+          {/* Services Section */}
           <div class="bg-card shadow rounded-lg">
             <div class="px-4 py-5 sm:p-6">
               {loading() && (

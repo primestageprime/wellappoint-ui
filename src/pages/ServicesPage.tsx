@@ -43,73 +43,74 @@ export function ServicesPage() {
 
   return (
     <div class="min-h-screen bg-background">
-      {/* Header with rounded background */}
-      <header class="bg-card rounded-b-lg shadow-sm border-b border-border/20 mb-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex justify-between items-center py-4">
-            <div class="flex items-center gap-3">
-              <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                <User class="w-4 h-4 text-primary" />
-              </div>
-              <div>
-                <p class="text-sm text-primary">Welcome back,</p>
-                <p class="text-primary">{auth.user()?.nickname || auth.user()?.given_name || auth.user()?.name || auth.user()?.email}</p>
-              </div>
-            </div>
-            <button
-              onClick={auth.logout}
-              class="flex items-center gap-2 text-primary hover:text-primary/80 hover:bg-primary/5 px-3 py-1.5 rounded text-sm font-medium"
-            >
-              <LogOut class="w-4 h-4" />
-              Logout
-            </button>
-          </div>
-        </div>
-      </header>
-
       {/* Main Content with white page background */}
-      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-card rounded-lg shadow-sm border border-border/20 p-6 sm:p-8">
-          {/* Logo and Title */}
-          <div class="flex justify-center mb-8">
-            <div class="flex items-center flex-col">
-              <WellAppointLogo className="mr-3 text-card-foreground" size={40} />
-              <h1 class="text-small text-card-foreground !text-sm font-normal">WellAppoint</h1>
+      <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="bg-card rounded-lg shadow-sm border border-border/20">
+          {/* Auth Header */}
+          <div class="bg-muted rounded-t-lg p-4 mb-6">
+            <div class="flex justify-between items-center">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                  <User class="w-4 h-4 text-primary" />
+                </div>
+                <div>
+                  <p class="text-sm text-primary">Welcome back,</p>
+                  <p class="text-primary">{auth.user()?.nickname || auth.user()?.given_name || auth.user()?.name || auth.user()?.email}</p>
+                </div>
+              </div>
+              <button
+                onClick={auth.logout}
+                class="flex items-center gap-2 text-primary hover:text-primary/80 hover:bg-primary/5 px-3 py-1.5 rounded text-sm font-medium"
+              >
+                <LogOut class="w-4 h-4" />
+                Logout
+              </button>
             </div>
           </div>
-          
-          {/* Provider Card */}
-          <ProviderCard />
-          
-          {/* Appointments Card */}
-          <AppointmentsCard />
-          
-          {/* Services Section */}
-          <div class="bg-card shadow rounded-lg">
-            <div class="px-4 py-5 sm:p-6">
-              {loading() && (
-                <div class="text-center py-8">
-                  <div class="text-muted-foreground">Loading services...</div>
-                </div>
-              )}
 
-              {error() && (
-                <div class="bg-destructive/10 border border-destructive/20 rounded-md p-4 mb-4">
-                  <div class="text-destructive">
-                    Error: {error()}
+          {/* Content with padding */}
+          <div class="px-6 sm:px-8 pb-6 sm:pb-8">
+            {/* Logo and Title */}
+            <div class="flex justify-center mb-8">
+              <div class="flex items-center flex-col">
+                <WellAppointLogo className="mr-3 text-card-foreground" size={40} />
+                <h1 class="text-small text-card-foreground !text-sm font-normal">WellAppoint</h1>
+              </div>
+            </div>
+            
+            {/* Provider Card */}
+            <ProviderCard />
+            
+            {/* Appointments Card */}
+            <AppointmentsCard />
+            
+            {/* Services Section */}
+            <div class="bg-card shadow rounded-lg">
+              <div class="px-4 py-5 sm:p-6">
+                {loading() && (
+                  <div class="text-center py-8">
+                    <div class="text-muted-foreground">Loading services...</div>
                   </div>
-                  <button
-                    onClick={fetchServices}
-                    class="mt-2 text-destructive hover:text-destructive/80 underline"
-                  >
-                    Try again
-                  </button>
-                </div>
-              )}
+                )}
 
-              {!loading() && !error() && (
-                <ServicesList services={services()} />
-              )}
+                {error() && (
+                  <div class="bg-destructive/10 border border-destructive/20 rounded-md p-4 mb-4">
+                    <div class="text-destructive">
+                      Error: {error()}
+                    </div>
+                    <button
+                      onClick={fetchServices}
+                      class="mt-2 text-destructive hover:text-destructive/80 underline"
+                    >
+                      Try again
+                    </button>
+                  </div>
+                )}
+
+                {!loading() && !error() && (
+                  <ServicesList services={services()} />
+                )}
+              </div>
             </div>
           </div>
         </div>

@@ -1,8 +1,8 @@
 import { createSignal, createEffect } from 'solid-js';
 import { useAuth } from '../auth/AuthProvider';
-import { BookingForm } from '../components/BookingForm';
 import { WellAppointLogo } from '../components/WellAppointLogo';
 import { ProviderCard } from '../components/ProviderCard';
+import { ServicesList } from '../components/ServicesList';
 import { LogOut, User } from 'lucide-solid';
 
 interface Service {
@@ -82,10 +82,6 @@ export function ServicesPage() {
           
           <div class="bg-card shadow rounded-lg">
             <div class="px-4 py-5 sm:p-6">
-              <h2 class="text-lg leading-6 font-medium text-card-foreground mb-4">
-                Available Services
-              </h2>
-              
               {loading() && (
                 <div class="text-center py-8">
                   <div class="text-muted-foreground">Loading services...</div>
@@ -107,9 +103,7 @@ export function ServicesPage() {
               )}
 
               {!loading() && !error() && (
-                <div class="flex justify-center">
-                  <BookingForm services={services()} />
-                </div>
+                <ServicesList services={services()} />
               )}
             </div>
           </div>

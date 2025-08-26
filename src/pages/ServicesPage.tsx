@@ -2,6 +2,7 @@ import { createSignal, createEffect } from 'solid-js';
 import { useAuth } from '../auth/AuthProvider';
 import { WellAppointLogo } from '../components/WellAppointLogo';
 import { ProviderCard } from '../components/ProviderCard';
+import { AppointmentsCard } from '../components/AppointmentsCard';
 import { ServicesList } from '../components/ServicesList';
 import { LogOut, User } from 'lucide-solid';
 
@@ -79,6 +80,9 @@ export function ServicesPage() {
           
           {/* Provider Card */}
           <ProviderCard />
+          
+          {/* Appointments Card */}
+          <AppointmentsCard />
           
           <div class="bg-card shadow rounded-lg">
             <div class="px-4 py-5 sm:p-6">

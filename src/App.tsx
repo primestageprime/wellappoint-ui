@@ -1,6 +1,7 @@
 import { createSignal, createEffect, Show } from 'solid-js';
 import { AuthProvider, useAuth } from './auth/AuthProvider';
 import { BookingForm } from './components/BookingForm';
+import { WellAppointLogo } from './components/WellAppointLogo';
 
 interface Service {
   name: string;
@@ -44,7 +45,8 @@ function ServicesPage() {
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="flex justify-between items-center py-6">
             <div class="flex items-center">
-              <h1 class="text-3xl font-bold text-gray-900">Appointed</h1>
+              <WellAppointLogo className="mr-3" />
+              <h1 class="text-3xl font-bold text-gray-900">WellAppoint</h1>
             </div>
             <div class="flex items-center space-x-4">
               <div class="text-sm text-gray-700">
@@ -127,11 +129,14 @@ function LoginPage() {
     <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div class="max-w-md w-full space-y-8">
         <div>
+          <div class="flex justify-center mb-4">
+            <WellAppointLogo />
+          </div>
           <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Welcome to Appointed
+            Welcome to WellAppoint
           </h2>
           <p class="mt-2 text-center text-sm text-gray-600">
-            Sign in to view available services
+            Welcome to your wellness journey
           </p>
         </div>
         <div class="mt-8 space-y-6">

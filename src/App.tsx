@@ -2,6 +2,7 @@ import { createSignal, createEffect, Show } from 'solid-js';
 import { AuthProvider, useAuth } from './auth/AuthProvider';
 import { BookingForm } from './components/BookingForm';
 import { WellAppointLogo } from './components/WellAppointLogo';
+import { LogOut, User } from 'lucide-solid';
 
 interface Service {
   name: string;
@@ -41,41 +42,25 @@ function ServicesPage() {
   return (
     <div class="min-h-screen bg-background">
       {/* Header */}
-      <header class="bg-card shadow">
+      <header class="bg-background border-b border-border/20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex justify-between items-center py-6">
-            <div class="flex items-center">
-              <WellAppointLogo className="mr-3 text-card-foreground" />
-              <h1 class="text-3xl font-bold text-card-foreground">WellAppoint</h1>
-            </div>
-            <div class="flex items-center space-x-4">
-              <div class="text-sm text-muted-foreground">
-                {auth.user() ? (
-                  <div class="flex items-center space-x-2">
-                    {auth.user()?.picture && (
-                      <img 
-                        src={auth.user().picture} 
-                        alt="Profile" 
-                        class="w-6 h-6 rounded-full"
-                      />
-                    )}
-                    <span>
-                      Welcome, {auth.user().nickname || auth.user().given_name || auth.user().name || auth.user().email}
-                    </span>
-                  </div>
-                ) : (
-                  'Services Dashboard'
-                )}
+          <div class="flex justify-between items-center py-4">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                <User class="w-4 h-4 text-primary" />
               </div>
-              {auth.user() && (
-                <button
-                  onClick={auth.logout}
-                  class="bg-destructive hover:bg-destructive/90 text-destructive-foreground px-4 py-2 rounded-md text-sm font-medium"
-                >
-                  Logout
-                </button>
-              )}
+              <div>
+                <p class="text-sm text-primary">Welcome back,</p>
+                <p class="text-primary">{auth.user()?.nickname || auth.user()?.given_name || auth.user()?.name || auth.user()?.email}</p>
+              </div>
             </div>
+            <button
+              onClick={auth.logout}
+              class="flex items-center gap-2 text-primary hover:text-primary/80 hover:bg-primary/5 px-3 py-1.5 rounded text-sm font-medium"
+            >
+              <LogOut class="w-4 h-4" />
+              Logout
+            </button>
           </div>
         </div>
       </header>
@@ -83,6 +68,14 @@ function ServicesPage() {
       {/* Main Content */}
       <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div class="px-4 py-6 sm:px-0">
+          {/* Logo and Title */}
+          <div class="flex justify-center mb-8">
+            <div class="flex items-center">
+              <WellAppointLogo className="mr-3 text-card-foreground" />
+              <h1 class="text-3xl font-bold text-card-foreground">WellAppoint</h1>
+            </div>
+          </div>
+          
           <div class="bg-card shadow rounded-lg">
             <div class="px-4 py-5 sm:p-6">
               <h2 class="text-lg leading-6 font-medium text-card-foreground mb-4">
@@ -137,7 +130,7 @@ function LoginPage() {
               WellAppoint
             </h2>
             <p class="mt-2 text-center text-sm text-muted-foreground">
-              Welcome to your wellness journey
+              Keep coming back to the Well
             </p>
           </div>
           <div class="mt-8 space-y-6">

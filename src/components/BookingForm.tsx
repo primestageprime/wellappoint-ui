@@ -144,7 +144,7 @@ export function BookingForm(props: BookingFormProps) {
       };
 
       // Make POST request to availability endpoint
-      const response = await fetch('/api/availability', {
+              const response = await fetch('/availability', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -219,7 +219,7 @@ export function BookingForm(props: BookingFormProps) {
         } : undefined
       };
 
-      const response = await fetch('/api/appointment_request', {
+              const response = await fetch('/appointment_request', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

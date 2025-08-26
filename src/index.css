@@ -127,6 +127,13 @@ body {
   border: 1px solid rgba(139, 69, 19, 0.1);
 }
 
+/* Override default h1 styles when using utility classes */
+h1.text-small {
+  font-size: 0.875rem !important;
+  line-height: 1.25rem !important;
+  font-weight: normal !important;
+}
+
 /* Responsive utilities */
 @media (min-width: 640px) {
   .sm\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }

@@ -8,8 +8,19 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'http://localhost:8000',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        changeOrigin: true
+      },
+      '/services': {
+        target: 'http://localhost:8000',
+        changeOrigin: true
+      },
+      '/availability': {
+        target: 'http://localhost:8000',
+        changeOrigin: true
+      },
+      '/appointment_request': {
+        target: 'http://localhost:8000',
+        changeOrigin: true
       }
     }
   },

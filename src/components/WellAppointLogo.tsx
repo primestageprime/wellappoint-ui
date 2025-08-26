@@ -1,15 +1,16 @@
 interface WellAppointLogoProps {
   className?: string;
+  size?: number;
 }
 
-export function WellAppointLogo({ className = "" }: WellAppointLogoProps) {
+export function WellAppointLogo({ className = "", size = 80}: WellAppointLogoProps) {
 
 
   return (
     <svg 
       viewBox="0 0 100 100" 
       class={`${className}`}
-      width={80}
+      width={size}
       xmlns="http://www.w3.org/2000/svg"
     >
       {/* Peaked Roof */}

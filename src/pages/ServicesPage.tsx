@@ -2,6 +2,7 @@ import { createSignal, createEffect } from 'solid-js';
 import { useAuth } from '../auth/AuthProvider';
 import { BookingForm } from '../components/BookingForm';
 import { WellAppointLogo } from '../components/WellAppointLogo';
+import { ProviderCard } from '../components/ProviderCard';
 import { LogOut, User } from 'lucide-solid';
 
 interface Service {
@@ -21,7 +22,7 @@ export function ServicesPage() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/api/services');
+      const response = await fetch('/services');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -70,11 +71,14 @@ export function ServicesPage() {
         <div class="px-4 py-6 sm:px-0">
           {/* Logo and Title */}
           <div class="flex justify-center mb-8">
-            <div class="flex items-center">
-              <WellAppointLogo className="mr-3 text-card-foreground" />
-              <h1 class="text-3xl font-bold text-card-foreground">WellAppoint</h1>
+            <div class="flex items-center flex-col">
+              <WellAppointLogo className="mr-3 text-card-foreground" size={40} />
+              <h1 class="text-small text-card-foreground !text-sm font-normal">WellAppoint</h1>
             </div>
           </div>
+          
+          {/* Provider Card */}
+          <ProviderCard />
           
           <div class="bg-card shadow rounded-lg">
             <div class="px-4 py-5 sm:p-6">

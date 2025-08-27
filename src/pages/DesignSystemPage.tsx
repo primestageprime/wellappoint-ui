@@ -6,23 +6,24 @@ export function DesignSystemPage() {
       <DesignSystemSection title="Composed Page">
         <PageFrame>
           <HeaderCard>
-            <TestContent header="Page Header">
-             This HeaderCard contains the page title and navigation elements.
-            </TestContent>
+            <Split 
+              left={<Avatar name="Testee McTesterson" />}
+              right={<div></div>}
+            />
           </HeaderCard>
           
           <Content>
-              <Card>
-                <TestContent header="First Card">
-                  This is the first card component within the Content area. It demonstrates how cards work within the main content section.
-                </TestContent>
-              </Card>
-              
-              <Card>
-                <TestContent header="Second Card">
+            <Card>
+              <TestContent header="First Card">
+                This is the first card component within the Content area. It demonstrates how cards work within the main content section.
+              </TestContent>
+            </Card>
+            
+            <Card>
+              <TestContent header="Second Card">
                 This is the second card component within the Content area. It shows how multiple cards can be stacked vertically.
-                </TestContent>
-              </Card>
+              </TestContent>
+            </Card>
           </Content>
         </PageFrame>
       </DesignSystemSection>

@@ -27,6 +27,10 @@ export function TestContent(props: TestContentProps) {
       'PageFrame': {
         basic: 'This is a basic PageFrame component with white background, 4px drop shadow, rounded corners, and 1rem margin from all edges. It has no internal padding, so content must provide its own padding.',
         'in-container': 'This PageFrame component is inside a container and demonstrates the 1rem margin from its container edge. Notice how the content inside provides its own padding since PageFrame has no internal padding.'
+      },
+      'HeaderCard': {
+        basic: 'This is a HeaderCard component with light brown background, rounded top corners, and pointy bottom corners. It has the same shadow and spacing as other components but with header-specific styling.',
+        'in-container': 'This HeaderCard component is inside a container and demonstrates the 1rem margin from its container edge.'
       }
     };
 
@@ -39,7 +43,7 @@ export function TestContent(props: TestContentProps) {
   };
 
   const getTextColor = () => {
-    if (props.componentName === 'Card') {
+    if (props.componentName === 'Card' || props.componentName === 'HeaderCard') {
       return 'text-card-foreground';
     }
     return 'text-primary';

@@ -7,7 +7,7 @@ interface CardProps {
 
 export function Card(props: CardProps) {
   return (
-    <div class={`bg-background shadow-lg rounded-lg mx-auto my-4 ${props.class || ''}`}>
+    <div class={`bg-background shadow-lg rounded-lg m-4 ${props.class || ''}`}>
       {props.children}
     </div>
   );

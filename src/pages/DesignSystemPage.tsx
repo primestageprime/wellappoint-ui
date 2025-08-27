@@ -1,4 +1,4 @@
-import { Paper, Card, PageFrame, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper } from '../components/visual';
+import { Paper, Card, PageFrame, HeaderCard, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper } from '../components/visual';
 
 export function DesignSystemPage() {
   return (
@@ -9,7 +9,7 @@ export function DesignSystemPage() {
         </Paper>
         
         <DesignSystemContainer>
-          <Paper class="max-w-md">
+          <Paper>
             <TestContent componentName="Paper" variant="in-container" />
           </Paper>
         </DesignSystemContainer>
@@ -21,7 +21,7 @@ export function DesignSystemPage() {
         </Card>
         
         <DesignSystemContainer>
-          <Card class="max-w-md">
+          <Card>
             <TestContent componentName="Card" variant="in-container" />
           </Card>
         </DesignSystemContainer>
@@ -30,6 +30,14 @@ export function DesignSystemPage() {
       <DesignSystemSection title="PageFrame Component">
         <PageFrame>
           <TestContent componentName="PageFrame" />
+        </PageFrame>
+      </DesignSystemSection>
+
+      <DesignSystemSection title="HeaderCard Component">
+        <PageFrame>
+        <HeaderCard>
+            <TestContent componentName="HeaderCard" />
+          </HeaderCard>
         </PageFrame>
       </DesignSystemSection>
     </DesignSystemPageWrapper>

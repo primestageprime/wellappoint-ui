@@ -1,5 +1,5 @@
 import { JSX } from 'solid-js';
-import { PaddingSpacer } from './PaddingSpacer';
+import { PaddingSpacer } from './base';
 
 interface CardProps {
   children: JSX.Element;

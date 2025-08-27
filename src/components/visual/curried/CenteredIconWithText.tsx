@@ -1,4 +1,5 @@
 import { JSX } from 'solid-js';
+import { IconWithText } from '../base';
 
 interface CenteredIconWithTextProps {
   icon: JSX.Element;
@@ -8,9 +9,8 @@ interface CenteredIconWithTextProps {
 
 export function CenteredIconWithText(props: CenteredIconWithTextProps) {
   return (
-    <div class={`flex items-center justify-center gap-2 ${props.class || ''}`}>
-      {props.icon}
+    <IconWithText icon={props.icon} class={`justify-center ${props.class || ''}`}>
       {props.children}
-    </div>
+    </IconWithText>
   );
 }

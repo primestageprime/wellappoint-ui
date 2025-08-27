@@ -16,6 +16,7 @@ interface AvailabilityListProps {
   selectedService: string;
   selectedDuration: number;
   onBack: () => void;
+  onTimeSelect: (slot: AvailableSlot) => void;
 }
 
 export function AvailabilityList(props: AvailabilityListProps) {
@@ -53,14 +54,7 @@ export function AvailabilityList(props: AvailabilityListProps) {
   };
 
   const handleTimeSelect = (slot: AvailableSlot) => {
-    const date = new Date(slot.startTime).toISOString().split('T')[0];
-    const time = new Date(slot.startTime).toLocaleTimeString('en-US', { 
-      hour: 'numeric', 
-      minute: '2-digit',
-      hour12: true 
-    });
-    setSelectedDate(date);
-    setSelectedTime(time);
+    props.onTimeSelect(slot);
   };
 
   const handleBackToDurations = () => {

@@ -15,7 +15,7 @@ export function DurationItem(props: DurationItemProps) {
   return (
     <button
       onClick={props.onClick}
-      class={`w-full p-2 bg-card rounded-lg border border-primary/10 hover:border-primary/20 transition-colors cursor-pointer flex items-center justify-between ${props.class || ''}`}
+      class={`w-full p-4 bg-card rounded-lg border border-primary/10 hover:border-primary/20 transition-colors cursor-pointer flex items-center justify-between ${props.class || ''}`}
   
     >
       <IconWithTitleAndSubtitle

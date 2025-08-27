@@ -22,7 +22,7 @@ interface AppointmentsCardProps {
 export function AppointmentsCard(props: AppointmentsCardProps) {
   return (
     <Card class={props.class}>
-      <div class="p-6 space-y-4">
+      <div class="space-y-3">
         <div class="flex items-center justify-between">
           <IconWithText icon={<Calendar class="w-5 h-5 text-primary" />}>
             <H3>Your Appointments</H3>
@@ -30,7 +30,7 @@ export function AppointmentsCard(props: AppointmentsCardProps) {
           <Ratio current={1} total={props.appointments.length} />
         </div>
         
-        <div class="space-y-3">
+        <div class="space-y-2">
           <For each={props.appointments}>
             {(appointment) => (
               <AppointmentItem

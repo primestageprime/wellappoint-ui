@@ -23,8 +23,8 @@ export function AppointmentsCard(props: AppointmentsCardProps) {
     <Card class={props.class}>
       <div class="p-6 space-y-4">
         <div class="flex items-center justify-between">
-          <IconWithText icon={<Calendar class="w-5 h-5" />}>
-            <span class="text-lg font-semibold">Your Appointments</span>
+          <IconWithText icon={<Calendar class="w-5 h-5 text-primary" />}>
+            <span class="text-base font-semibold text-primary">Your Appointments</span>
           </IconWithText>
           <Ratio current={1} total={props.appointments.length} />
         </div>

@@ -1,4 +1,5 @@
 import { JSX } from 'solid-js';
+import { SectionHeading } from '../base';
 
 interface TestContentProps {
   header?: string;
@@ -10,7 +11,7 @@ export function TestContent(props: TestContentProps) {
   if (props.header) {
     return (
       <div class={`p-6 ${props.class || ''}`}>
-        <h3 class="text-lg font-medium text-primary mb-2">{props.header}</h3>
+        <SectionHeading>{props.header}</SectionHeading>
         {props.children}
       </div>
     );

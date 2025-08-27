@@ -1,17 +1,5 @@
-export { Paper } from './Paper';
 export { Card } from './Card';
-export { PageFrame } from './PageFrame';
-export { HeaderCard } from './HeaderCard';
-export { Content } from './Content';
-export { Avatar } from './Avatar';
-export { Split } from './Split';
-export { Button } from './Button';
-export { LogoutButton } from './LogoutButton';
 export { WellAppointLogo } from './WellAppointLogo';
-export { DesignSystemSection } from './DesignSystemSection';
-export { TestContent } from './TestContent';
-export { DesignSystemContainer } from './DesignSystemContainer';
-export { DesignSystemPage } from './DesignSystemPage';
 export { ProviderContent } from './ProviderContent';
 export { User, Mail, Briefcase } from './icons';
 export * from './base';

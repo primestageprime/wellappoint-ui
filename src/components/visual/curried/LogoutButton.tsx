@@ -1,6 +1,6 @@
 import { JSX } from 'solid-js';
 import { LogOut } from 'lucide-solid';
-import { Button } from './Button';
+import { Button } from '../base';
 
 interface LogoutButtonProps {
   onLogout: () => void;

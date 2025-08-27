@@ -1,4 +1,5 @@
 import { JSX } from 'solid-js';
+import { CenteredContent } from '../base';
 
 interface DesignSystemPageProps {
   children: JSX.Element;

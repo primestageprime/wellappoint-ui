@@ -18,9 +18,12 @@ export function DesignSystemPage() {
           
           <Content>
             <Card>
-              <TestContent header="First Card">
-                This is the first card component within the Content area. It demonstrates how cards work within the main content section.
-              </TestContent>
+              <ProviderContent 
+                name="Dr. Katara Waterbender"
+                email="katara@southernwatertribe.gov"
+                title="Water Healing Specialist"
+                profilePic="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=150&h=150&fit=crop&crop=face"
+              />
             </Card>
             
             <Card>

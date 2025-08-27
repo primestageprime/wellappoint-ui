@@ -1,4 +1,4 @@
-import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, AppointmentsCard, ServicesCard, IconWithText, IconWithTitleAndSubtitle, ServiceItem, SmallText, SectionHeading, Briefcase, CenteredContent, H3, H4 } from '../components/visual';
+import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, AppointmentsCard, ServicesCard, IconWithText, IconWithTitleAndSubtitle, ServiceItem, SmallText, SectionHeading, Briefcase, CenteredContent, H3, H4, Heart, Craniosacral, FootReflexology, VerticallySpacedContent } from '../components/visual';
 
 export function DesignSystemPage() {
   const handleLogout = () => {
@@ -194,25 +194,23 @@ export function DesignSystemPage() {
       </DesignSystemSection>
 
       <DesignSystemSection title="IconWithTitleAndSubtitle Component">
-        <div class="space-y-4">
-          <IconWithTitleAndSubtitle
-            icon={<Briefcase class="w-5 h-5 text-primary" />}
-            title="Therapeutic Massage"
-            subtitle="60 minutes of deep tissue relaxation"
-          />
-          
-          <IconWithTitleAndSubtitle
-            icon={<Briefcase class="w-5 h-5 text-primary" />}
-            title="Energy Healing Session"
-            subtitle="45 minutes of chakra balancing and energy work"
-          />
-          
-          <IconWithTitleAndSubtitle
-            icon={<Briefcase class="w-5 h-5 text-primary" />}
-            title="Crystal Therapy"
-            subtitle="90 minutes of crystal healing and meditation"
-          />
-        </div>
+        <IconWithTitleAndSubtitle
+          icon={<Heart class="w-5 h-5 text-primary" />}
+          title="Therapeutic Massage"
+          subtitle="Deep tissue & relaxation therapy"
+        />
+        
+        <IconWithTitleAndSubtitle
+          icon={<Craniosacral class="w-5 h-5 text-primary" />}
+          title="Craniosacral Therapy"
+          subtitle="Gentle energy work & alignment"
+        />
+        
+        <IconWithTitleAndSubtitle
+          icon={<FootReflexology class="w-5 h-5 text-primary" />}
+          title="Foot Reflexology"
+          subtitle="Pressure point healing"
+        />
       </DesignSystemSection>
 
       <DesignSystemSection title="ServicesCard Component">
@@ -220,15 +218,21 @@ export function DesignSystemPage() {
           services={[
             {
               name: "Therapeutic Massage",
-              description: "60 minutes of deep tissue relaxation"
+              description: "Deep tissue & relaxation therapy",
+              icon: <Heart class="w-5 h-5 text-primary" />,
+              onClick: () => console.log('Therapeutic Massage selected')
             },
             {
-              name: "Energy Healing Session",
-              description: "45 minutes of chakra balancing and energy work"
+              name: "Craniosacral Therapy",
+              description: "Gentle energy work & alignment",
+              icon: <Craniosacral class="w-5 h-5 text-primary" />,
+              onClick: () => console.log('Craniosacral Therapy selected')
             },
             {
-              name: "Crystal Therapy",
-              description: "90 minutes of crystal healing and meditation"
+              name: "Foot Reflexology",
+              description: "Pressure point healing",
+              icon: <FootReflexology class="w-5 h-5 text-primary" />,
+              onClick: () => console.log('Foot Reflexology selected')
             }
           ]}
         />

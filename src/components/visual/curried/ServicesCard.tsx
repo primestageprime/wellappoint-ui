@@ -3,12 +3,13 @@ import { IconWithTitleAndSubtitle } from '../base/IconWithTitleAndSubtitle';
 import { ServiceItem } from '../base/ServiceItem';
 import { Card } from './Card';
 import { H3 } from '../base/H3';
-import { Briefcase } from 'lucide-solid';
+import { Heart, Craniosacral, FootReflexology } from '../icons';
 
 interface Service {
   name: string;
   description: string;
   icon?: JSX.Element;
+  onClick?: () => void;
 }
 
 interface ServicesCardProps {
@@ -29,6 +30,7 @@ export function ServicesCard(props: ServicesCardProps) {
                 name={service.name}
                 description={service.description}
                 icon={service.icon}
+                onClick={service.onClick}
               />
             )}
           </For>

@@ -1,6 +1,7 @@
 import { createSignal } from 'solid-js';
-import { ServiceCard } from './ServiceCard';
 import { BookingForm } from './BookingForm';
+import { ServicesCard, H3, H4, CenteredContent } from './visual';
+import { Heart, Craniosacral, FootReflexology } from './visual/icons';
 
 interface Service {
   name: string;
@@ -12,16 +13,19 @@ interface ServicesListProps {
   services: Service[];
 }
 
-const serviceDescriptions = {
-  'Massage': 'Deep tissue & relaxation therapy',
-  'Cranial Sacral Massage': 'Gentle energy work & alignment',
-  'Reflexology': 'Pressure point healing'
-};
-
-const serviceIcons = {
-  'Massage': 'heart' as const,
-  'Cranial Sacral Massage': 'infinity' as const,
-  'Reflexology': 'foot' as const
+const serviceData = {
+  'Massage': {
+    description: 'Deep tissue & relaxation therapy',
+    icon: <Heart class="w-5 h-5 text-primary" />
+  },
+  'Cranial Sacral Massage': {
+    description: 'Gentle energy work & alignment',
+    icon: <Craniosacral class="w-5 h-5 text-primary" />
+  },
+  'Reflexology': {
+    description: 'Pressure point healing',
+    icon: <FootReflexology class="w-5 h-5 text-primary" />
+  }
 };
 
 export function ServicesList(props: ServicesListProps) {
@@ -66,27 +70,19 @@ export function ServicesList(props: ServicesListProps) {
 
   return (
     <div class="space-y-4">
-      <div class="text-center space-y-2">
-        <h3 class="text-primary">Choose Your Healing Journey</h3>
-        <p class="text-sm text-muted-foreground italic">Select a service to continue</p>
-      </div>
+      <CenteredContent>
+        <H3>Choose Your Healing Journey</H3>
+        <H4>Select a service to continue</H4>
+      </CenteredContent>
       
-      <div class="space-y-3">
-        {uniqueServices().map(service => (
-          <ServiceCard
-            name={service.name}
-            description={serviceDescriptions[service.name] || 'Professional wellness service'}
-            icon={serviceIcons[service.name] || 'heart'}
-            onClick={() => handleServiceSelect(service.name)}
-          />
-        ))}
-      </div>
-      
-      <div class="text-center pt-2">
-        <p class="text-xs text-muted-foreground italic">
-          Click any service above to see available durations and pricing
-        </p>
-      </div>
+      <ServicesCard 
+        services={uniqueServices().map(service => ({
+          name: service.name,
+          description: serviceData[service.name as keyof typeof serviceData]?.description || 'Professional wellness service',
+          icon: serviceData[service.name as keyof typeof serviceData]?.icon,
+          onClick: () => handleServiceSelect(service.name)
+        }))}
+      />
     </div>
   );
 }

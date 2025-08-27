@@ -11,5 +11,7 @@ export { Content } from './Content';
 export { Avatar } from './Avatar';
 export { Card } from './Card';
 export { AppointmentsCard } from './AppointmentsCard';
+export { ErrorCard } from './ErrorCard';
+export { LoadingCard } from './LoadingCard';
 export { ProviderContent } from './ProviderContent';
 export { ServicesCard } from './ServicesCard';

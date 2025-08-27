@@ -1,5 +1,5 @@
 import { JSX } from 'solid-js';
-import { IconWithTitleAndSubtitle } from './IconWithTitleAndSubtitle';
+import { IconWithTitleAndSubtitle } from '../base/IconWithTitleAndSubtitle';
 import { ChevronRight } from '../icons';
 
 interface ServiceItemProps {

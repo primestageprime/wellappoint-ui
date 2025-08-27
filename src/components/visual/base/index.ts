@@ -12,7 +12,6 @@ export { Paper } from './Paper';
 export { PaddingSpacer } from './PaddingSpacer';
 export { Ratio } from './Ratio';
 export { SectionHeading } from './SectionHeading';
-export { ServiceItem } from './ServiceItem';
 export { SmallText } from './SmallText';
 export { Split } from './Split';
 export { VerticallySpacedContent } from './VerticallySpacedContent';

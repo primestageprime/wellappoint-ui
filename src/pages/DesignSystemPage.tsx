@@ -1,4 +1,4 @@
-import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, AppointmentsCard, ServicesCard, IconWithText, IconWithTitleAndSubtitle, ServiceItem, SmallText, SectionHeading, Briefcase, CenteredContent, H3, H4, Heart, Craniosacral, FootReflexology, VerticallySpacedContent } from '../components/visual';
+import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, AppointmentsCard, ServicesCard, DurationList, DurationItem, IconWithText, IconWithTitleAndSubtitle, ServiceItem, SmallText, SectionHeading, Briefcase, CenteredContent, H3, H4, Heart, Craniosacral, FootReflexology, VerticallySpacedContent } from '../components/visual';
 
 export function DesignSystemPage() {
   const handleLogout = () => {
@@ -42,6 +42,27 @@ const provider = {
       name: "Foot Reflexology",
       description: "Pressure point healing",
       icon: <FootReflexology class="w-5 h-5 text-primary" />,
+    }
+  ]
+
+  const durations = [
+    {
+      duration: "30 minutes",
+      description: "A gentle 30-minute massage using organic oils to release tension and restore balance.",
+      price: "$85",
+      icon: <Heart class="w-5 h-5 text-primary" />
+    },
+    {
+      duration: "60 minutes", 
+      description: "A comprehensive 60-minute full body massage with essential oils and healing crystals.",
+      price: "$140",
+      icon: <Heart class="w-5 h-5 text-primary" />
+    },
+    {
+      duration: "90 minutes",
+      description: "Extended 90-minute deep healing session with aromatherapy, crystal therapy, and chakra balancing.",
+      price: "$190",
+      icon: <Heart class="w-5 h-5 text-primary" />
     }
   ]
 
@@ -263,6 +284,36 @@ const provider = {
               onClick: () => console.log('Foot Reflexology selected')
             }
           ]}
+        />
+      </DesignSystemSection>
+
+      <DesignSystemSection title="DurationItem Component">
+        <DurationItem
+          duration="30 minutes"
+          description="A gentle 30-minute massage using organic oils to release tension and restore balance."
+          price="$85"
+          onClick={() => console.log('30 minutes selected')}
+        />
+        
+        <DurationItem
+          duration="60 minutes"
+          description="A comprehensive 60-minute full body massage with essential oils and healing crystals."
+          price="$140"
+          onClick={() => console.log('60 minutes selected')}
+        />
+        
+        <DurationItem
+          duration="90 minutes"
+          description="Extended 90-minute deep healing session with aromatherapy, crystal therapy, and chakra balancing."
+          price="$190"
+          onClick={() => console.log('90 minutes selected')}
+        />
+      </DesignSystemSection>
+
+      <DesignSystemSection title="DurationList Component">
+        <DurationList 
+          title="Select Session Duration"
+          durations={durations}
         />
       </DesignSystemSection>
     </DesignSystemPageWrapper>

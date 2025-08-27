@@ -15,3 +15,6 @@ export { ErrorCard } from './ErrorCard';
 export { LoadingCard } from './LoadingCard';
 export { ProviderContent } from './ProviderContent';
 export { ServicesCard } from './ServicesCard';
+export { DurationList } from './DurationList';
+export { DurationItem } from './DurationItem';
+export { ServiceItem } from './ServiceItem';

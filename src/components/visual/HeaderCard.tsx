@@ -7,7 +7,7 @@ interface HeaderCardProps {
 
 export function HeaderCard(props: HeaderCardProps) {
   return (
-    <div class={`bg-background shadow-lg rounded-t-lg my-4 ${props.class || ''}`}>
+    <div class={`bg-background shadow-lg rounded-t-lg my-4 py-8 outline-t outline-primary/20 ${props.class || ''}`}>
       {props.children}
     </div>
   );

@@ -7,14 +7,13 @@ export interface UserAppointment {
   startTime: string;
   endTime: string;
   description: string;
-  attendees: string[];
+  attendees: readonly string[];
 }
 
 export interface UserAppointmentsResponse {
   success: boolean;
   appointments: UserAppointment[];
   count: number;
-  userEmail: string;
   dateRange: {
     start: string;
     end: string;

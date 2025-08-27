@@ -15,19 +15,22 @@ export function DesignSystemPage() {
                 <h3 class="text-lg font-medium text-primary mb-2">Basic Paper</h3>
                 <p class="text-muted-foreground">
                   This is a basic Paper component with default styling. It has a white background, 
-                  drop shadow, rounded corners, and is horizontally centered with 1rem margin from its parent.
+                  4px drop shadow, rounded corners, and is horizontally centered with 1rem margin from its parent.
                 </p>
               </div>
             </Paper>
             
-            <Paper class="max-w-md">
-              <div class="p-6">
-                <h3 class="text-lg font-medium text-primary mb-2">Paper with Custom Width</h3>
-                <p class="text-muted-foreground">
-                  This Paper component has a custom max-width applied via the class prop.
-                </p>
-              </div>
-            </Paper>
+            {/* Container for second example */}
+            <div class="bg-muted p-4 rounded-lg">
+              <Paper class="max-w-md">
+                <div class="p-6">
+                  <h3 class="text-lg font-medium text-primary mb-2">Paper in Container</h3>
+                  <p class="text-muted-foreground">
+                    This Paper component is inside a container and demonstrates the 1rem margin from its container edge.
+                  </p>
+                </div>
+              </Paper>
+            </div>
             
             <Paper class="max-w-lg">
               <div class="p-6">

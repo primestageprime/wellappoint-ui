@@ -20,6 +20,7 @@ import {
   ErrorCard
 } from '../components/visual';
 import { getProviderDetails } from '../services/providerService';
+import { getUserAppointments, type UserAppointment } from '../services/appointmentService';
 
 interface Service {
   name: string;
@@ -27,21 +28,13 @@ interface Service {
   price: number;
 }
 
-// Stub data for appointments
-const stubAppointments = [
-  {
-    service: "Therapeutic Massage",
-    duration: "60 minutes",
-    date: "8/27/2025",
-    time: "2:00 PM"
-  },
-  {
-    service: "Energy Healing Session",
-    duration: "45 minutes",
-    date: "8/29/2025", 
-    time: "10:00 AM"
-  }
-];
+// Helper function to convert UserAppointment to the format expected by AppointmentsCard
+const convertToAppointmentCardFormat = (appointment: UserAppointment) => ({
+  service: appointment.service,
+  duration: appointment.duration,
+  date: appointment.date,
+  time: appointment.time
+});
 
 export function ServicesPage() {
   const auth = useAuth();
@@ -49,6 +42,10 @@ export function ServicesPage() {
   const [loading, setLoading] = createSignal(true);
   const [error, setError] = createSignal<string | null>(null);
   const [provider] = createResource(getProviderDetails);
+  
+  // Get user appointments
+  const userEmail = () => auth.user()?.email || '';
+  const [appointments] = createResource(userEmail, getUserAppointments);
 
   const fetchServices = async () => {
     try {
@@ -105,9 +102,11 @@ export function ServicesPage() {
           </Card>
         )}
         
-        <AppointmentsCard 
-          appointments={stubAppointments}
-        />
+        {appointments() && (
+          <AppointmentsCard 
+            appointments={appointments()!.appointments.map(convertToAppointmentCardFormat)}
+          />
+        )}
 
         {loading() && (
           <LoadingCard message="Loading services..." />

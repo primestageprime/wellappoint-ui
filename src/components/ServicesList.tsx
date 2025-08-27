@@ -7,6 +7,7 @@ interface Service {
   name: string;
   duration: number;
   price: number;
+  description?: string;
 }
 
 interface ServicesListProps {
@@ -78,7 +79,7 @@ export function ServicesList(props: ServicesListProps) {
       <ServicesCard 
         services={uniqueServices().map(service => ({
           name: service.name,
-          description: serviceData[service.name as keyof typeof serviceData]?.description || 'Professional wellness service',
+          description: service.description || serviceData[service.name as keyof typeof serviceData]?.description || 'Professional wellness service',
           icon: serviceData[service.name as keyof typeof serviceData]?.icon,
           onClick: () => handleServiceSelect(service.name)
         }))}

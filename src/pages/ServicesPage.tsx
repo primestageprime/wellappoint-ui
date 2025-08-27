@@ -26,6 +26,7 @@ interface Service {
   name: string;
   duration: number;
   price: number;
+  description?: string;
 }
 
 // Helper function to convert UserAppointment to the format expected by AppointmentsCard

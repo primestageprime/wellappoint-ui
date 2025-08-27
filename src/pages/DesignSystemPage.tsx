@@ -1,4 +1,5 @@
-import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper } from '../components/visual';
+import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, IconWithText, TightIconWithText, LooseIconWithText, BriefcaseWithText, TightBriefcaseWithText, LooseBriefcaseWithText, SmallText } from '../components/visual';
+import { Briefcase } from 'lucide-solid';
 
 export function DesignSystemPage() {
   const handleLogout = () => {
@@ -115,6 +116,64 @@ export function DesignSystemPage() {
             <h3 class="text-lg font-medium text-primary mb-2">Page Heading Size (48px)</h3>
             <WellAppointLogo className="text-primary" size={48} />
           </div>
+        </div>
+      </DesignSystemSection>
+
+      <DesignSystemSection title="ProviderContent Component">
+        <div class="space-y-4">
+          <div>
+            <h3 class="text-lg font-medium text-primary mb-2">With Profile Picture</h3>
+            <Card>
+              <ProviderContent 
+                name="Dr. Katara Waterbender"
+                email="katara@southernwatertribe.gov"
+                title="Water Healing Specialist"
+                profilePic="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=150&h=150&fit=crop&crop=face"
+              />
+            </Card>
+          </div>
+          
+          <div>
+            <h3 class="text-lg font-medium text-primary mb-2">With Fallback Avatar</h3>
+            <Card>
+              <ProviderContent 
+                name="Dr. Aang Avatar"
+                email="aang@airtemple.org"
+                title="Air Nomad Healer"
+              />
+            </Card>
+          </div>
+          
+          <div>
+            <h3 class="text-lg font-medium text-primary mb-2">Long Text Handling</h3>
+            <Card>
+              <ProviderContent 
+                name="Dr. Toph Beifong Earthbending Master and Metalbending Pioneer"
+                email="verylongemailaddress@extremelylongdomainname.com"
+                title="Earth Kingdom's Most Distinguished Metalbending Specialist and Seismic Sense Expert"
+              />
+            </Card>
+          </div>
+        </div>
+      </DesignSystemSection>
+
+      <DesignSystemSection title="IconWithText Component">
+        <div class="space-y-4">
+          <Card>
+            <div class="p-6 space-y-4">
+              <TightBriefcaseWithText>
+                <SmallText>Your Text here (gap-2)</SmallText>
+              </TightBriefcaseWithText>
+              
+              <BriefcaseWithText>
+                <SmallText>Your Text here (gap-4)</SmallText>
+              </BriefcaseWithText>
+              
+              <LooseBriefcaseWithText>
+                <SmallText>Your Text here (gap-8)</SmallText>
+              </LooseBriefcaseWithText>
+            </div>
+          </Card>
         </div>
       </DesignSystemSection>
     </DesignSystemPageWrapper>

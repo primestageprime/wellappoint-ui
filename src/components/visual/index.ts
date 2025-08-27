@@ -12,3 +12,6 @@ export { DesignSystemSection } from './DesignSystemSection';
 export { TestContent } from './TestContent';
 export { DesignSystemContainer } from './DesignSystemContainer';
 export { DesignSystemPage } from './DesignSystemPage';
+export { ProviderContent } from './ProviderContent';
+export { IconWithText, TightIconWithText, LooseIconWithText, BriefcaseWithText, TightBriefcaseWithText, LooseBriefcaseWithText } from './IconWithText';
+export { SmallText } from './SmallText';

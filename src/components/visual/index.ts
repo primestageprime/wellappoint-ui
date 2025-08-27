@@ -5,6 +5,8 @@ export { HeaderCard } from './HeaderCard';
 export { Content } from './Content';
 export { Avatar } from './Avatar';
 export { Split } from './Split';
+export { Button } from './Button';
+export { LogoutButton } from './LogoutButton';
 export { DesignSystemSection } from './DesignSystemSection';
 export { TestContent } from './TestContent';
 export { DesignSystemContainer } from './DesignSystemContainer';

@@ -1,6 +1,10 @@
-import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper } from '../components/visual';
+import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper } from '../components/visual';
 
 export function DesignSystemPage() {
+  const handleLogout = () => {
+    console.log('Logout clicked');
+  };
+
   return (
     <DesignSystemPageWrapper>
       <DesignSystemSection title="Composed Page">
@@ -8,7 +12,7 @@ export function DesignSystemPage() {
           <HeaderCard>
             <Split 
               left={<Avatar name="Testee McTesterson" />}
-              right={<div></div>}
+              right={<LogoutButton onLogout={handleLogout}>Logout</LogoutButton>}
             />
           </HeaderCard>
           
@@ -95,6 +99,10 @@ export function DesignSystemPage() {
           left={<TestContent>This is the left side content of the Split component.</TestContent>}
           right={<TestContent>This is the right side content of the Split component.</TestContent>}
         />
+      </DesignSystemSection>
+
+      <DesignSystemSection title="LogoutButton Component">
+        <LogoutButton onLogout={handleLogout}>Logout</LogoutButton>
       </DesignSystemSection>
     </DesignSystemPageWrapper>
   );

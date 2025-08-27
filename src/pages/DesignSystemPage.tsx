@@ -1,4 +1,4 @@
-import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper } from '../components/visual';
+import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper } from '../components/visual';
 
 export function DesignSystemPage() {
   const handleLogout = () => {
@@ -103,6 +103,23 @@ export function DesignSystemPage() {
 
       <DesignSystemSection title="LogoutButton Component">
         <LogoutButton onLogout={handleLogout}>Logout</LogoutButton>
+      </DesignSystemSection>
+
+      <DesignSystemSection title="WellAppointLogo Component">
+        <div class="flex flex-col items-center space-y-4">
+          <div>
+            <h3 class="text-lg font-medium text-primary mb-2">Default Size</h3>
+            <WellAppointLogo className="text-primary" />
+          </div>
+          <div>
+            <h3 class="text-lg font-medium text-primary mb-2">Small Size (32px)</h3>
+            <WellAppointLogo className="text-primary" size={32} />
+          </div>
+          <div>
+            <h3 class="text-lg font-medium text-primary mb-2">Large Size (80px)</h3>
+            <WellAppointLogo className="text-primary" size={80} />
+          </div>
+        </div>
       </DesignSystemSection>
     </DesignSystemPageWrapper>
   );

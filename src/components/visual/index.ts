@@ -7,6 +7,7 @@ export { Avatar } from './Avatar';
 export { Split } from './Split';
 export { Button } from './Button';
 export { LogoutButton } from './LogoutButton';
+export { WellAppointLogo } from './WellAppointLogo';
 export { DesignSystemSection } from './DesignSystemSection';
 export { TestContent } from './TestContent';
 export { DesignSystemContainer } from './DesignSystemContainer';

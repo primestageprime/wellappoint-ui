@@ -1,9 +1,11 @@
-import { createSignal, createEffect } from 'solid-js';
+import { createSignal, createEffect, createResource } from 'solid-js';
+import { WellAppointLogo } from '../components/visual/WellAppointLogo';
 import { useAuth } from '../auth/AuthProvider';
-import { WellAppointLogo } from '../components/WellAppointLogo';
+import { ServiceCard } from '../components/ServiceCard';
+import { ServicesList } from '../components/ServicesList';
+import { BookingForm } from '../components/BookingForm';
 import { ProviderCard } from '../components/ProviderCard';
 import { AppointmentsCard } from '../components/AppointmentsCard';
-import { ServicesList } from '../components/ServicesList';
 import { LogOut, User } from 'lucide-solid';
 
 interface Service {

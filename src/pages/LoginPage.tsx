@@ -1,5 +1,6 @@
+import { WellAppointLogo } from '../components/visual/WellAppointLogo';
 import { useAuth } from '../auth/AuthProvider';
-import { WellAppointLogo } from '../components/WellAppointLogo';
+import { createEffect } from 'solid-js';
 
 export function LoginPage() {
   const auth = useAuth();

@@ -1,5 +1,5 @@
 import { JSX } from 'solid-js';
-import { WellAppointLogo } from '../WellAppointLogo';
+import { WellAppointLogo } from './WellAppointLogo';
 
 interface ContentProps {
   children?: JSX.Element;

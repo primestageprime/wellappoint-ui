@@ -1,4 +1,4 @@
-import { Paper } from '../components/visual';
+import { Paper, Card } from '../components/visual';
 
 export function DesignSystemPage() {
   return (
@@ -41,6 +41,44 @@ export function DesignSystemPage() {
                 </p>
               </div>
             </Paper>
+          </div>
+        </section>
+
+        {/* Card Component */}
+        <section class="mb-12">
+          <h2 class="text-2xl font-semibold text-primary mb-4">Card Component</h2>
+          <div class="space-y-4">
+            <Card>
+              <div class="p-6">
+                <h3 class="text-lg font-medium text-card-foreground mb-2">Basic Card</h3>
+                <p class="text-muted-foreground">
+                  This is a basic Card component with light brown background. It has the same shadow and spacing 
+                  as Paper but uses the card background color for a warmer appearance.
+                </p>
+              </div>
+            </Card>
+            
+            {/* Container for second example */}
+            <div class="bg-muted p-4 rounded-lg">
+              <Card class="max-w-md">
+                <div class="p-6">
+                  <h3 class="text-lg font-medium text-card-foreground mb-2">Card in Container</h3>
+                  <p class="text-muted-foreground">
+                    This Card component is inside a container and demonstrates the 1rem margin from its container edge.
+                  </p>
+                </div>
+              </Card>
+            </div>
+            
+            <Card class="max-w-lg">
+              <div class="p-6">
+                <h3 class="text-lg font-medium text-card-foreground mb-2">Card with Larger Width</h3>
+                <p class="text-muted-foreground">
+                  This Card component demonstrates how the component can be customized with additional classes 
+                  while maintaining its core styling and warm background color.
+                </p>
+              </div>
+            </Card>
           </div>
         </section>
       </div>

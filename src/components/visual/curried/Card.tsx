@@ -8,7 +8,7 @@ interface CardProps {
 
 export function Card(props: CardProps) {
   return (
-    <div class={`bg-background shadow-lg rounded-lg m-4 ${props.class || ''}`}>
+    <div class={`bg-background shadow-lg rounded-lg mb-3 ${props.class || ''}`}>
       <PaddingSpacer>
         {props.children}
       </PaddingSpacer>

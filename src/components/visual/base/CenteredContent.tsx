@@ -7,7 +7,7 @@ interface CenteredContentProps {
 
 export function CenteredContent(props: CenteredContentProps) {
   return (
-    <div class={`flex flex-col items-center text-center p-6 ${props.class || ''}`}>
+    <div class={`flex flex-col items-center text-center p-3 ${props.class || ''}`}>
       {props.children}
     </div>
   );

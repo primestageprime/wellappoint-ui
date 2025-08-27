@@ -96,7 +96,7 @@ export function ServicesPage() {
       
       <Content>
         {provider() && (
-          <Card>
+          <Card class="border border-primary/10 mb-4">
             <ProviderContent 
               name={provider()!.name}
               email={provider()!.email}

@@ -9,7 +9,7 @@ interface ContentProps {
 
 export function Content(props: ContentProps) {
   return (
-    <div class={`bg-white p-4 ${props.class || ''}`}>
+    <div class={`bg-white p-3 ${props.class || ''}`}>
       <CenteredContent>
         {/* Well Logo */}
         <WellAppointLogo className="text-primary" size={48} />

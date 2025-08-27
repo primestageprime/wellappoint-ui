@@ -18,3 +18,4 @@ export { ServicesCard } from './ServicesCard';
 export { DurationList } from './DurationList';
 export { DurationItem } from './DurationItem';
 export { ServiceItem } from './ServiceItem';
+export { TimeItem } from './TimeItem';

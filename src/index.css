@@ -79,6 +79,7 @@ body {
 .justify-center { justify-content: center; }
 .justify-between { justify-content: space-between; }
 .flex-col { flex-direction: column; }
+.flex-wrap { flex-wrap: wrap; }
 .space-y-8 > * + * { margin-top: 8px; }
 .space-y-6 > * + * { margin-top: 6px; }
 .space-y-4 > * + * { margin-top: 4px; }

@@ -1,5 +1,5 @@
 import { createSignal, createEffect, For, Show } from 'solid-js';
-import { SegmentedControl } from '@kobalte/core/segmented-control';
+import { Clock } from 'lucide-solid';
 import { useAuth } from '../auth/AuthProvider';
 
 interface AvailabilityRequest {
@@ -73,10 +73,20 @@ export function BookingForm(props: BookingFormProps) {
     }));
   };
 
+  // Set the selected service when component mounts
+  createEffect(() => {
+    if (props.services.length > 0 && !selectedService()) {
+      const serviceName = props.services[0].name;
+      console.log('Setting selected service:', serviceName);
+      setSelectedService(serviceName);
+    }
+  });
+
   // Update available durations when service changes
   createEffect(() => {
     const service = uniqueServices().find(s => s.name === selectedService());
     if (service) {
+      console.log('Setting available durations for service:', selectedService(), 'durations:', service.durations);
       setAvailableDurations(service.durations);
       // Reset duration selection
       setSelectedDuration(0);
@@ -144,7 +154,7 @@ export function BookingForm(props: BookingFormProps) {
       };
 
       // Make POST request to availability endpoint
-              const response = await fetch('/availability', {
+      const response = await fetch('/availability', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -202,153 +212,117 @@ export function BookingForm(props: BookingFormProps) {
       const day = String(startDate.getDate()).padStart(2, '0');
       const hours = String(startDate.getHours()).padStart(2, '0');
       const minutes = String(startDate.getMinutes()).padStart(2, '0');
-      const formattedStart = `${year}-${month}-${day} ${hours}:${minutes}`;
+      const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}`;
 
-      const request = {
+      const requestBody = {
         service: selectedService(),
         duration: selectedDuration(),
-        location: 'OFFICE',
+        startTime: formattedDateTime,
         email: userEmail,
-        start: formattedStart,
-        userProfile: auth.user() ? {
-          name: auth.user()?.name,
-          given_name: auth.user()?.given_name,
-          family_name: auth.user()?.family_name,
-          nickname: auth.user()?.nickname,
-          phone_number: auth.user()?.phone_number
-        } : undefined
+        location: selectedSlot()!.location,
+        price: selectedPrice()
       };
 
-              const response = await fetch('/appointment_request', {
+      console.log('Submitting appointment request:', requestBody);
+
+      const response = await fetch('/appointment-request', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(request)
+        body: JSON.stringify(requestBody)
       });
 
       if (response.ok) {
         const result = await response.json();
-        setSubmitMessage('Appointment booked successfully!');
-        console.log('Appointment result:', result);
+        setSubmitMessage(`Success! Your appointment request has been submitted. You'll receive a confirmation email shortly.`);
+        // Reset form after successful submission
+        setTimeout(() => {
+          setSelectedSlot(null);
+          setSelectedDuration(0);
+          setSelectedPrice(0);
+          setSubmitMessage('');
+        }, 5000);
       } else {
         const errorData = await response.json();
-        setSubmitMessage(`Error: ${errorData.error || 'Failed to book appointment'}`);
-        console.error('Appointment booking failed:', errorData);
+        setSubmitMessage(`Error: ${errorData.error || 'Failed to submit appointment request'}`);
       }
     } catch (error) {
-      console.error('Error booking appointment:', error);
-      setSubmitMessage('Error: Failed to book appointment');
+      console.error('Error submitting appointment request:', error);
+      setSubmitMessage('Error: Failed to submit appointment request. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  // Get service name from the selected service
+  const serviceName = () => selectedService() || props.services[0]?.name || '';
+
+  // Get duration descriptions
+  const getDurationDescription = (duration: number) => {
+    switch (duration) {
+      case 30:
+        return 'A gentle 30-minute massage using organic oils to release tension and restore balance.';
+      case 60:
+        return 'A comprehensive 60-minute full body massage with essential oils and healing crystals.';
+      case 90:
+        return 'An extended 90-minute session for deep relaxation and complete body healing.';
+      default:
+        return 'Professional wellness service tailored to your needs.';
+    }
+  };
+
   return (
-    <div class="w-2/3 mx-auto bg-white p-6 rounded-lg shadow-md border border-gray-200">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Book Your Appointment</h2>
-      
-      {/* User Profile Information */}
-      <Show when={auth.user()}>
-        <div class="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-          <h3 class="text-sm font-medium text-gray-700 mb-2">Booking for:</h3>
-          <div class="flex items-center space-x-3">
-            {auth.user()?.picture && (
-              <img 
-                src={auth.user()!.picture} 
-                alt="Profile" 
-                class="w-10 h-10 rounded-full"
-              />
-            )}
-            <div class="flex-1">
-              <div class="text-sm font-medium text-gray-900">
-                {auth.user()?.nickname || auth.user()?.given_name || auth.user()?.name || 'Unknown Name'}
-              </div>
-              <div class="text-sm text-gray-600">
-                {auth.user()?.email}
-              </div>
-              {auth.user()?.phone_number && (
-                <div class="text-sm text-gray-600">
-                  📞 {auth.user()!.phone_number}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </Show>
-      
-      {/* Service Selection */}
-      <div class="mb-6">
-        <SegmentedControl 
-          value={selectedService()} 
-          onChange={setSelectedService}
-          class="w-full"
-        >
-          <SegmentedControl.Label class="block text-sm font-medium text-gray-700 mb-3">
-            Select Service
-          </SegmentedControl.Label>
-          <div role="presentation" class="flex bg-gray-100 rounded-lg p-1 relative">
-            <SegmentedControl.Indicator />
-            <div role="presentation" class="flex flex-1 relative">
-              <For each={uniqueServices()}>
-                {(service) => (
-                  <SegmentedControl.Item 
-                    value={service.name}
-                    class="flex-1 relative px-3 py-2 text-sm font-medium text-gray-700 rounded-md cursor-pointer transition-colors duration-200 border border-black data-[checked]:border-black data-[checked]:bg-white"
-                  >
-                    <SegmentedControl.ItemInput />
-                    <SegmentedControl.ItemLabel class="block text-center">
-                      {service.name}
-                    </SegmentedControl.ItemLabel>
-                  </SegmentedControl.Item>
-                )}
-              </For>
-            </div>
-          </div>
-        </SegmentedControl>
+    <div class="space-y-6">
+      <div class="text-center space-y-2">
+        <h3 class="text-xl font-semibold text-primary">Select Session Duration</h3>
+        <p class="text-sm text-muted-foreground">Choose your preferred session length</p>
       </div>
 
-      {/* Duration Selection - Only show if service is selected */}
-      <Show when={selectedService() && availableDurations().length > 0}>
-        <div class="mb-6">
-          <SegmentedControl 
-            value={selectedDuration().toString()} 
-            onChange={(value) => setSelectedDuration(parseInt(value))}
-            class="w-full"
-          >
-            <SegmentedControl.Label class="block text-sm font-medium text-gray-700 mb-3">
-              Select Duration
-            </SegmentedControl.Label>
-            <div role="presentation" class="flex bg-gray-100 rounded-lg p-1 relative">
-              <SegmentedControl.Indicator />
-                          <div role="presentation" class="flex flex-1 relative">
-              <For each={availableDurations()}>
-                {(duration) => (
-                  <SegmentedControl.Item 
-                    value={duration.toString()}
-                    class="flex-1 relative px-3 py-2 text-sm font-medium text-gray-700 rounded-md cursor-pointer transition-colors duration-200 border border-black data-[checked]:border-black data-[checked]:bg-white"
-                  >
-                    <SegmentedControl.ItemInput />
-                    <SegmentedControl.ItemLabel class="block text-center">
-                      {duration} min
-                    </SegmentedControl.ItemLabel>
-                  </SegmentedControl.Item>
-                )}
-              </For>
-            </div>
-            </div>
-          </SegmentedControl>
-        </div>
-      </Show>
+      {/* Duration Selection Cards */}
+      <div class="space-y-3">
+        {availableDurations().map(duration => {
+          const matchingService = props.services.find(s => s.duration === duration);
+          const price = matchingService?.price || 0;
+          
+          return (
+            <button
+              onClick={() => setSelectedDuration(duration)}
+              class={`w-full p-6 flex items-center justify-between border rounded-md transition-all duration-300 group ${
+                selectedDuration() === duration
+                  ? 'border-primary bg-primary/5 shadow-md'
+                  : 'border-primary/20 hover:border-primary hover:bg-primary/3'
+              }`}
+            >
+              <div class="flex items-center gap-4">
+                <div class={`p-3 rounded-full transition-colors duration-300 ${
+                  selectedDuration() === duration
+                    ? 'bg-primary/20'
+                    : 'bg-primary/10 group-hover:bg-primary/15'
+                }`}>
+                  <Clock class="w-6 h-6 text-primary" />
+                </div>
+                <div class="text-left">
+                  <div class="text-lg font-semibold text-primary">{duration} minutes</div>
+                  <div class="text-sm text-muted-foreground">{getDurationDescription(duration)}</div>
+                </div>
+              </div>
+              <div class="text-right">
+                <div class="text-2xl font-bold text-primary">${price}</div>
+              </div>
+            </button>
+          );
+        })}
+      </div>
 
-      {/* Price Display - Only show if both service and duration are selected */}
-      <Show when={selectedService() && selectedDuration() > 0 && selectedPrice() > 0}>
+      {/* Price Display - Only show if duration is selected */}
+      <Show when={selectedDuration() > 0 && selectedPrice() > 0}>
         <div class="bg-green-50 border border-green-200 rounded-lg p-4">
           <div class="flex justify-between items-center">
             <div>
               <h3 class="text-lg font-semibold text-green-900">Selected Service</h3>
               <p class="text-sm text-green-700">
-                {selectedService()} - {selectedDuration()} minutes
+                {serviceName()} - {selectedDuration()} minutes
               </p>
             </div>
             <div class="text-right">
@@ -396,59 +370,10 @@ export function BookingForm(props: BookingFormProps) {
 
       {/* Instructions */}
       <div class="mt-6 text-sm text-gray-600">
-        <p>1. Choose your service from the options above</p>
-        <p>2. Select your preferred duration</p>
-        <p>3. Review the price and proceed with booking</p>
+        <p>1. Choose your preferred session duration from the options above</p>
+        <p>2. Review the pricing and service details</p>
+        <p>3. Complete your booking when ready</p>
       </div>
-
-      {/* Availability Response */}
-      <Show when={isLoading()}>
-        <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <p class="text-blue-700">Loading availability...</p>
-        </div>
-      </Show>
-
-      <Show when={availabilityResponse() !== null}>
-        <div class="mt-6">
-          <h3 class="text-lg font-semibold text-gray-900 mb-3">Available Time Slots</h3>
-          <Show when={availabilityResponse() && availabilityResponse()!.length > 0} fallback={
-            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-              <p class="text-yellow-700">No results found</p>
-            </div>
-          }>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-              <For each={availabilityResponse()}>
-                {(slot) => (
-                  <button
-                    onClick={() => setSelectedSlot(slot)}
-                    class={`p-3 rounded-lg border-2 transition-colors duration-200 text-left ${
-                      selectedSlot()?.startTime === slot.startTime
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-200 hover:border-gray-300 bg-white'
-                    }`}
-                  >
-                    <div class="font-medium text-gray-900">
-                      {new Date(slot.startTime).toLocaleDateString()}
-                    </div>
-                    <div class="text-sm text-gray-600">
-                      {new Date(slot.startTime).toLocaleTimeString([], { 
-                        hour: '2-digit', 
-                        minute: '2-digit' 
-                      })} - {new Date(slot.endTime).toLocaleTimeString([], { 
-                        hour: '2-digit', 
-                        minute: '2-digit' 
-                      })}
-                    </div>
-                    <div class="text-xs text-gray-500 mt-1">
-                      {slot.isOptimal ? 'Optimal time' : 'Available time'}
-                    </div>
-                  </button>
-                )}
-              </For>
-            </div>
-          </Show>
-        </div>
-      </Show>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, IconWithText, TightIconWithText, LooseIconWithText, BriefcaseWithText, TightBriefcaseWithText, LooseBriefcaseWithText, SmallText } from '../components/visual';
+import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, IconWithText, TightIconWithText, LooseIconWithText, BriefcaseWithText, TightBriefcaseWithText, LooseBriefcaseWithText, SmallText, SectionHeading } from '../components/visual';
 import { Briefcase } from 'lucide-solid';
 
 export function DesignSystemPage() {
@@ -122,7 +122,7 @@ export function DesignSystemPage() {
       <DesignSystemSection title="ProviderContent Component">
         <div class="space-y-4">
           <div>
-            <h3 class="text-lg font-medium text-primary mb-2">With Profile Picture</h3>
+            <SectionHeading>With Profile Picture</SectionHeading>
             <Card>
               <ProviderContent 
                 name="Dr. Katara Waterbender"
@@ -134,7 +134,7 @@ export function DesignSystemPage() {
           </div>
           
           <div>
-            <h3 class="text-lg font-medium text-primary mb-2">With Fallback Avatar</h3>
+            <SectionHeading>With Fallback Avatar</SectionHeading>
             <Card>
               <ProviderContent 
                 name="Dr. Aang Avatar"
@@ -145,7 +145,7 @@ export function DesignSystemPage() {
           </div>
           
           <div>
-            <h3 class="text-lg font-medium text-primary mb-2">Long Text Handling</h3>
+            <SectionHeading>Long Text Handling</SectionHeading>
             <Card>
               <ProviderContent 
                 name="Dr. Toph Beifong Earthbending Master and Metalbending Pioneer"
@@ -158,23 +158,19 @@ export function DesignSystemPage() {
       </DesignSystemSection>
 
       <DesignSystemSection title="IconWithText Component">
-        <div class="space-y-4">
-          <Card>
-            <div class="p-6 space-y-4">
-              <TightBriefcaseWithText>
-                <SmallText>Your Text here (gap-2)</SmallText>
-              </TightBriefcaseWithText>
-              
-              <BriefcaseWithText>
-                <SmallText>Your Text here (gap-4)</SmallText>
-              </BriefcaseWithText>
-              
-              <LooseBriefcaseWithText>
-                <SmallText>Your Text here (gap-8)</SmallText>
-              </LooseBriefcaseWithText>
-            </div>
-          </Card>
-        </div>
+        <Card>
+          <TightBriefcaseWithText>
+            <SmallText>Your Text here (gap-2)</SmallText>
+          </TightBriefcaseWithText>
+          
+          <BriefcaseWithText>
+            <SmallText>Your Text here (gap-4)</SmallText>
+          </BriefcaseWithText>
+          
+          <LooseBriefcaseWithText>
+            <SmallText>Your Text here (gap-8)</SmallText>
+          </LooseBriefcaseWithText>
+        </Card>
       </DesignSystemSection>
     </DesignSystemPageWrapper>
   );

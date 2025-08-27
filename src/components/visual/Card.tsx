@@ -1,4 +1,5 @@
 import { JSX } from 'solid-js';
+import { PaddingSpacer } from './PaddingSpacer';
 
 interface CardProps {
   children: JSX.Element;
@@ -8,7 +9,9 @@ interface CardProps {
 export function Card(props: CardProps) {
   return (
     <div class={`bg-background shadow-lg rounded-lg m-4 ${props.class || ''}`}>
-      {props.children}
+      <PaddingSpacer>
+        {props.children}
+      </PaddingSpacer>
     </div>
   );
 }

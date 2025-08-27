@@ -15,3 +15,5 @@ export { DesignSystemPage } from './DesignSystemPage';
 export { ProviderContent } from './ProviderContent';
 export { IconWithText, TightIconWithText, LooseIconWithText, BriefcaseWithText, TightBriefcaseWithText, LooseBriefcaseWithText } from './IconWithText';
 export { SmallText } from './SmallText';
+export { PaddingSpacer } from './PaddingSpacer';
+export { SectionHeading } from './SectionHeading';

@@ -19,3 +19,6 @@ export { DurationList } from './DurationList';
 export { DurationItem } from './DurationItem';
 export { ServiceItem } from './ServiceItem';
 export { TimeItem } from './TimeItem';
+export { PrimaryHeart } from './PrimaryHeart';
+export { PrimaryCraniosacral } from './PrimaryCraniosacral';
+export { PrimaryFootReflexology } from './PrimaryFootReflexology';

@@ -1,4 +1,4 @@
-import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, AppointmentsCard, ServicesCard, DurationList, DurationItem, IconWithText, IconWithTitleAndSubtitle, ServiceItem, SmallText, SectionHeading, Briefcase, CenteredContent, H3, H4, Heart, Craniosacral, FootReflexology, VerticallySpacedContent } from '../components/visual';
+import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, AppointmentsCard, ServicesCard, DurationList, DurationItem, IconWithText, IconWithTitleAndSubtitle, ServiceItem, SmallText, SectionHeading, Briefcase, CenteredContent, H3, H4, Heart, Craniosacral, FootReflexology, VerticallySpacedContent, PrimaryHeart, PrimaryCraniosacral, PrimaryFootReflexology } from '../components/visual';
 
 export function DesignSystemPage() {
   const handleLogout = () => {
@@ -30,18 +30,18 @@ const provider = {
     {
       name: "Therapeutic Massage",
       description: "Deep tissue & relaxation therapy",
-      icon: <Heart class="w-5 h-5 text-primary" />,
+      icon: <PrimaryHeart />,
     },
     {
       name: "Craniosacral Therapy",
       description: "Gentle energy work & alignment",
-      icon: <Craniosacral class="w-5 h-5 text-primary" />,
+      icon: <PrimaryCraniosacral />,
     },
     
     {
       name: "Foot Reflexology",
       description: "Pressure point healing",
-      icon: <FootReflexology class="w-5 h-5 text-primary" />,
+      icon: <PrimaryFootReflexology />,
     }
   ]
 
@@ -50,19 +50,19 @@ const provider = {
       duration: "30 minutes",
       description: "A gentle 30-minute massage using organic oils to release tension and restore balance.",
       price: "$85",
-      icon: <Heart class="w-5 h-5 text-primary" />
+      icon: <PrimaryHeart />
     },
     {
       duration: "60 minutes", 
       description: "A comprehensive 60-minute full body massage with essential oils and healing crystals.",
       price: "$140",
-      icon: <Heart class="w-5 h-5 text-primary" />
+      icon: <PrimaryHeart />
     },
     {
       duration: "90 minutes",
       description: "Extended 90-minute deep healing session with aromatherapy, crystal therapy, and chakra balancing.",
       price: "$190",
-      icon: <Heart class="w-5 h-5 text-primary" />
+      icon: <PrimaryHeart />
     }
   ]
 
@@ -244,19 +244,19 @@ const provider = {
 
       <DesignSystemSection title="IconWithTitleAndSubtitle Component">
         <IconWithTitleAndSubtitle
-          icon={<Heart class="w-5 h-5 text-primary" />}
+          icon={<PrimaryHeart />}
           title="Therapeutic Massage"
           subtitle="Deep tissue & relaxation therapy"
         />
         
         <IconWithTitleAndSubtitle
-          icon={<Craniosacral class="w-5 h-5 text-primary" />}
+          icon={<PrimaryCraniosacral />}
           title="Craniosacral Therapy"
           subtitle="Gentle energy work & alignment"
         />
         
         <IconWithTitleAndSubtitle
-          icon={<FootReflexology class="w-5 h-5 text-primary" />}
+          icon={<PrimaryFootReflexology />}
           title="Foot Reflexology"
           subtitle="Pressure point healing"
         />
@@ -268,19 +268,19 @@ const provider = {
             {
               name: "Therapeutic Massage",
               description: "Deep tissue & relaxation therapy",
-              icon: <Heart class="w-5 h-5 text-primary" />,
+              icon: <PrimaryHeart />,
               onClick: () => console.log('Therapeutic Massage selected')
             },
             {
               name: "Craniosacral Therapy",
               description: "Gentle energy work & alignment",
-              icon: <Craniosacral class="w-5 h-5 text-primary" />,
+              icon: <PrimaryCraniosacral />,
               onClick: () => console.log('Craniosacral Therapy selected')
             },
             {
               name: "Foot Reflexology",
               description: "Pressure point healing",
-              icon: <FootReflexology class="w-5 h-5 text-primary" />,
+              icon: <PrimaryFootReflexology />,
               onClick: () => console.log('Foot Reflexology selected')
             }
           ]}

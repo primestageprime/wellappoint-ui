@@ -4,7 +4,12 @@ export function DesignSystemPage() {
   const handleLogout = () => {
     console.log('Logout clicked');
   };
-
+const provider = {
+  name: "Dr. Katara Waterbender",
+  email: "katara@southernwatertribe.gov",
+  title: "Water Healing Specialist",
+  profilePic: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=150&h=150&fit=crop&crop=face"
+}
   const appointments = [
     {
       service: "Therapeutic Massage",
@@ -17,6 +22,26 @@ export function DesignSystemPage() {
       duration: "45 minutes",
       date: "8/29/2025",
       time: "10:00 AM"
+    }
+  ]
+
+  const services = [
+
+    {
+      name: "Therapeutic Massage",
+      description: "Deep tissue & relaxation therapy",
+      icon: <Heart class="w-5 h-5 text-primary" />,
+    },
+    {
+      name: "Craniosacral Therapy",
+      description: "Gentle energy work & alignment",
+      icon: <Craniosacral class="w-5 h-5 text-primary" />,
+    },
+    
+    {
+      name: "Foot Reflexology",
+      description: "Pressure point healing",
+      icon: <FootReflexology class="w-5 h-5 text-primary" />,
     }
   ]
 
@@ -34,10 +59,10 @@ export function DesignSystemPage() {
           <Content>
             <Card>
               <ProviderContent 
-                name="Dr. Katara Waterbender"
-                email="katara@southernwatertribe.gov"
-                title="Water Healing Specialist"
-                profilePic="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=150&h=150&fit=crop&crop=face"
+                name={provider.name}
+                email={provider.email}
+                title={provider.title}
+                profilePic={provider.profilePic}
               />
             </Card>
             
@@ -49,6 +74,9 @@ export function DesignSystemPage() {
               <H3>Choose Your Healing Journey</H3>
               <H4>Select a service to continue</H4>
             </CenteredContent>
+            <ServicesCard
+              services={services}
+            />
           </Content>
         </PageFrame>
       </DesignSystemSection>

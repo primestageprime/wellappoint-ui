@@ -1,4 +1,4 @@
-import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, AppointmentsCard, IconWithText, SmallText, SectionHeading, Briefcase, CenteredContent, H3, H4 } from '../components/visual';
+import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, AppointmentsCard, ServicesCard, IconWithText, IconWithTitleAndSubtitle, ServiceItem, SmallText, SectionHeading, Briefcase, CenteredContent, H3, H4 } from '../components/visual';
 
 export function DesignSystemPage() {
   const handleLogout = () => {
@@ -47,7 +47,7 @@ export function DesignSystemPage() {
 
             <CenteredContent>
               <H3>Choose Your Healing Journey</H3>
-              <H4>Select a service to to continue</H4>
+              <H4>Select a service to continue</H4>
             </CenteredContent>
           </Content>
         </PageFrame>
@@ -191,6 +191,47 @@ export function DesignSystemPage() {
             <SmallText>Your Text here</SmallText>
           </IconWithText>
         </Card>
+      </DesignSystemSection>
+
+      <DesignSystemSection title="IconWithTitleAndSubtitle Component">
+        <div class="space-y-4">
+          <IconWithTitleAndSubtitle
+            icon={<Briefcase class="w-5 h-5 text-primary" />}
+            title="Therapeutic Massage"
+            subtitle="60 minutes of deep tissue relaxation"
+          />
+          
+          <IconWithTitleAndSubtitle
+            icon={<Briefcase class="w-5 h-5 text-primary" />}
+            title="Energy Healing Session"
+            subtitle="45 minutes of chakra balancing and energy work"
+          />
+          
+          <IconWithTitleAndSubtitle
+            icon={<Briefcase class="w-5 h-5 text-primary" />}
+            title="Crystal Therapy"
+            subtitle="90 minutes of crystal healing and meditation"
+          />
+        </div>
+      </DesignSystemSection>
+
+      <DesignSystemSection title="ServicesCard Component">
+        <ServicesCard 
+          services={[
+            {
+              name: "Therapeutic Massage",
+              description: "60 minutes of deep tissue relaxation"
+            },
+            {
+              name: "Energy Healing Session",
+              description: "45 minutes of chakra balancing and energy work"
+            },
+            {
+              name: "Crystal Therapy",
+              description: "90 minutes of crystal healing and meditation"
+            }
+          ]}
+        />
       </DesignSystemSection>
     </DesignSystemPageWrapper>
   );

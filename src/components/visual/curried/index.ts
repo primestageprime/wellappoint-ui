@@ -12,3 +12,4 @@ export { Avatar } from './Avatar';
 export { Card } from './Card';
 export { AppointmentsCard } from './AppointmentsCard';
 export { ProviderContent } from './ProviderContent';
+export { ServicesCard } from './ServicesCard';

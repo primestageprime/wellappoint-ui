@@ -1,5 +1,5 @@
 import { JSX } from 'solid-js';
-import { IconWithText } from './IconWithText';
+import { IconWithTitleAndSubtitle } from './IconWithTitleAndSubtitle';
 import { Clock } from 'lucide-solid';
 
 interface AppointmentItemProps {
@@ -16,12 +16,11 @@ export function AppointmentItem(props: AppointmentItemProps) {
   
   return (
     <div class={`p-3 bg-white rounded-lg border border-primary/10 ${props.class || ''}`}>
-      <IconWithText icon={props.icon || <Clock class="w-4 h-4 text-primary" />}>
-        <div class="flex flex-col">
-          <span class="font-medium text-primary">{props.service}</span>
-          <span class="text-sm">{details}</span>
-        </div>
-      </IconWithText>
+      <IconWithTitleAndSubtitle
+        icon={props.icon || <Clock class="w-4 h-4 text-primary" />}
+        title={props.service}
+        subtitle={details}
+      />
     </div>
   );
 }

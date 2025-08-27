@@ -1,2 +1,3 @@
 export { Paper } from './Paper';
 export { Card } from './Card';
+export { PageFrame } from './PageFrame';

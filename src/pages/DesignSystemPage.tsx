@@ -5,6 +5,21 @@ export function DesignSystemPage() {
     console.log('Logout clicked');
   };
 
+  const appointments = [
+    {
+      service: "Therapeutic Massage",
+      duration: "60 minutes",
+      date: "8/27/2025",
+      time: "2:00 PM"
+    },
+    {
+      service: "Energy Healing Session",
+      duration: "45 minutes",
+      date: "8/29/2025",
+      time: "10:00 AM"
+    }
+  ]
+
   return (
     <DesignSystemPageWrapper>
       <DesignSystemSection title="Composed Page">
@@ -27,29 +42,18 @@ export function DesignSystemPage() {
             </Card>
             
             <AppointmentsCard 
-              appointments={[
-                {
-                  service: "Therapeutic Massage",
-                  duration: "60 minutes",
-                  date: "8/27/2025",
-                  time: "2:00 PM"
-                },
-                {
-                  service: "Energy Healing Session",
-                  duration: "45 minutes", 
-                  date: "8/29/2025",
-                  time: "10:00 AM"
-                },
-                {
-                  service: "Crystal Therapy",
-                  duration: "90 minutes",
-                  date: "9/2/2025", 
-                  time: "3:30 PM"
-                }
-              ]}
+              appointments={appointments}
             />
           </Content>
         </PageFrame>
+      </DesignSystemSection>
+
+      <DesignSystemSection title="Paper Component">
+        <Paper>
+          <TestContent>
+            This is a basic Paper component with default styling. It has a white background, 4px drop shadow, rounded corners, and is horizontally centered with 1rem margin from its parent.
+          </TestContent>
+        </Paper>
       </DesignSystemSection>
 
       <DesignSystemSection title="Paper Component">

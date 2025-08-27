@@ -2,6 +2,7 @@ import { JSX, For } from 'solid-js';
 import { IconWithText } from '../base/IconWithText';
 import { Ratio } from '../base/Ratio';
 import { AppointmentItem } from '../base/AppointmentItem';
+import { H3 } from '../base/H3';
 import { Card } from './Card';
 import { Calendar } from 'lucide-solid';
 
@@ -24,7 +25,7 @@ export function AppointmentsCard(props: AppointmentsCardProps) {
       <div class="p-6 space-y-4">
         <div class="flex items-center justify-between">
           <IconWithText icon={<Calendar class="w-5 h-5 text-primary" />}>
-            <span class="text-base font-semibold text-primary">Your Appointments</span>
+            <H3>Your Appointments</H3>
           </IconWithText>
           <Ratio current={1} total={props.appointments.length} />
         </div>

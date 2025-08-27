@@ -1,4 +1,4 @@
-import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, AppointmentsCard, IconWithText, SmallText, SectionHeading, Briefcase } from '../components/visual';
+import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, AppointmentsCard, IconWithText, SmallText, SectionHeading, Briefcase, CenteredContent, H3, H4 } from '../components/visual';
 
 export function DesignSystemPage() {
   const handleLogout = () => {
@@ -44,6 +44,11 @@ export function DesignSystemPage() {
             <AppointmentsCard 
               appointments={appointments}
             />
+
+            <CenteredContent>
+              <H3>Choose Your Healing Journey</H3>
+              <H4>Select a service to to continue</H4>
+            </CenteredContent>
           </Content>
         </PageFrame>
       </DesignSystemSection>

@@ -1,7 +1,7 @@
 import { Show, createSignal } from 'solid-js';
 import { AuthProvider, useAuth } from './auth/AuthProvider';
 import { LoginPage } from './pages/LoginPage';
-import { ServicesPage } from './pages/ServicesPage';
+import { BookingPage } from './pages/BookingPage';
 import { DesignSystemPage } from './pages/DesignSystemPage';
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
                   : 'text-primary hover:bg-primary/10'
               }`}
             >
-              Services
+              Booking
             </button>
             <button
               onClick={() => setCurrentPage('design-system')}
@@ -39,7 +39,7 @@ function App() {
 
         {/* Page Content */}
         <Show when={currentPage() === 'services'} fallback={<DesignSystemPage />}>
-          <ServicesPage />
+          <BookingPage />
         </Show>
       </div>
     </Show>

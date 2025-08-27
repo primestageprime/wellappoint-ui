@@ -11,9 +11,16 @@ interface ServiceItemProps {
 }
 
 export function ServiceItem(props: ServiceItemProps) {
+  const handleClick = () => {
+    console.log('ServiceItem clicked:', props.name);
+    if (props.onClick) {
+      props.onClick();
+    }
+  };
+
   return (
     <button
-      onClick={props.onClick}
+      onClick={handleClick}
       class={`w-full p-4 bg-card rounded-lg border border-primary/10 hover:border-primary/20 transition-colors cursor-pointer flex items-center justify-between ${props.class || ''}`}
     >
       <IconWithTitleAndSubtitle

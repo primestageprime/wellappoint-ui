@@ -1,7 +1,8 @@
 import { createSignal, createEffect, createResource } from 'solid-js';
 import { useAuth } from '../auth/AuthProvider';
 import { ServicesList } from '../components/ServicesList';
-import { BookingForm } from '../components/BookingForm';
+import { DurationsList } from '../components/DurationsList';
+import { AvailabilityList } from '../components/AvailabilityList';
 import { 
   ProviderContent, 
   AppointmentsCard, 
@@ -27,6 +28,7 @@ interface Service {
   duration: number;
   price: number;
   description?: string;
+  durationDescription?: string;
 }
 
 // Helper function to convert UserAppointment to the format expected by AppointmentsCard
@@ -37,11 +39,13 @@ const convertToAppointmentCardFormat = (appointment: UserAppointment) => ({
   time: appointment.time
 });
 
-export function ServicesPage() {
+export function BookingPage() {
   const auth = useAuth();
   const [services, setServices] = createSignal<Service[]>([]);
   const [loading, setLoading] = createSignal(true);
   const [error, setError] = createSignal<string | null>(null);
+  const [selectedService, setSelectedService] = createSignal<string | null>(null);
+  const [selectedDuration, setSelectedDuration] = createSignal<number | null>(null);
   const [provider] = createResource(getProviderDetails);
   
   // Get user appointments
@@ -73,6 +77,24 @@ export function ServicesPage() {
 
   const handleLogout = () => {
     auth.logout();
+  };
+
+  const handleServiceSelect = (serviceName: string) => {
+    setSelectedService(serviceName);
+    setSelectedDuration(null);
+  };
+
+  const handleDurationSelect = (duration: number) => {
+    setSelectedDuration(duration);
+  };
+
+  const handleBackToServices = () => {
+    setSelectedService(null);
+    setSelectedDuration(null);
+  };
+
+  const handleBackToDurations = () => {
+    setSelectedDuration(null);
   };
 
   const userName = () => {
@@ -118,7 +140,32 @@ export function ServicesPage() {
         )}
 
         {!loading() && !error() && (
-          <ServicesList services={services()} />
+          <>
+            {!selectedService() && (
+              <ServicesList 
+                services={services()} 
+                onServiceSelect={handleServiceSelect}
+              />
+            )}
+            
+            {selectedService() && !selectedDuration() && (
+              <DurationsList 
+                services={services()}
+                selectedService={selectedService()!}
+                onDurationSelect={handleDurationSelect}
+                onBack={handleBackToServices}
+              />
+            )}
+            
+            {selectedService() && selectedDuration() && (
+              <AvailabilityList 
+                services={services()}
+                selectedService={selectedService()!}
+                selectedDuration={selectedDuration()!}
+                onBack={handleBackToDurations}
+              />
+            )}
+          </>
         )}
       </Content>
     </PageFrame>

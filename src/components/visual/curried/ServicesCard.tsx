@@ -27,14 +27,17 @@ export function ServicesCard(props: ServicesCardProps) {
         
         <div class="space-y-3">
           <For each={props.services}>
-            {(service) => (
-              <ServiceItem
-                name={service.name}
-                description={service.subtitle || service.description}
-                icon={service.icon}
-                onClick={service.onClick}
-              />
-            )}
+            {(service) => {
+              console.log('Rendering service:', service.name, 'with onClick:', !!service.onClick);
+              return (
+                <ServiceItem
+                  name={service.name}
+                  description={service.subtitle || service.description}
+                  icon={service.icon}
+                  onClick={service.onClick}
+                />
+              );
+            }}
           </For>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { JSX } from 'solid-js';
-import { User } from 'lucide-solid';
+import { User } from './icons';
 
 interface AvatarProps {
   name: string;
@@ -11,7 +11,7 @@ export function Avatar(props: AvatarProps) {
     <div class={`pt-6 pb-6 pl-3 pr-6 flex items-center gap-4 ${props.class || ''}`}>
       {/* User Icon Circle */}
       <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
-        <User class="w-6 h-6 text-primary-foreground" />
+        <User class="w-6 h-6" />
       </div>
       
       {/* Welcome Message and Name */}

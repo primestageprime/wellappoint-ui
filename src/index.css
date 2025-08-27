@@ -103,9 +103,9 @@ body {
 .p-3 { padding: 0.75rem; }
 .p-4 { padding: 1rem; }
 .pt-2 { padding-top: 0.5rem; }
-.gap-3 { gap: 0.75rem; }
+.gap-2 { gap: 0.5rem; }
 .gap-4 { gap: 1rem; }
-.gap-6 { gap: 1.5rem; }
+.gap-8 { gap: 2rem; }
 
 /* Sizing utilities */
 .w-full { width: 100%; }

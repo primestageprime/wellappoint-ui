@@ -1,5 +1,4 @@
-import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, IconWithText, TightIconWithText, LooseIconWithText, BriefcaseWithText, TightBriefcaseWithText, LooseBriefcaseWithText, SmallText, SectionHeading } from '../components/visual';
-import { Briefcase } from 'lucide-solid';
+import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, IconWithText, SmallText, SectionHeading, Briefcase } from '../components/visual';
 
 export function DesignSystemPage() {
   const handleLogout = () => {
@@ -159,17 +158,9 @@ export function DesignSystemPage() {
 
       <DesignSystemSection title="IconWithText Component">
         <Card>
-          <TightBriefcaseWithText>
-            <SmallText>Your Text here (gap-2)</SmallText>
-          </TightBriefcaseWithText>
-          
-          <BriefcaseWithText>
-            <SmallText>Your Text here (gap-4)</SmallText>
-          </BriefcaseWithText>
-          
-          <LooseBriefcaseWithText>
-            <SmallText>Your Text here (gap-8)</SmallText>
-          </LooseBriefcaseWithText>
+          <IconWithText icon={<Briefcase />}>
+            <SmallText>Your Text here</SmallText>
+          </IconWithText>
         </Card>
       </DesignSystemSection>
     </DesignSystemPageWrapper>

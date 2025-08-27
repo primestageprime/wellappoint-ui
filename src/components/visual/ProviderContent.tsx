@@ -1,5 +1,9 @@
 import { JSX } from 'solid-js';
-import { User, Mail, Briefcase } from 'lucide-solid';
+import { IconWithText } from './IconWithText';
+import { Mail, Briefcase } from './icons';
+import { CenteredContent } from './CenteredContent';
+import { ProfilePic } from './ProfilePic';
+import { MailLink } from './MailLink';
 
 interface ProviderContentProps {
   name: string;
@@ -11,48 +15,29 @@ interface ProviderContentProps {
 
 export function ProviderContent(props: ProviderContentProps) {
   return (
-    <div class={`flex flex-col items-center text-center p-6 ${props.class || ''}`}>
-      {/* Profile Picture */}
-      <div class="mb-4">
-        {props.profilePic ? (
-          <img 
-            src={props.profilePic} 
-            alt={`${props.name}'s profile picture`}
-            class="w-20 h-20 rounded-full object-cover border-2 border-primary/20"
-          />
-        ) : (
-          <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center">
-            <User class="w-10 h-10 text-primary-foreground" />
-          </div>
-        )}
-      </div>
+    <CenteredContent class={`p-6 ${props.class || ''}`}>
+      <ProfilePic 
+        src={props.profilePic} 
+        alt={`${props.name}'s profile picture`}
+      />
       
-      {/* Provider Information */}
       <div class="space-y-2">
-        {/* Name */}
         <h3 class="text-xl font-semibold text-primary">
           {props.name}
         </h3>
         
-        {/* Title */}
-        <div class="flex items-center justify-center gap-4">
-          <Briefcase class="w-4 h-4 text-muted-foreground" />
+        <IconWithText icon={<Briefcase />} class="justify-center">
           <span class="text-sm font-medium text-muted-foreground">
             {props.title}
           </span>
-        </div>
+        </IconWithText>
         
-        {/* Email */}
-        <div class="flex items-center justify-center gap-4">
-          <Mail class="w-4 h-4 text-muted-foreground" />
-          <a 
-            href={`mailto:${props.email}`}
-            class="text-sm text-primary hover:text-primary/80 transition-colors"
-          >
+        <IconWithText icon={<Mail />} class="justify-center">
+          <MailLink email={props.email}>
             {props.email}
-          </a>
-        </div>
+          </MailLink>
+        </IconWithText>
       </div>
-    </div>
+    </CenteredContent>
   );
 }

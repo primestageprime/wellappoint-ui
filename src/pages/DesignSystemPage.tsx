@@ -1,4 +1,4 @@
-import { Paper, Card, PageFrame, HeaderCard, Content, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper } from '../components/visual';
+import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper } from '../components/visual';
 
 export function DesignSystemPage() {
   return (
@@ -7,24 +7,22 @@ export function DesignSystemPage() {
         <PageFrame>
           <HeaderCard>
             <TestContent header="Page Header">
-              <p class="text-muted-foreground">This HeaderCard contains the page title and navigation elements.</p>
+             This HeaderCard contains the page title and navigation elements.
             </TestContent>
           </HeaderCard>
           
           <Content>
-            <div class="space-y-4">
               <Card>
                 <TestContent header="First Card">
-                  <p class="text-muted-foreground">This is the first card component within the Content area. It demonstrates how cards work within the main content section.</p>
+                  This is the first card component within the Content area. It demonstrates how cards work within the main content section.
                 </TestContent>
               </Card>
               
               <Card>
                 <TestContent header="Second Card">
-                  <p class="text-muted-foreground">This is the second card component within the Content area. It shows how multiple cards can be stacked vertically.</p>
+                This is the second card component within the Content area. It shows how multiple cards can be stacked vertically.
                 </TestContent>
               </Card>
-            </div>
           </Content>
         </PageFrame>
       </DesignSystemSection>
@@ -85,6 +83,17 @@ export function DesignSystemPage() {
             This is a Content component with the WellAppoint logo and company name. It has a white background, square corners, and 1rem padding. The logo is centered with the company name below it.
           </TestContent>
         </Content>
+      </DesignSystemSection>
+
+      <DesignSystemSection title="Avatar Component">
+        <Avatar name="Testee McTesterson" />
+      </DesignSystemSection>
+
+      <DesignSystemSection title="Split Component">
+        <Split 
+          left={<TestContent>This is the left side content of the Split component.</TestContent>}
+          right={<TestContent>This is the right side content of the Split component.</TestContent>}
+        />
       </DesignSystemSection>
     </DesignSystemPageWrapper>
   );

@@ -3,6 +3,8 @@ export { Card } from './Card';
 export { PageFrame } from './PageFrame';
 export { HeaderCard } from './HeaderCard';
 export { Content } from './Content';
+export { Avatar } from './Avatar';
+export { Split } from './Split';
 export { DesignSystemSection } from './DesignSystemSection';
 export { TestContent } from './TestContent';
 export { DesignSystemContainer } from './DesignSystemContainer';

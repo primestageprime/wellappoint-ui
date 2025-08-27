@@ -100,7 +100,7 @@ export function WellAppointLogo({ className = "", size = 80}: WellAppointLogoPro
       
       {/* Stone Pattern - Middle Row */}
       <path 
-        d="M28 72 Q33 70 38 72 Q43 74 48 72 Q53 70 58 72 Q63 74 68 72" 
+        d="M32 72 Q37 70 42 72 Q47 74 52 72 Q57 70 62 72 Q67 74 72 72" 
         stroke="currentColor" 
         stroke-width="1.5" 
         fill="none"
@@ -109,65 +109,108 @@ export function WellAppointLogo({ className = "", size = 80}: WellAppointLogoPro
       
       {/* Stone Pattern - Bottom Row */}
       <path 
-        d="M26 76 Q31 74 36 76 Q41 78 46 76 Q51 74 56 76 Q61 78 66 76" 
+        d="M34 76 Q39 74 44 76 Q49 78 54 76 Q59 74 64 76 Q69 78 74 76" 
         stroke="currentColor" 
         stroke-width="1.5" 
         fill="none"
         stroke-linecap="round"
       />
       
-      {/* Individual Stone Details */}
-      <path 
-        d="M32 69 L34 71 L32 73 L30 71 Z" 
-        stroke="currentColor" 
-        stroke-width="1" 
-        fill="none"
-      />
-      <path 
-        d="M42 67 L44 69 L42 71 L40 69 Z" 
-        stroke="currentColor" 
-        stroke-width="1" 
-        fill="none"
-      />
-      <path 
-        d="M58 69 L60 71 L58 73 L56 71 Z" 
-        stroke="currentColor" 
-        stroke-width="1" 
-        fill="none"
-      />
-      <path 
-        d="M66 67 L68 69 L66 71 L64 69 Z" 
-        stroke="currentColor" 
-        stroke-width="1" 
-        fill="none"
-      />
-      
-      {/* Mortar Lines */}
-      <path 
-        d="M35 75 L37 77" 
-        stroke="currentColor" 
-        stroke-width="0.8"
-        stroke-linecap="round"
-      />
-      <path 
-        d="M45 73 L47 75" 
-        stroke="currentColor" 
-        stroke-width="0.8"
-        stroke-linecap="round"
-      />
-      <path 
-        d="M55 75 L57 77" 
-        stroke="currentColor" 
-        stroke-width="0.8"
-        stroke-linecap="round"
-      />
-      
-      {/* Well Opening Shadow */}
+      {/* Bucket */}
       <ellipse 
-        cx="50" cy="75" 
-        rx="12" ry="4" 
+        cx="50" cy="60" 
+        rx="4" ry="2" 
+        stroke="currentColor" 
+        stroke-width="1.5" 
+        fill="none"
+      />
+      <line 
+        x1="46" y1="60" 
+        x2="46" y2="62" 
+        stroke="currentColor" 
+        stroke-width="1"
+        stroke-linecap="round"
+      />
+      <line 
+        x1="54" y1="60" 
+        x2="54" y2="62" 
+        stroke="currentColor" 
+        stroke-width="1"
+        stroke-linecap="round"
+      />
+      <ellipse 
+        cx="50" cy="62" 
+        rx="4" ry="2" 
+        stroke="currentColor" 
+        stroke-width="1.5" 
+        fill="none"
+      />
+      
+      {/* Water Ripples */}
+      <circle 
+        cx="50" cy="82" 
+        r="2" 
+        stroke="currentColor" 
+        stroke-width="1" 
+        fill="none"
+        opacity="0.7"
+      />
+      <circle 
+        cx="50" cy="82" 
+        r="4" 
+        stroke="currentColor" 
+        stroke-width="0.5" 
+        fill="none"
+        opacity="0.5"
+      />
+      <circle 
+        cx="50" cy="82" 
+        r="6" 
+        stroke="currentColor" 
+        stroke-width="0.3" 
+        fill="none"
+        opacity="0.3"
+      />
+      
+      {/* Decorative Elements - Small Details */}
+      <circle 
+        cx="30" cy="45" 
+        r="1" 
         fill="currentColor" 
-        opacity="0.15"
+        opacity="0.6"
+      />
+      <circle 
+        cx="70" cy="45" 
+        r="1" 
+        fill="currentColor" 
+        opacity="0.6"
+      />
+      
+      {/* Roof Shingles Pattern */}
+      <path 
+        d="M25 35 L30 33 L35 35 L40 33 L45 35 L50 33 L55 35 L60 33 L65 35 L70 33 L75 35" 
+        stroke="currentColor" 
+        stroke-width="0.5" 
+        fill="none"
+        opacity="0.4"
+      />
+      
+      {/* Additional Structural Details */}
+      <line 
+        x1="40" y1="40" 
+        x2="40" y2="65" 
+        stroke="currentColor" 
+        stroke-width="1"
+        stroke-linecap="round"
+        opacity="0.3"
+      />
+      <line 
+        x1="60" y1="40" 
+        x2="60" y2="65" 
+        stroke="currentColor" 
+        stroke-width="1"
+        stroke-linecap="round"
+        opacity="0.3"
       />
     </svg>
   );

@@ -9,3 +9,5 @@ export { DesignSystemSection } from './DesignSystemSection';
 export { DesignSystemPage } from './DesignSystemPage';
 export { Content } from './Content';
 export { Avatar } from './Avatar';
+export { Card } from './Card';
+export { ProviderContent } from './ProviderContent';

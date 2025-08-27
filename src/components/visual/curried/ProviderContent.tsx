@@ -1,8 +1,8 @@
 import { JSX } from 'solid-js';
-import { Mail, Briefcase } from './icons';
-import { CenteredContent } from './base';
-import { ProfilePic, MailLink, CenteredIconWithText, ProviderName, ProviderTitle } from './curried';
-import { VerticallySpacedContent } from './base';
+import { Mail, Briefcase } from '../icons';
+import { CenteredContent } from '../base';
+import { ProfilePic, MailLink, CenteredIconWithText, ProviderName, ProviderTitle } from './';
+import { VerticallySpacedContent } from '../base';
 
 interface ProviderContentProps {
   name: string;

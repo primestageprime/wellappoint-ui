@@ -1,4 +1,4 @@
-import { WellAppointLogo } from '../components/visual/WellAppointLogo';
+import { WellAppointLogo } from '../components/visual/icons';
 import { useAuth } from '../auth/AuthProvider';
 import { createEffect } from 'solid-js';
 

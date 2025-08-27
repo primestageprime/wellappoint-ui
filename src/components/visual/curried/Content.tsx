@@ -1,5 +1,5 @@
 import { JSX } from 'solid-js';
-import { WellAppointLogo } from '../WellAppointLogo';
+import { WellAppointLogo } from '../icons';
 import { CenteredContent } from '../base';
 
 interface ContentProps {

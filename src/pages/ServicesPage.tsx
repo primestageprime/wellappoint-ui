@@ -1,5 +1,5 @@
 import { createSignal, createEffect, createResource } from 'solid-js';
-import { WellAppointLogo } from '../components/visual/WellAppointLogo';
+import { WellAppointLogo } from '../components/visual/icons';
 import { useAuth } from '../auth/AuthProvider';
 import { ServiceCard } from '../components/ServiceCard';
 import { ServicesList } from '../components/ServicesList';

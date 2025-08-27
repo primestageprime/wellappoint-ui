@@ -1,9 +1,12 @@
 import { JSX } from 'solid-js';
-import { IconWithText } from './IconWithText';
 import { Mail, Briefcase } from './icons';
 import { CenteredContent } from './CenteredContent';
 import { ProfilePic } from './ProfilePic';
 import { MailLink } from './MailLink';
+import { CenteredIconWithText } from './CenteredIconWithText';
+import { ProviderName } from './ProviderName';
+import { ProviderTitle } from './ProviderTitle';
+import { VerticallySpacedContent } from './VerticallySpacedContent';
 
 interface ProviderContentProps {
   name: string;
@@ -15,29 +18,29 @@ interface ProviderContentProps {
 
 export function ProviderContent(props: ProviderContentProps) {
   return (
-    <CenteredContent class={`p-6 ${props.class || ''}`}>
+    <CenteredContent class={props.class || ''}>
       <ProfilePic 
         src={props.profilePic} 
         alt={`${props.name}'s profile picture`}
       />
       
-      <div class="space-y-2">
-        <h3 class="text-xl font-semibold text-primary">
+      <VerticallySpacedContent>
+        <ProviderName>
           {props.name}
-        </h3>
+        </ProviderName>
         
-        <IconWithText icon={<Briefcase />} class="justify-center">
-          <span class="text-sm font-medium text-muted-foreground">
+        <CenteredIconWithText icon={<Briefcase />}>
+          <ProviderTitle>
             {props.title}
-          </span>
-        </IconWithText>
+          </ProviderTitle>
+        </CenteredIconWithText>
         
-        <IconWithText icon={<Mail />} class="justify-center">
+        <CenteredIconWithText icon={<Mail />}>
           <MailLink email={props.email}>
             {props.email}
           </MailLink>
-        </IconWithText>
-      </div>
+        </CenteredIconWithText>
+      </VerticallySpacedContent>
     </CenteredContent>
   );
 }

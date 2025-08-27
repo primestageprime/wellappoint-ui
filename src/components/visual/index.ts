@@ -21,3 +21,7 @@ export { User, Mail, Briefcase } from './icons';
 export { CenteredContent } from './CenteredContent';
 export { ProfilePic } from './ProfilePic';
 export { MailLink } from './MailLink';
+export { CenteredIconWithText } from './CenteredIconWithText';
+export { ProviderName } from './ProviderName';
+export { ProviderTitle } from './ProviderTitle';
+export { VerticallySpacedContent } from './VerticallySpacedContent';

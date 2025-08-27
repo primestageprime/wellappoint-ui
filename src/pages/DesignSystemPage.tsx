@@ -106,18 +106,14 @@ export function DesignSystemPage() {
       </DesignSystemSection>
 
       <DesignSystemSection title="WellAppointLogo Component">
-        <div class="flex flex-col items-center space-y-4">
+        <div class="flex flex-col items-center space-y-6">
           <div>
-            <h3 class="text-lg font-medium text-primary mb-2">Default Size</h3>
-            <WellAppointLogo className="text-primary" />
+            <h3 class="text-lg font-medium text-primary mb-2">Favicon Size (16px)</h3>
+            <WellAppointLogo className="text-primary" size={16} />
           </div>
           <div>
-            <h3 class="text-lg font-medium text-primary mb-2">Small Size (32px)</h3>
-            <WellAppointLogo className="text-primary" size={32} />
-          </div>
-          <div>
-            <h3 class="text-lg font-medium text-primary mb-2">Large Size (80px)</h3>
-            <WellAppointLogo className="text-primary" size={80} />
+            <h3 class="text-lg font-medium text-primary mb-2">Page Heading Size (48px)</h3>
+            <WellAppointLogo className="text-primary" size={48} />
           </div>
         </div>
       </DesignSystemSection>

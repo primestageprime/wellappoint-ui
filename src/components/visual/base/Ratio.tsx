@@ -8,7 +8,7 @@ interface RatioProps {
 
 export function Ratio(props: RatioProps) {
   return (
-    <span class={`text-xs bg-amber-50 px-2 py-1 rounded text-amber-800 ${props.class || ''}`}>
+    <span class={`text-xs bg-primary/10 p-2 py-1.5 rounded-full text-primary font-medium ${props.class || ''}`}>
       {props.current}/{props.total}
     </span>
   );

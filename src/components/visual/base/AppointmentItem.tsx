@@ -15,7 +15,7 @@ export function AppointmentItem(props: AppointmentItemProps) {
   const details = `${props.duration} • ${props.date} at ${props.time}`;
   
   return (
-    <div class={`p-3 bg-background rounded-lg border border-amber-200 ${props.class || ''}`}>
+    <div class={`p-3 bg-white rounded-lg border border-primary/10 ${props.class || ''}`}>
       <IconWithText icon={props.icon || <Clock class="w-4 h-4 text-primary" />}>
         <div class="flex flex-col">
           <span class="font-medium text-primary">{props.service}</span>

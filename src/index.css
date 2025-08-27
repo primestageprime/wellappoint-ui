@@ -47,6 +47,7 @@ body {
 .text-card-foreground { color: var(--card-foreground); }
 .text-muted-foreground { color: var(--muted-foreground); }
 .text-primary { color: var(--primary); }
+.text-primary\/80 { color: rgba(139, 69, 19, 0.8); }
 .text-primary-foreground { color: var(--primary-foreground); }
 .text-destructive { color: var(--destructive); }
 
@@ -58,12 +59,18 @@ body {
 .bg-gray-50 { background-color: #f9fafb; }
 .bg-muted { background-color: var(--muted); }
 .bg-muted\/30 { background-color: rgba(232, 220, 192, 0.3); }
+.bg-primary\/10 { background-color: rgba(139, 69, 19, 0.1); }
+.bg-primary\/5 { background-color: rgba(139, 69, 19, 0.05); }
+.bg-primary\/3 { background-color: rgba(139, 69, 19, 0.03); }
+.bg-primary\/20 { background-color: rgba(139, 69, 19, 0.2); }
+.bg-primary\/15 { background-color: rgba(139, 69, 19, 0.15); }
 
 .border-gray-300 { border-color: #d1d5db; }
 .border-primary\/20 { border-color: rgba(139, 69, 19, 0.2); }
 .border-primary\/10 { border-color: rgba(139, 69, 19, 0.1); }
 .border-primary\/30 { border-color: rgba(139, 69, 19, 0.3); }
 .border-border\/20 { border-color: rgba(139, 69, 19, 0.2); }
+.border-amber-200 { border-color: #fde68a; }
 
 /* Layout utilities */
 .min-h-screen { min-height: 100vh; }
@@ -102,6 +109,7 @@ body {
 .p-6 { padding: 1.5rem; }
 .p-3 { padding: 0.75rem; }
 .p-4 { padding: 1rem; }
+.p-2 { padding: 0.5rem; }
 .pt-2 { padding-top: 0.5rem; }
 .gap-2 { gap: 0.5rem; }
 .gap-4 { gap: 1rem; }

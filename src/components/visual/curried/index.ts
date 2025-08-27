@@ -10,4 +10,5 @@ export { DesignSystemPage } from './DesignSystemPage';
 export { Content } from './Content';
 export { Avatar } from './Avatar';
 export { Card } from './Card';
+export { AppointmentsCard } from './AppointmentsCard';
 export { ProviderContent } from './ProviderContent';

@@ -1,4 +1,4 @@
-import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, IconWithText, SmallText, SectionHeading, Briefcase } from '../components/visual';
+import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, AppointmentsCard, IconWithText, SmallText, SectionHeading, Briefcase } from '../components/visual';
 
 export function DesignSystemPage() {
   const handleLogout = () => {
@@ -26,11 +26,28 @@ export function DesignSystemPage() {
               />
             </Card>
             
-            <Card>
-              <TestContent header="Second Card">
-                This is the second card component within the Content area. It shows how multiple cards can be stacked vertically.
-              </TestContent>
-            </Card>
+            <AppointmentsCard 
+              appointments={[
+                {
+                  service: "Therapeutic Massage",
+                  duration: "60 minutes",
+                  date: "8/27/2025",
+                  time: "2:00 PM"
+                },
+                {
+                  service: "Energy Healing Session",
+                  duration: "45 minutes", 
+                  date: "8/29/2025",
+                  time: "10:00 AM"
+                },
+                {
+                  service: "Crystal Therapy",
+                  duration: "90 minutes",
+                  date: "9/2/2025", 
+                  time: "3:30 PM"
+                }
+              ]}
+            />
           </Content>
         </PageFrame>
       </DesignSystemSection>

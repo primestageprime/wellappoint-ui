@@ -14,7 +14,7 @@ export function TimeItem(props: TimeItemProps) {
     <button
       onClick={props.onClick}
       disabled={!props.available}
-      class={`px-3 py-2 bg-card rounded-lg border border-primary/10 hover:border-primary/20 transition-colors cursor-pointer flex items-center gap-2 whitespace-nowrap flex-shrink-0 ${
+      class={`p-4 bg-card rounded-lg border border-primary/10 hover:border-primary/20 transition-colors cursor-pointer flex items-center gap-2 whitespace-nowrap flex-shrink-0 ${
         props.available 
           ? 'hover:bg-primary/5' 
           : 'opacity-50 cursor-not-allowed'

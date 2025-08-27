@@ -15,7 +15,8 @@ export function DurationItem(props: DurationItemProps) {
   return (
     <button
       onClick={props.onClick}
-      class={`w-full p-4 bg-card rounded-lg border border-primary/10 hover:border-primary/20 transition-colors cursor-pointer flex items-center justify-between gap-8 ${props.class || ''}`}
+      class={`w-full p-2 bg-card rounded-lg border border-primary/10 hover:border-primary/20 transition-colors cursor-pointer flex items-center justify-between ${props.class || ''}`}
+  
     >
       <IconWithTitleAndSubtitle
         icon={<Clock class="w-5 h-5 text-primary" />}

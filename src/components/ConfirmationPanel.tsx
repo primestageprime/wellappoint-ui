@@ -13,6 +13,8 @@ import {
   ActionButtons,
   SessionDescription
 } from './visual';
+import { Calendar, Globe, Currency } from './visual/icons';
+import { Clock } from 'lucide-solid';
 
 interface Service {
   name: string;
@@ -114,19 +116,23 @@ export function ConfirmationPanel(props: ConfirmationPanelProps) {
               details={[
                 {
                   label: 'Date & Time',
-                  value: `${formatDate(props.selectedSlot.startTime)} at ${formatTime(props.selectedSlot.startTime)}`
+                  value: `${formatDate(props.selectedSlot.startTime)} at ${formatTime(props.selectedSlot.startTime)}`,
+                  icon: <Calendar class="w-5 h-5 text-primary" />
                 },
                 {
                   label: 'Duration',
-                  value: `${props.service.duration} minutes`
+                  value: `${props.service.duration} minutes`,
+                  icon: <Clock class="w-5 h-5 text-primary" />
                 },
                 {
                   label: 'Location',
-                  value: props.selectedSlot.location
+                  value: props.selectedSlot.location,
+                  icon: <Globe class="w-5 h-5 text-primary" />
                 },
                 {
-                  label: 'Exchange',
-                  value: `$${props.service.price}`
+                  label: 'Sacred Exchange',
+                  value: `$${props.service.price}`,
+                  icon: <Currency class="w-5 h-5 text-primary" />
                 }
               ]}
             />

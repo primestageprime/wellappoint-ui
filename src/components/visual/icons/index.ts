@@ -1,8 +1,11 @@
 export { User } from './User';
 export { Mail } from './Mail';
 export { Briefcase } from './Briefcase';
+export { Calendar } from './Calendar';
 export { ChevronRight } from './ChevronRight';
 export { Craniosacral } from './Craniosacral';
+export { Currency } from './Currency';
 export { FootReflexology } from './FootReflexology';
+export { Globe } from './Globe';
 export { Heart } from './Heart';
 export { WellAppointLogo } from './WellAppointLogo';

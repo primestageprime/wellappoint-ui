@@ -1,4 +1,6 @@
 import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, AppointmentsCard, ServicesCard, DurationList, DurationItem, IconWithText, IconWithTitleAndSubtitle, ServiceItem, SmallText, SectionHeading, Briefcase, CenteredContent, H3, H4, Heart, Craniosacral, FootReflexology, VerticallySpacedContent, PrimaryHeart, PrimaryCraniosacral, PrimaryFootReflexology, ServiceSummaryCard, AppointmentDetailsGrid, ActionButtons, SessionDescription, StandardButton } from '../components/visual';
+import { Calendar, Globe, Currency } from '../components/visual/icons';
+import { Clock } from 'lucide-solid';
 
 export function DesignSystemPage() {
   const handleLogout = () => {
@@ -330,19 +332,23 @@ const provider = {
           details={[
             {
               label: 'Date & Time',
-              value: 'Thursday, August 28, 2025 at 4:55 PM'
+              value: 'Thursday, August 28, 2025 at 4:55 PM',
+              icon: <Calendar class="w-5 h-5 text-primary" />
             },
             {
               label: 'Duration',
-              value: '30 minutes'
+              value: '30 minutes',
+              icon: <Clock class="w-5 h-5 text-primary" />
             },
             {
               label: 'Location',
-              value: 'OFFICE'
+              value: 'OFFICE',
+              icon: <Globe class="w-5 h-5 text-primary" />
             },
             {
-              label: 'Exchange',
-              value: '$100'
+              label: 'Sacred Exchange',
+              value: '$100',
+              icon: <Currency class="w-5 h-5 text-primary" />
             }
           ]}
         />

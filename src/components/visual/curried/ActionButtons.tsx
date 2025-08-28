@@ -19,7 +19,7 @@ export function ActionButtons(props: ActionButtonsProps) {
         <button
           onClick={button.onClick}
           disabled={button.disabled}
-          class={`flex-1 px-6 py-3 rounded-lg transition-colors disabled:opacity-50 ${
+          class={`flex-1 p-4 rounded-lg transition-colors disabled:opacity-50 ${
             button.variant === 'primary'
               ? 'bg-primary text-white hover:bg-primary/90'
               : 'border border-primary/20 text-primary hover:bg-primary/5'

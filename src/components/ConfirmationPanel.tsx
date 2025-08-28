@@ -7,7 +7,11 @@ import {
   CenteredContent, 
   PrimaryHeart, 
   PrimaryCraniosacral, 
-  PrimaryFootReflexology 
+  PrimaryFootReflexology,
+  ServiceSummaryCard,
+  AppointmentDetailsGrid,
+  ActionButtons,
+  SessionDescription
 } from './visual';
 
 interface Service {
@@ -114,49 +118,35 @@ export function ConfirmationPanel(props: ConfirmationPanelProps) {
 
         <Card class="p-6 space-y-6">
           <div class="space-y-4">
-            <div class="flex items-center gap-4 p-4 bg-primary/5 rounded-lg">
-              <ServiceIcon />
-              <div>
-                <H4>{props.service.name}</H4>
-                <p class="text-muted-foreground">{props.service.description}</p>
-              </div>
-            </div>
+            <ServiceSummaryCard
+              icon={<ServiceIcon />}
+              title={props.service.name}
+              subtitle={props.service.description || ''}
+            />
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="space-y-2">
-                <label class="text-sm font-medium text-muted-foreground">Date & Time</label>
-                <div class="text-lg font-semibold text-primary">
-                  {formatDate(props.selectedSlot.startTime)} at {formatTime(props.selectedSlot.startTime)}
-                </div>
-              </div>
-
-              <div class="space-y-2">
-                <label class="text-sm font-medium text-muted-foreground">Duration</label>
-                <div class="text-lg font-semibold text-primary">
-                  {props.service.duration} minutes
-                </div>
-              </div>
-
-              <div class="space-y-2">
-                <label class="text-sm font-medium text-muted-foreground">Location</label>
-                <div class="text-lg font-semibold text-primary">
-                  {props.selectedSlot.location}
-                </div>
-              </div>
-
-              <div class="space-y-2">
-                <label class="text-sm font-medium text-muted-foreground">Sacred Exchange</label>
-                <div class="text-2xl font-bold text-primary">
-                  ${props.service.price}
-                </div>
-              </div>
-            </div>
+            <AppointmentDetailsGrid
+              details={[
+                {
+                  label: 'Date & Time',
+                  value: `${formatDate(props.selectedSlot.startTime)} at ${formatTime(props.selectedSlot.startTime)}`
+                },
+                {
+                  label: 'Duration',
+                  value: `${props.service.duration} minutes`
+                },
+                {
+                  label: 'Location',
+                  value: props.selectedSlot.location
+                },
+                {
+                  label: 'Sacred Exchange',
+                  value: `$${props.service.price}`
+                }
+              ]}
+            />
 
             <Show when={props.service.durationDescription}>
-              <div class="space-y-2">
-                <label class="text-sm font-medium text-muted-foreground">Session Description</label>
-                <p class="text-primary">{props.service.durationDescription}</p>
-              </div>
+              <SessionDescription description={props.service.durationDescription || ''} />
             </Show>
           </div>
 
@@ -166,22 +156,22 @@ export function ConfirmationPanel(props: ConfirmationPanelProps) {
             </div>
           </Show>
 
-          <div class="flex gap-4">
-            <button
-              onClick={props.onBack}
-              disabled={props.isSubmitting}
-              class="flex-1 px-6 py-3 border border-primary/20 rounded-lg text-primary hover:bg-primary/5 transition-colors disabled:opacity-50"
-            >
-              Back
-            </button>
-            <button
-              onClick={handleCreateAppointment}
-              disabled={props.isSubmitting}
-              class="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
-            >
-              {props.isSubmitting ? 'Creating Appointment...' : 'Confirm Your Sacred Session'}
-            </button>
-          </div>
+          <ActionButtons
+            buttons={[
+              {
+                text: 'Back',
+                onClick: props.onBack,
+                variant: 'secondary',
+                disabled: props.isSubmitting
+              },
+              {
+                text: props.isSubmitting ? 'Creating Appointment...' : 'Confirm Your Sacred Session',
+                onClick: handleCreateAppointment,
+                variant: 'primary',
+                disabled: props.isSubmitting
+              }
+            ]}
+          />
         </Card>
       </div>
     );

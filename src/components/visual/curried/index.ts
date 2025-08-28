@@ -22,3 +22,7 @@ export { TimeItem } from './TimeItem';
 export { PrimaryHeart } from './PrimaryHeart';
 export { PrimaryCraniosacral } from './PrimaryCraniosacral';
 export { PrimaryFootReflexology } from './PrimaryFootReflexology';
+export { ServiceSummaryCard } from './ServiceSummaryCard';
+export { AppointmentDetailsGrid } from './AppointmentDetailsGrid';
+export { ActionButtons } from './ActionButtons';
+export { SessionDescription } from './SessionDescription';

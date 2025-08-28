@@ -1,4 +1,4 @@
-import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, AppointmentsCard, ServicesCard, DurationList, DurationItem, IconWithText, IconWithTitleAndSubtitle, ServiceItem, SmallText, SectionHeading, Briefcase, CenteredContent, H3, H4, Heart, Craniosacral, FootReflexology, VerticallySpacedContent, PrimaryHeart, PrimaryCraniosacral, PrimaryFootReflexology } from '../components/visual';
+import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, AppointmentsCard, ServicesCard, DurationList, DurationItem, IconWithText, IconWithTitleAndSubtitle, ServiceItem, SmallText, SectionHeading, Briefcase, CenteredContent, H3, H4, Heart, Craniosacral, FootReflexology, VerticallySpacedContent, PrimaryHeart, PrimaryCraniosacral, PrimaryFootReflexology, ServiceSummaryCard, AppointmentDetailsGrid, ActionButtons, SessionDescription } from '../components/visual';
 
 export function DesignSystemPage() {
   const handleLogout = () => {
@@ -314,6 +314,60 @@ const provider = {
         <DurationList 
           title="Select Session Duration"
           durations={durations}
+        />
+      </DesignSystemSection>
+
+      <DesignSystemSection title="ServiceSummaryCard Component">
+        <ServiceSummaryCard
+          icon={<PrimaryHeart />}
+          title="Therapeutic Massage"
+          subtitle="Deep tissue & relaxation therapy"
+        />
+      </DesignSystemSection>
+
+      <DesignSystemSection title="AppointmentDetailsGrid Component">
+        <AppointmentDetailsGrid
+          details={[
+            {
+              label: 'Date & Time',
+              value: 'Thursday, August 28, 2025 at 4:55 PM'
+            },
+            {
+              label: 'Duration',
+              value: '30 minutes'
+            },
+            {
+              label: 'Location',
+              value: 'OFFICE'
+            },
+            {
+              label: 'Sacred Exchange',
+              value: '$100'
+            }
+          ]}
+        />
+      </DesignSystemSection>
+
+      <DesignSystemSection title="SessionDescription Component">
+        <SessionDescription 
+          description="A gentle back and shoulder massage using organic oils to release tension and restore balance."
+        />
+      </DesignSystemSection>
+
+      <DesignSystemSection title="ActionButtons Component">
+        <ActionButtons
+          buttons={[
+            {
+              text: 'Back',
+              onClick: () => console.log('Back clicked'),
+              variant: 'secondary'
+            },
+            {
+              text: 'Confirm Your Sacred Session',
+              onClick: () => console.log('Confirm clicked'),
+              variant: 'primary'
+            }
+          ]}
         />
       </DesignSystemSection>
     </DesignSystemPageWrapper>

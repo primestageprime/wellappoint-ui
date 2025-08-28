@@ -16,6 +16,7 @@ interface Appointment {
 
 interface AppointmentsCardProps {
   appointments: Appointment[];
+  appointmentRequestCap?: number;
   class?: string;
 }
 
@@ -27,7 +28,7 @@ export function AppointmentsCard(props: AppointmentsCardProps) {
           <IconWithText icon={<Calendar class="w-5 h-5 text-primary" />}>
             <H3>Your Appointments</H3>
           </IconWithText>
-          <Ratio current={1} total={props.appointments.length} />
+          <Ratio current={props.appointments.length} total={props.appointmentRequestCap || 1} />
         </div>
         
         <div class="space-y-2">

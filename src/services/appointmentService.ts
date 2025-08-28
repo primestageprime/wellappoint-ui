@@ -14,6 +14,7 @@ export interface UserAppointmentsResponse {
   success: boolean;
   appointments: UserAppointment[];
   count: number;
+  appointmentRequestCap: number;
   dateRange: {
     start: string;
     end: string;

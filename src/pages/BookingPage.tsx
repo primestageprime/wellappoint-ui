@@ -219,6 +219,7 @@ export function BookingPage() {
         {appointments() && (
           <AppointmentsCard 
             appointments={appointments()!.appointments.map(convertToAppointmentCardFormat)}
+            appointmentRequestCap={appointments()!.appointmentRequestCap}
           />
         )}
 

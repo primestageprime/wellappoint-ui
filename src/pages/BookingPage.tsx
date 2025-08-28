@@ -80,35 +80,7 @@ export function BookingPage() {
     fetchServices();
   });
 
-  // Temporary testing effect - remove in production
-  createEffect(() => {
-    // Auto-set test values for confirmation panel testing
-    if (services().length > 0 && !selectedService()) {
-      console.log('Setting test data for confirmation panel');
-      
-      // Set test service (first service)
-      const testService = services()[0];
-      setSelectedService(testService.name);
-      
-      // Set test duration (first duration for that service)
-      const testDuration = services().find(s => s.name === testService.name)?.duration || 30;
-      setSelectedDuration(testDuration);
-      
-      // Set test time slot
-      const testSlot = {
-        startTime: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // Tomorrow
-        endTime: new Date(Date.now() + 24 * 60 * 60 * 1000 + testDuration * 60 * 1000).toISOString(),
-        location: 'OFFICE'
-      };
-      setSelectedSlot(testSlot);
-      
-      console.log('Test data set:', {
-        service: testService.name,
-        duration: testDuration,
-        slot: testSlot
-      });
-    }
-  });
+
 
   const handleLogout = () => {
     auth.logout();

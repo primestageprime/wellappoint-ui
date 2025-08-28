@@ -16,13 +16,17 @@ interface AppointmentDetailsGridProps {
 
 export function AppointmentDetailsGrid(props: AppointmentDetailsGridProps) {
   return (
-    <VerticallySpacedContent>
+    <div class={`grid grid-cols-1 md:grid-cols-2 gap-4 ${props.class || ''}`}>
       {props.details.map((detail) => (
-        <div>
+        <VerticallySpacedContent>
           <IconWithText icon={detail.icon}>{detail.label}</IconWithText>
-          <SmallText>{detail.value}</SmallText>
-        </div>
+          <div class={`text-lg font-semibold ${
+            detail.label === 'Sacred Exchange' ? 'text-2xl font-bold text-primary' : 'text-foreground'
+          }`}>
+            {detail.value}
+          </div>
+        </VerticallySpacedContent>
       ))}
-    </VerticallySpacedContent>
+    </div>
   );
 }

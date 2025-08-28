@@ -1,4 +1,4 @@
-import { createSignal, createEffect, createResource } from 'solid-js';
+import { createSignal, createEffect, createResource, Show } from 'solid-js';
 import { useAuth } from '../auth/AuthProvider';
 import { ServicesList } from '../components/ServicesList';
 import { DurationsList } from '../components/DurationsList';
@@ -232,65 +232,78 @@ export function BookingPage() {
         )}
 
         {!loading() && !error() && (
-          <>
-            {!selectedService() && (
-              <ServicesList 
-                services={services()} 
-                onServiceSelect={handleServiceSelect}
-              />
-            )}
-            
-            {selectedService() && !selectedDuration() && (
-              <DurationsList 
-                services={services()}
-                selectedService={selectedService()!}
-                onDurationSelect={handleDurationSelect}
-                onBack={handleBackToServices}
-              />
-            )}
-            
-            {selectedService() && selectedDuration() && !selectedSlot() && (
-              <AvailabilityList 
-                services={services()}
-                selectedService={selectedService()!}
-                selectedDuration={selectedDuration()!}
-                onBack={handleBackToDurations}
-                onTimeSelect={handleTimeSelect}
-              />
-            )}
-            
-            {selectedService() && selectedDuration() && selectedSlot() && appointmentConfirmed() === undefined && (
-              <ConfirmationPanel
-                service={services().find(s => s.name === selectedService() && s.duration === selectedDuration())!}
-                selectedSlot={selectedSlot()}
-                isSubmitting={isSubmitting()}
-                error={confirmationError()}
-                onBack={handleBackToTimeSelection}
-                onConfirm={handleConfirmAppointment}
-              />
-            )}
-            
-            {selectedService() && selectedDuration() && selectedSlot() && appointmentConfirmed() === true && (
-              <div class="text-center space-y-4">
-                <div class="p-4 sm:p-6 bg-gradient-to-r from-green-50 to-yellow-50 border border-primary/20 rounded-xl">
-                  <div class="text-6xl">✨</div>
-                  <H3>Your healing session is confirmed!</H3>
-                  <p class="text-muted-foreground">Your appointment has been scheduled. You'll receive a confirmation with details shortly.</p>
+          <Show 
+            when={!appointments() || appointments()!.appointments.length < appointments()!.appointmentRequestCap}
+            fallback={
+              <Card class="p-6 text-center space-y-4">
+                <div class="text-4xl">📋</div>
+                <H3>Appointment Limit Reached</H3>
+                <p class="text-muted-foreground">
+                  You have reached the maximum number of booked appointments. If you would like to increase this limit, please contact the provider.
+                </p>
+              </Card>
+            }
+          >
+            <>
+              {!selectedService() && (
+                <ServicesList 
+                  services={services()} 
+                  onServiceSelect={handleServiceSelect}
+                />
+              )}
+              
+              {selectedService() && !selectedDuration() && (
+                <DurationsList 
+                  services={services()}
+                  selectedService={selectedService()!}
+                  onDurationSelect={handleDurationSelect}
+                  onBack={handleBackToServices}
+                />
+              )}
+              
+              {selectedService() && selectedDuration() && !selectedSlot() && (
+                <AvailabilityList 
+                  services={services()}
+                  selectedService={selectedService()!}
+                  selectedDuration={selectedDuration()!}
+                  onBack={handleBackToDurations}
+                  onTimeSelect={handleTimeSelect}
+                />
+              )}
+              
+              {selectedService() && selectedDuration() && selectedSlot() && appointmentConfirmed() === undefined && (
+                <ConfirmationPanel
+                  service={services().find(s => s.name === selectedService() && s.duration === selectedDuration())!}
+                  selectedSlot={selectedSlot()}
+                  isSubmitting={isSubmitting()}
+                  error={confirmationError()}
+                  onBack={handleBackToTimeSelection}
+                  onConfirm={handleConfirmAppointment}
+                />
+              )}
+              
+              {selectedService() && selectedDuration() && selectedSlot() && appointmentConfirmed() === true && (
+                <div class="text-center space-y-4">
+                  <div class="p-4 sm:p-6 bg-gradient-to-r from-green-50 to-yellow-50 border border-primary/20 rounded-xl">
+                    <div class="text-6xl">✨</div>
+                    <H3>Your healing session is confirmed!</H3>
+                    <p class="text-muted-foreground">Your appointment has been scheduled. You'll receive a confirmation with details shortly.</p>
+                  </div>
+                  <button 
+                    onClick={() => {
+                      setSelectedService(null);
+                      setSelectedDuration(null);
+                      setSelectedSlot(null);
+                      setAppointmentConfirmed(undefined);
+                    }}
+                    class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+                  >
+                    Book Another Session
+                  </button>
                 </div>
-                <button 
-                  onClick={() => {
-                    setSelectedService(null);
-                    setSelectedDuration(null);
-                    setSelectedSlot(null);
-                    setAppointmentConfirmed(undefined);
-                  }}
-                  class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
-                >
-                  Book Another Session
-                </button>
-              </div>
-            )}
-          </>
+              )}
+            </>
+          </Show>
         )}
       </Content>
     </PageFrame>

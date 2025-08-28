@@ -1,3 +1,5 @@
+import { formatTime, formatDateTime } from '../utils/dateUtils';
+
 export interface UserAppointment {
   id: string;
   service: string;
@@ -29,8 +31,17 @@ export async function getUserAppointments(userEmail: string): Promise<UserAppoin
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
-    const data = await response.json();
-    return data as UserAppointmentsResponse;
+    const rawData = await response.json();
+
+    
+    const data = rawData.appointments.map((appointment: UserAppointment) => ({
+      ...appointment,
+      startTime: formatDateTime(appointment.startTime),
+      endTime: formatDateTime(appointment.endTime),
+      time: formatTime(appointment.startTime)
+    }));
+    rawData.appointments = data;
+    return rawData as UserAppointmentsResponse;
   } catch (error) {
     console.error('Failed to fetch user appointments:', error);
     throw new Error('Failed to fetch user appointments');

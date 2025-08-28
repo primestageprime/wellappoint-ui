@@ -12,6 +12,7 @@ interface AppointmentItemProps {
 }
 
 export function AppointmentItem(props: AppointmentItemProps) {
+  
   const details = `${props.duration} • ${props.date} at ${props.time}`;
   
   return (

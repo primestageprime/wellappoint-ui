@@ -2,6 +2,7 @@ import { createSignal, createEffect, createResource, For, Show } from 'solid-js'
 import { useAuth } from '../auth/AuthProvider';
 import { getAvailableSlots, type AvailableSlot } from '../services/availabilityService';
 import { TimeItem, H3, H4, CenteredContent } from './visual';
+import { formatDate } from '../utils/dateUtils';
 
 interface Service {
   name: string;
@@ -61,16 +62,7 @@ export function AvailabilityList(props: AvailabilityListProps) {
     props.onBack();
   };
 
-  const formatDate = (dateStr: string) => {
-    // Parse the date string as local time, not UTC
-    const [year, month, day] = dateStr.split('-').map(Number);
-    const date = new Date(year, month - 1, day); // month is 0-indexed
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'long', 
-      month: 'long', 
-      day: 'numeric' 
-    });
-  };
+
 
   return (
     <div class="space-y-4">

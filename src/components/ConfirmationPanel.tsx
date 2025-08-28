@@ -100,20 +100,6 @@ export function ConfirmationPanel(props: ConfirmationPanelProps) {
       <CenteredContent>
         <H3>Confirm Your Healing Session</H3>
         <H4>Review your appointment details</H4>
-        
-        {/* Temporary test button - remove in production */}
-        <button
-          onClick={() => {
-            console.log('Test data:', {
-              service: props.service,
-              selectedSlot: props.selectedSlot,
-              auth: auth.user()
-            });
-          }}
-          class="mt-4 px-4 py-2 bg-blue-500 text-white rounded text-sm"
-        >
-          Test Data (Check Console)
-        </button>
       </CenteredContent>
 
         <Card class="p-6 space-y-6">
@@ -158,12 +144,6 @@ export function ConfirmationPanel(props: ConfirmationPanelProps) {
 
           <ActionButtons
             buttons={[
-              {
-                text: 'Back',
-                onClick: props.onBack,
-                variant: 'secondary',
-                disabled: props.isSubmitting
-              },
               {
                 text: props.isSubmitting ? 'Creating Appointment...' : 'Confirm Your Sacred Session',
                 onClick: handleCreateAppointment,

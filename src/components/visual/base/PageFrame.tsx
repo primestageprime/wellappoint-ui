@@ -7,8 +7,10 @@ interface PageFrameProps {
 
 export function PageFrame(props: PageFrameProps) {
   return (
-    <div class={`bg-card shadow-lg rounded-lg m-4 ${props.class || ''}`}>
-      {props.children}
+    <div class={`w-full max-w-large mx-auto ${props.class || ''}`}>
+      <div class="bg-card shadow-lg rounded-lg m-4 w-full max-w-large">
+        {props.children}
+      </div>
     </div>
   );
 }

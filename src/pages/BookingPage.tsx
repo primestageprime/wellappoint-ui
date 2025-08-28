@@ -51,6 +51,7 @@ export function BookingPage() {
   const [appointmentConfirmed, setAppointmentConfirmed] = createSignal<boolean | undefined>(undefined);
   const [isSubmitting, setIsSubmitting] = createSignal(false);
   const [confirmationError, setConfirmationError] = createSignal<string | null>(null);
+  const [loadingAppointments, setLoadingAppointments] = createSignal(false);
   const [provider] = createResource(getProviderDetails);
   
   // Get user appointments
@@ -78,6 +79,13 @@ export function BookingPage() {
 
   createEffect(() => {
     fetchServices();
+  });
+
+  // Reset loadingAppointments when appointments are refreshed
+  createEffect(() => {
+    if (appointments()) {
+      setLoadingAppointments(false);
+    }
   });
 
 
@@ -167,8 +175,9 @@ export function BookingPage() {
       const result = await response.json();
       console.log('Appointment created successfully:', result);
       
-      // Set appointment as confirmed
+      // Set appointment as confirmed and start loading appointments
       setAppointmentConfirmed(true);
+      setLoadingAppointments(true);
       
       // Reset all selections and refresh appointments after a delay
       setTimeout(() => {
@@ -244,13 +253,13 @@ export function BookingPage() {
               </Card>
             }
           >
-            <>
-              {!selectedService() && (
-                <ServicesList 
-                  services={services()} 
-                  onServiceSelect={handleServiceSelect}
-                />
-              )}
+                           <>
+                 {!selectedService() && !loadingAppointments() && (
+                   <ServicesList
+                     services={services()}
+                     onServiceSelect={handleServiceSelect}
+                   />
+                 )}
               
               {selectedService() && !selectedDuration() && (
                 <DurationsList 

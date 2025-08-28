@@ -85,7 +85,7 @@ export function AuthProvider(props: AuthProviderProps) {
       });
       setClient(auth0);
       setAuth0Client(auth0);
-      
+
       // Handle the redirect callback
       if (window.location.search.includes("code=")) {
         try {
@@ -249,7 +249,7 @@ export function AuthProvider(props: AuthProviderProps) {
           </button>
         </div>
       </Show>
-      <Show when={!loading()}>{props.children}</Show>
+      <Show when={!loading() && !error()}>{props.children}</Show>
     </AuthContext.Provider>
   );
 }

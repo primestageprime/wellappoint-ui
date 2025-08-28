@@ -1,5 +1,6 @@
 export { AppointmentItem } from './AppointmentItem';
 export { Button } from './Button';
+export { StandardButton } from './StandardButton';
 export { CenteredContent } from './CenteredContent';
 export { H3 } from './H3';
 export { H4 } from './H4';

@@ -1,4 +1,4 @@
-import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, AppointmentsCard, ServicesCard, DurationList, DurationItem, IconWithText, IconWithTitleAndSubtitle, ServiceItem, SmallText, SectionHeading, Briefcase, CenteredContent, H3, H4, Heart, Craniosacral, FootReflexology, VerticallySpacedContent, PrimaryHeart, PrimaryCraniosacral, PrimaryFootReflexology, ServiceSummaryCard, AppointmentDetailsGrid, ActionButtons, SessionDescription } from '../components/visual';
+import { Paper, Card, PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, WellAppointLogo, DesignSystemSection, TestContent, DesignSystemContainer, DesignSystemPage as DesignSystemPageWrapper, ProviderContent, AppointmentsCard, ServicesCard, DurationList, DurationItem, IconWithText, IconWithTitleAndSubtitle, ServiceItem, SmallText, SectionHeading, Briefcase, CenteredContent, H3, H4, Heart, Craniosacral, FootReflexology, VerticallySpacedContent, PrimaryHeart, PrimaryCraniosacral, PrimaryFootReflexology, ServiceSummaryCard, AppointmentDetailsGrid, ActionButtons, SessionDescription, StandardButton } from '../components/visual';
 
 export function DesignSystemPage() {
   const handleLogout = () => {
@@ -341,7 +341,7 @@ const provider = {
               value: 'OFFICE'
             },
             {
-              label: 'Sacred Exchange',
+              label: 'Exchange',
               value: '$100'
             }
           ]}
@@ -352,6 +352,33 @@ const provider = {
         <SessionDescription 
           description="A gentle back and shoulder massage using organic oils to release tension and restore balance."
         />
+      </DesignSystemSection>
+
+      <DesignSystemSection title="StandardButton Component">
+        <div class="space-y-4">
+          <div class="flex gap-4">
+            <StandardButton variant="primary" onClick={() => console.log('Primary clicked')}>
+              Primary Button
+            </StandardButton>
+            <StandardButton variant="secondary" onClick={() => console.log('Secondary clicked')}>
+              Secondary Button
+            </StandardButton>
+            <StandardButton variant="outline" onClick={() => console.log('Outline clicked')}>
+              Outline Button
+            </StandardButton>
+          </div>
+          <div class="flex gap-4">
+            <StandardButton size="sm" variant="primary" onClick={() => console.log('Small clicked')}>
+              Small
+            </StandardButton>
+            <StandardButton size="md" variant="primary" onClick={() => console.log('Medium clicked')}>
+              Medium
+            </StandardButton>
+            <StandardButton size="lg" variant="primary" onClick={() => console.log('Large clicked')}>
+              Large
+            </StandardButton>
+          </div>
+        </div>
       </DesignSystemSection>
 
       <DesignSystemSection title="ActionButtons Component">

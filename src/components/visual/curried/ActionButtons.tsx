@@ -1,4 +1,5 @@
 import { JSX } from 'solid-js';
+import { StandardButton } from '../base/StandardButton';
 
 interface ActionButton {
   text: string;
@@ -16,17 +17,14 @@ export function ActionButtons(props: ActionButtonsProps) {
   return (
     <div class={`flex gap-4 ${props.class || ''}`}>
       {props.buttons.map((button) => (
-        <button
+        <StandardButton
           onClick={button.onClick}
           disabled={button.disabled}
-          class={`flex-1 p-4 rounded-lg transition-colors disabled:opacity-50 ${
-            button.variant === 'primary'
-              ? 'bg-primary text-white hover:bg-primary/90'
-              : 'border border-primary/20 text-primary hover:bg-primary/5'
-          }`}
+          variant={button.variant}
+          class="flex-1"
         >
           {button.text}
-        </button>
+        </StandardButton>
       ))}
     </div>
   );

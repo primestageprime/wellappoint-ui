@@ -125,7 +125,7 @@ export function ConfirmationPanel(props: ConfirmationPanelProps) {
                   value: props.selectedSlot.location
                 },
                 {
-                  label: 'Sacred Exchange',
+                  label: 'Exchange',
                   value: `$${props.service.price}`
                 }
               ]}

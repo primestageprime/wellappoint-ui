@@ -82,8 +82,8 @@ export function BookingPage() {
 
 
 
-  const handleLogout = () => {
-    auth.logout();
+  const handleLogout = async () => {
+    await auth.logout();
   };
 
   const handleServiceSelect = (serviceName: string) => {

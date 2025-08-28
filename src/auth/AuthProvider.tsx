@@ -167,12 +167,12 @@ export function AuthProvider(props: AuthProviderProps) {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
     try {
       if (!client()) {
         throw new Error("Auth client not initialized");
       }
-      client()!.logout({
+      await client()!.logout({
         logoutParams: {
           returnTo: window.location.origin,
         },

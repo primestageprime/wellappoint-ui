@@ -62,7 +62,9 @@ export function AvailabilityList(props: AvailabilityListProps) {
   };
 
   const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
+    // Parse the date string as local time, not UTC
+    const [year, month, day] = dateStr.split('-').map(Number);
+    const date = new Date(year, month - 1, day); // month is 0-indexed
     return date.toLocaleDateString('en-US', { 
       weekday: 'long', 
       month: 'long', 

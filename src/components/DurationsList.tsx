@@ -1,16 +1,9 @@
 import { DurationList, H3, H4, CenteredContent } from './visual';
 import { Heart, Craniosacral, FootReflexology } from './visual/icons';
-
-interface Service {
-  name: string;
-  duration: number;
-  price: number;
-  description?: string;
-  durationDescription?: string;
-}
+import { type BookingService } from '../types/service';
 
 interface DurationsListProps {
-  services: Service[];
+  services: BookingService[];
   selectedService: string;
   onDurationSelect: (duration: number) => void;
   onBack: () => void;

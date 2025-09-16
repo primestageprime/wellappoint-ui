@@ -1,26 +1,18 @@
-import { JSX, For } from 'solid-js';
-import { IconWithTitleAndSubtitle } from '../base/IconWithTitleAndSubtitle';
+import { For, Show } from 'solid-js';  
 import { ServiceItem } from './ServiceItem';
 import { Card } from './Card';
 import { H3 } from '../base/H3';
-import { Heart, Craniosacral, FootReflexology } from '../icons';
-
-interface Service {
-  name: string;
-  description: string;
-  subtitle?: string;
-  icon?: JSX.Element;
-  onClick?: () => void;
-}
+import { type UIService } from '../../../types/service';
 
 interface ServicesCardProps {
-  services: Service[];
+  services: UIService[];
   title?: string;
   class?: string;
 }
 
 export function ServicesCard(props: ServicesCardProps) {
   return (
+    <Show when={props.services && props.services.length > 0}>
     <Card class={props.class}>
       <div class="p-6 space-y-4">
         {props.title && <H3>{props.title}</H3>}
@@ -42,5 +34,6 @@ export function ServicesCard(props: ServicesCardProps) {
         </div>
       </div>
     </Card>
+    </Show>
   );
 }

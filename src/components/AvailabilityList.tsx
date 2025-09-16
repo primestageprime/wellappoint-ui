@@ -4,14 +4,6 @@ import { getAvailableSlots, type AvailableSlot } from '../services/availabilityS
 import { TimeItem, H3, H4, CenteredContent } from './visual';
 import { formatDate } from '../utils/dateUtils';
 
-interface Service {
-  name: string;
-  duration: number;
-  price: number;
-  description?: string;
-  durationDescription?: string;
-}
-
 interface AvailabilityListProps {
   service: string;
   duration: number;

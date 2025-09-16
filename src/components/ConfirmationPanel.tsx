@@ -15,14 +15,7 @@ import {
 } from './visual';
 import { Calendar, Globe, Currency } from './visual/icons';
 import { Clock } from 'lucide-solid';
-
-interface Service {
-  name: string;
-  duration: number;
-  price: number;
-  description?: string;
-  durationDescription?: string;
-}
+import { type BookingService } from '../types/service';
 
 interface AvailableSlot {
   startTime: string;
@@ -31,7 +24,7 @@ interface AvailableSlot {
 }
 
 interface ConfirmationPanelProps {
-  service: Service;
+  service: BookingService;
   selectedSlot: AvailableSlot;
   isSubmitting: boolean;
   error: string | null;

@@ -23,14 +23,7 @@ import {
 } from '../components/visual';
 import { getProviderDetails } from '../services/providerService';
 import { getUserAppointments, type UserAppointment } from '../services/appointmentService';
-
-interface Service {
-  name: string;
-  duration: number;
-  price: number;
-  description?: string;
-  durationDescription?: string;
-}
+import { type BookingService } from '../types/service';
 
 
 export function ProviderBookingPage() {
@@ -41,7 +34,7 @@ export function ProviderBookingPage() {
   console.log('🔍 ProviderBookingPage - username:', username());
   console.log('🔍 ProviderBookingPage - user:', auth.user());
   
-  const [services, setServices] = createSignal<Service[]>([]);
+  const [services, setServices] = createSignal<BookingService[]>([]);
   const [loading, setLoading] = createSignal(true);
   const [error, setError] = createSignal<string | null>(null);
   const [selectedService, setSelectedService] = createSignal<string | null>(null);
@@ -185,7 +178,7 @@ export function ProviderBookingPage() {
               Debug: loading={loading()}, error={error()}, services={services().length}
             </div>
             
-            <ServicesCard>
+            <ServicesCard services={services()}>
               <H4>Services</H4>
               <Show when={loading()}>
                 <LoadingCard>Loading services...</LoadingCard>

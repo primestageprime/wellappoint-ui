@@ -23,14 +23,7 @@ import {
 } from '../components/visual';
 import { getProviderDetails } from '../services/providerService';
 import { getUserAppointments, type UserAppointment } from '../services/appointmentService';
-
-interface Service {
-  name: string;
-  duration: number;
-  price: number;
-  description?: string;
-  durationDescription?: string;
-}
+import { type BookingService } from '../types/service';
 
 // Helper function to convert UserAppointment to the format expected by AppointmentsCard
 const convertToAppointmentCardFormat = (appointment: UserAppointment) => ({
@@ -42,7 +35,7 @@ const convertToAppointmentCardFormat = (appointment: UserAppointment) => ({
 
 export function BookingPage() {
   const auth = useAuth();
-  const [services, setServices] = createSignal<Service[]>([]);
+  const [services, setServices] = createSignal<BookingService[]>([]);
   const [loading, setLoading] = createSignal(true);
   const [error, setError] = createSignal<string | null>(null);
   const [selectedService, setSelectedService] = createSignal<string | null>(null);

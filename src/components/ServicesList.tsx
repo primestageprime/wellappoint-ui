@@ -1,16 +1,9 @@
 import { ServicesCard, H3, H4, CenteredContent } from './visual';
 import { Heart, Craniosacral, FootReflexology } from './visual/icons';
-
-interface Service {
-  name: string;
-  duration: number;
-  price: number;
-  description?: string;
-  durationDescription?: string;
-}
+import { type BookingService } from '../types/service';
 
 interface ServicesListProps {
-  services: Service[];
+  services: BookingService[];
   onServiceSelect: (serviceName: string) => void;
 }
 
@@ -32,7 +25,7 @@ const serviceData = {
 export function ServicesList(props: ServicesListProps) {
   // Get unique service names
   const uniqueServices = () => {
-    const serviceMap = new Map<string, Service>();
+    const serviceMap = new Map<string, BookingService>();
     props.services.forEach(service => {
       if (!serviceMap.has(service.name)) {
         serviceMap.set(service.name, service);

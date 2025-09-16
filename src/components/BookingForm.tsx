@@ -29,14 +29,10 @@ interface AvailabilityResponse {
   };
 }
 
-interface Service {
-  name: string;
-  duration: number;
-  price: number;
-}
+import { type BookingService } from '../types/service';
 
 interface BookingFormProps {
-  services: Service[];
+  services: BookingService[];
 }
 
 export function BookingForm(props: BookingFormProps) {

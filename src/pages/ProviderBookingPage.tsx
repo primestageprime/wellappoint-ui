@@ -1,7 +1,6 @@
-import { createSignal, createEffect, createResource, Show } from 'solid-js';
+import { Show } from 'solid-js';
 import { useAuth } from '../auth/AuthProvider';
 import { useParams } from '@solidjs/router';
-import { ServicesList } from '../components/ServicesList';
 import { DurationsList } from '../components/DurationsList';
 import { AvailabilityList } from '../components/AvailabilityList';
 import { ConfirmationPanel } from '../components/ConfirmationPanel';
@@ -16,14 +15,13 @@ import {
   Content,
   Card,
   Split,
-  Avatar,
-  LoadingCard,
-  ErrorCard
+  Avatar
 } from '../components/visual';
-import { getProviderDetails } from '../services/providerService';
-import { getUserAppointments, type UserAppointment } from '../services/appointmentService';
-import { type BookingService, type UIService } from '../types/service';
-import { annotateOnClick } from '../utils/serviceUtils';
+import { type UserAppointment } from '../services/appointmentService';
+import { type UIService } from '../types/service';
+import { useServices } from '../hooks/useServices';
+import { useBookingFlow } from '../hooks/useBookingFlow';
+import { useAppointments } from '../hooks/useAppointments';
 
 
 export function ProviderBookingPage() {
@@ -34,125 +32,15 @@ export function ProviderBookingPage() {
   console.log('🔍 ProviderBookingPage - username:', username());
   console.log('🔍 ProviderBookingPage - user:', auth.user());
   
-  const [services, setServices] = createSignal<BookingService[]>([]);
-  const [loading, setLoading] = createSignal(true);
-  const [error, setError] = createSignal<string | null>(null);
-  const [selectedService, setSelectedService] = createSignal<string | null>(null);
-  const [selectedDuration, setSelectedDuration] = createSignal<number | null>(null);
-  const [selectedSlot, setSelectedSlot] = createSignal<any | null>(null);
-  const [bookingStep, setBookingStep] = createSignal<'services' | 'durations' | 'availability' | 'confirmation'>('services');
-  const [isSubmitting, setIsSubmitting] = createSignal(false);
-  const [bookingError, setBookingError] = createSignal<string | null>(null);
+  // Custom primitives
+  const services = useServices(username);
+  const booking = useBookingFlow();
+  const appointments = useAppointments(() => auth.user()?.email, username);
 
-  // Fetch provider details
-  const [providerDetails] = createResource(() => getProviderDetails());
-
-  // Fetch user appointments
-  const [appointments, { refetch: refetchAppointments }] = createResource(
-    () => ({ userEmail: auth.user()?.email, provider: username() }),
-    async ({ userEmail, provider }) => {
-      if (!userEmail) return [];
-      return await getUserAppointments(userEmail, provider);
-    }
-  );
-
-  const fetchServices = async () => {
-    try {
-      console.log('🔍 fetchServices called for username:', username());
-      setLoading(true);
-      setError(null);
-      
-      const response = await fetch(`/services?username=${username()}`);
-      console.log('🔍 Services response status:', response.status);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      const services = annotateOnClick(setSelectedService, data);
-      console.log('🔍 Services data:', data);
-      setServices(data);
-      console.log('🔍 Services set, setting loading to false');
-    } catch (err) {
-      console.error('Failed to fetch services:', err);
-      setError(err instanceof Error ? err.message : 'Failed to fetch services');
-    } finally {
-      setLoading(false);
-      console.log('🔍 Loading set to false');
-    }
-  };
-
-  createEffect(() => {
-    const currentUsername = username();
-    console.log('🔍 createEffect - username:', currentUsername);
-    if (currentUsername) {
-      fetchServices();
-    }
-  });
-
-  // Reset loadingAppointments when appointments are refreshed
-  createEffect(() => {
-    if (appointments.loading) {
-      // You can add loading state for appointments here if needed
-    }
-  });
-
-  const handleServiceSelect = (serviceName: string) => {
-    console.log('🔍 handleServiceSelect called with:', serviceName);
-    setSelectedService(serviceName);
-    setBookingStep('durations');
-    console.log('🔍 Booking step set to durations, selected service:', serviceName);
-  };
-
-  const handleDurationSelect = (duration: number) => {
-    setSelectedDuration(duration);
-    setBookingStep('availability');
-  };
-
-  const handleSlotSelect = (slot: any) => {
-    setSelectedSlot(slot);
-    setBookingStep('confirmation');
-  };
-
+  // Enhanced booking complete handler
   const handleBookingComplete = () => {
-    // Reset the booking flow
-    setSelectedService(null);
-    setSelectedDuration(null);
-    setSelectedSlot(null);
-    setBookingStep('services');
-    
-    // Refresh appointments
-    refetchAppointments();
-  };
-
-  const handleBackToServices = () => {
-    setSelectedService(null);
-    setSelectedDuration(null);
-    setSelectedSlot(null);
-    setBookingStep('services');
-  };
-
-  const handleBackToDurations = () => {
-    setSelectedDuration(null);
-    setSelectedSlot(null);
-    setBookingStep('durations');
-  };
-
-  const handleBackToAvailability = () => {
-    setSelectedSlot(null);
-    setBookingStep('availability');
-  };
-
-  const selectedServiceData = () => {
-    const serviceName = selectedService();
-    return services().find(s => s.name === serviceName);
-  };
-
-  const filteredDurations = () => {
-    const serviceName = selectedService();
-    return services()
-      .filter(s => s.name === serviceName)
-      .map(s => ({ duration: s.duration, price: s.price, description: s.durationDescription }));
+    booking.handleBookingComplete();
+    appointments.refetchAppointments();
   };
 
   return (
@@ -180,16 +68,16 @@ export function ProviderBookingPage() {
             <div class="space-y-6">
             {/* Debug info */}
             <div class="bg-yellow-100 p-2 text-xs">
-              Debug: loading={loading()}, error={error()}, services={services().length}
+              Debug: loading={services.loading()}, error={services.error()}, services={services.services().length}
             </div>
             
-            <ServicesCard services={services() as UIService[]} />
-            <AppointmentsCard appointments={appointments() as UserAppointment[]} />
+            <ServicesCard services={services.services() as UIService[]} />
+            <AppointmentsCard appointments={appointments.appointments() as UserAppointment[]} />
             </div>
           }
           right={
             <div class="space-y-6">
-            <Show when={bookingStep() === 'services'}>
+            <Show when={booking.bookingStep() === 'services'}>
               <Card>
                 <H4>Select a Service</H4>
                 <p class="text-muted-foreground text-sm mb-4">
@@ -198,35 +86,35 @@ export function ProviderBookingPage() {
               </Card>
             </Show>
 
-            <Show when={bookingStep() === 'durations'}>
+            <Show when={booking.bookingStep() === 'durations'}>
               <Card>
                 <H4>Select Duration</H4>
                 <p class="text-muted-foreground text-sm mb-4">
-                  Choose your preferred duration for {selectedService()}.
+                  Choose your preferred duration for {booking.selectedService()}.
                 </p>
                 <DurationsList 
-                  services={services()}
-                  selectedService={selectedService()!}
-                  onDurationSelect={handleDurationSelect}
-                  onBack={handleBackToServices}
+                  services={services.services()}
+                  selectedService={booking.selectedService()!}
+                  onDurationSelect={booking.handleDurationSelect}
+                  onBack={booking.handleBackToServices}
                 />
               </Card>
             </Show>
 
-            <Show when={bookingStep() === 'availability'}>
+            <Show when={booking.bookingStep() === 'availability'}>
               <Card>
                 <H4>Select Time Slot</H4>
                 <p class="text-muted-foreground text-sm mb-4">
                   Choose an available time slot for your appointment.
                 </p>
                 <AvailabilityList 
-                  service={selectedService()!}
-                  duration={selectedDuration()!}
-                  onSlotSelect={handleSlotSelect}
+                  service={booking.selectedService()!}
+                  duration={booking.selectedDuration()!}
+                  onSlotSelect={booking.handleSlotSelect}
                   provider={username()}
                 />
                 <button 
-                  onClick={handleBackToDurations}
+                  onClick={booking.handleBackToDurations}
                   class="mt-4 text-sm text-muted-foreground hover:text-foreground"
                 >
                   ← Back to Duration
@@ -234,14 +122,14 @@ export function ProviderBookingPage() {
               </Card>
             </Show>
 
-            <Show when={bookingStep() === 'confirmation'}>
+            <Show when={booking.bookingStep() === 'confirmation'}>
               <ConfirmationPanel 
-                service={selectedServiceData()!}
-                selectedSlot={selectedSlot()}
-                isSubmitting={isSubmitting()}
-                error={bookingError()}
+                service={booking.selectedServiceData(services.services)!}
+                selectedSlot={booking.selectedSlot()}
+                isSubmitting={booking.isSubmitting()}
+                error={booking.bookingError()}
                 onConfirm={handleBookingComplete}
-                onBack={handleBackToAvailability}
+                onBack={booking.handleBackToAvailability}
               />
             </Show>
             </div>

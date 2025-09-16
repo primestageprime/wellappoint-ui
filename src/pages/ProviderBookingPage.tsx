@@ -6,7 +6,6 @@ import { DurationsList } from '../components/DurationsList';
 import { AvailabilityList } from '../components/AvailabilityList';
 import { ConfirmationPanel } from '../components/ConfirmationPanel';
 import { 
-  ProviderContent, 
   AppointmentsCard, 
   ServicesCard, 
   LogoutButton, 
@@ -33,18 +32,14 @@ interface Service {
   durationDescription?: string;
 }
 
-// Helper function to convert UserAppointment to the format expected by AppointmentsCard
-const convertToAppointmentCardFormat = (appointment: UserAppointment) => ({
-  service: appointment.service,
-  duration: appointment.duration,
-  date: appointment.date,
-  time: appointment.time
-});
 
 export function ProviderBookingPage() {
   const auth = useAuth();
   const params = useParams();
   const username = () => params.username;
+  
+  console.log('🔍 ProviderBookingPage - username:', username());
+  console.log('🔍 ProviderBookingPage - user:', auth.user());
   
   const [services, setServices] = createSignal<Service[]>([]);
   const [loading, setLoading] = createSignal(true);
@@ -68,25 +63,33 @@ export function ProviderBookingPage() {
 
   const fetchServices = async () => {
     try {
+      console.log('🔍 fetchServices called for username:', username());
       setLoading(true);
       setError(null);
       
       const response = await fetch(`/services?username=${username()}`);
+      console.log('🔍 Services response status:', response.status);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const data = await response.json();
+      console.log('🔍 Services data:', data);
       setServices(data);
+      console.log('🔍 Services set, setting loading to false');
     } catch (err) {
+      console.error('Failed to fetch services:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch services');
     } finally {
       setLoading(false);
+      console.log('🔍 Loading set to false');
     }
   };
 
   createEffect(() => {
-    if (username()) {
+    const currentUsername = username();
+    console.log('🔍 createEffect - username:', currentUsername);
+    if (currentUsername) {
       fetchServices();
     }
   });
@@ -157,26 +160,29 @@ export function ProviderBookingPage() {
   return (
     <PageFrame>
       <HeaderCard>
-        <Split>
-          <CenteredContent>
-            <Avatar 
-              src={providerDetails()?.avatar} 
-              alt={providerDetails()?.name || 'Provider'} 
-              size="lg"
-            />
-            <div>
-              <H3>{providerDetails()?.name || 'Loading...'}</H3>
-              <p class="text-muted-foreground">@{username()}</p>
-            </div>
-          </CenteredContent>
-          <LogoutButton onClick={() => auth.logout()} />
-        </Split>
+        <Split 
+          left={
+            <CenteredContent>
+              <Avatar />
+              <div>
+                <H3>{providerDetails()?.name || 'Loading...'}</H3>
+                <p class="text-muted-foreground">@{username()}</p>
+              </div>
+            </CenteredContent>
+          }
+          right={<LogoutButton onLogout={() => auth.logout()} />}
+        />
       </HeaderCard>
 
       <Content>
-        <Split>
-          {/* Left Column - Services and Appointments */}
-          <div class="space-y-6">
+        <Split 
+          left={
+            <div class="space-y-6">
+            {/* Debug info */}
+            <div class="bg-yellow-100 p-2 text-xs">
+              Debug: loading={loading()}, error={error()}, services={services().length}
+            </div>
+            
             <ServicesCard>
               <H4>Services</H4>
               <Show when={loading()}>
@@ -227,10 +233,10 @@ export function ProviderBookingPage() {
                 <p class="text-muted-foreground text-sm">No appointments scheduled</p>
               </Show>
             </AppointmentsCard>
-          </div>
-
-          {/* Right Column - Booking Flow */}
-          <div class="space-y-6">
+            </div>
+          }
+          right={
+            <div class="space-y-6">
             <Show when={bookingStep() === 'services'}>
               <Card>
                 <H4>Select a Service</H4>
@@ -289,8 +295,9 @@ export function ProviderBookingPage() {
                 onBack={handleBackToAvailability}
               />
             </Show>
-          </div>
-        </Split>
+            </div>
+          }
+        />
       </Content>
     </PageFrame>
   );

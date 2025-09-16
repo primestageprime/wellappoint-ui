@@ -8,11 +8,15 @@ import { DesignSystemPage } from './pages/DesignSystemPage';
 
 function LoginWrapper() {
   const location = useLocation();
+  console.log('🔍 LoginWrapper - pathname:', location.pathname);
   return <LoginPage intendedUrl={location.pathname} />;
 }
 
 function App() {
   const auth = useAuth();
+  
+  console.log('🔍 App - isAuthenticated:', auth.isAuthenticated());
+  console.log('🔍 App - loading:', auth.loading());
 
   return (
     <Router>

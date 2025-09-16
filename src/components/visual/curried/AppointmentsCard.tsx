@@ -1,4 +1,4 @@
-import { JSX, For } from 'solid-js';
+import { JSX, For, Show } from 'solid-js';
 import { IconWithText } from '../base/IconWithText';
 import { Ratio } from '../base/Ratio';
 import { AppointmentItem } from '../base/AppointmentItem';
@@ -22,6 +22,7 @@ interface AppointmentsCardProps {
 
 export function AppointmentsCard(props: AppointmentsCardProps) {
   return (
+    <Show when={props.appointments && props.appointments.length > 0}>
     <Card class={props.class}>
       <div class="space-y-3">
         <div class="flex items-center justify-between">
@@ -46,5 +47,6 @@ export function AppointmentsCard(props: AppointmentsCardProps) {
         </div>
       </div>
     </Card>
+    </Show>
   );
 }

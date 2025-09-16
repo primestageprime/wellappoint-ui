@@ -14,6 +14,7 @@ export function LoginPage(props: LoginPageProps) {
     if (props.intendedUrl) {
       sessionStorage.setItem('intendedUrl', props.intendedUrl);
       console.log('🔗 Stored intended URL:', props.intendedUrl);
+      console.log('🔍 Should show FOO?', props.intendedUrl !== '/' && props.intendedUrl !== '/booking' && props.intendedUrl !== '/design-system');
     }
   });
   
@@ -38,6 +39,15 @@ export function LoginPage(props: LoginPageProps) {
             <div class="bg-blue-50 border border-blue-200 rounded-md p-3">
               <p class="text-xs text-blue-700">
                 <strong>🔗 You'll be redirected to:</strong> {props.intendedUrl}
+              </p>
+            </div>
+          )}
+          
+          {/* Show FOO when there's a username */}
+          {props.intendedUrl && props.intendedUrl.startsWith('/') && props.intendedUrl.length > 1 && (
+            <div class="bg-green-50 border border-green-200 rounded-md p-3">
+              <p class="text-sm text-green-700 font-bold">
+                FOO - Username detected: {props.intendedUrl}
               </p>
             </div>
           )}

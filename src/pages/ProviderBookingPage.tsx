@@ -1,21 +1,19 @@
 import { Show } from 'solid-js';
 import { useAuth } from '../auth/AuthProvider';
 import { useParams } from '@solidjs/router';
-import { AvailabilityList } from '../components/AvailabilityList';
 import { ConfirmationPanel } from '../components/ConfirmationPanel';
 import { 
   AppointmentsCard, 
   ServicesCard, 
   LogoutButton, 
-  H4, 
   CenteredContent,
   PageFrame,
   HeaderCard,
   Content,
-  Card,
   Split,
   Avatar,
-  DurationCard
+  DurationCard,
+  AvailabilityCard
 } from '../components/visual';
 import { type UserAppointment } from '../services/appointmentService';
 import { type UIService } from '../types/service';
@@ -83,26 +81,14 @@ export function ProviderBookingPage() {
               onBack={booking.handleBackToServices}
             />
 
-            <Show when={booking.bookingStep() === 'availability'}>
-              <Card>
-                <H4>Select Time Slot</H4>
-                <p class="text-muted-foreground text-sm mb-4">
-                  Choose an available time slot for your appointment.
-                </p>
-                <AvailabilityList 
-                  service={booking.selectedService()!}
-                  duration={booking.selectedDuration()!}
-                  onSlotSelect={booking.handleSlotSelect}
-                  provider={username()}
-                />
-                <button 
-                  onClick={booking.handleBackToDurations}
-                  class="mt-4 text-sm text-muted-foreground hover:text-foreground"
-                >
-                  ← Back to Duration
-                </button>
-              </Card>
-            </Show>
+            <AvailabilityCard 
+              bookingStep={booking.bookingStep}
+              selectedService={booking.selectedService}
+              selectedDuration={booking.selectedDuration}
+              provider={username}
+              onSlotSelect={booking.handleSlotSelect}
+              onBack={booking.handleBackToDurations}
+            />
 
             <Show when={booking.bookingStep() === 'confirmation'}>
               <ConfirmationPanel 

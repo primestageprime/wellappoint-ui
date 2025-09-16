@@ -231,6 +231,16 @@ export interface DurationCardProps {
   class?: string;
 }
 
+export interface AvailabilityCardProps {
+  bookingStep: () => 'services' | 'durations' | 'availability' | 'confirmation';
+  selectedService: () => string | null;
+  selectedDuration: () => number | null;
+  provider: () => string | undefined;
+  onSlotSelect: (slot: import('./global').AvailableSlot) => void;
+  onBack: () => void;
+  class?: string;
+}
+
 export interface AppointmentsCardProps {
   appointments: import('./global').Appointment[];
   appointmentRequestCap?: number;

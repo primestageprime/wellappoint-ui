@@ -163,14 +163,16 @@ export function ProviderBookingPage() {
         <Split 
           left={
             <CenteredContent>
-              <Avatar />
-              <div>
-                <H3>{providerDetails()?.name || 'Loading...'}</H3>
-                <p class="text-muted-foreground">@{username()}</p>
-              </div>
+              <Show when={username()}>
+              <Avatar name={username()!} />
+              </Show>
             </CenteredContent>
           }
-          right={<LogoutButton onLogout={() => auth.logout()} />}
+          right={
+            <Show when={username()}>
+              <LogoutButton onLogout={() => auth.logout()} />
+            </Show>
+          }
         />
       </HeaderCard>
 

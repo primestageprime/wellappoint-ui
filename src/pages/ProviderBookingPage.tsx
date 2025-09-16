@@ -41,6 +41,8 @@ export function ProviderBookingPage() {
   const [selectedDuration, setSelectedDuration] = createSignal<number | null>(null);
   const [selectedSlot, setSelectedSlot] = createSignal<any | null>(null);
   const [bookingStep, setBookingStep] = createSignal<'services' | 'durations' | 'availability' | 'confirmation'>('services');
+  const [isSubmitting, setIsSubmitting] = createSignal(false);
+  const [bookingError, setBookingError] = createSignal<string | null>(null);
 
   // Fetch provider details
   const [providerDetails] = createResource(() => getProviderDetails());
@@ -235,8 +237,9 @@ export function ProviderBookingPage() {
             <Show when={bookingStep() === 'confirmation'}>
               <ConfirmationPanel 
                 service={selectedServiceData()!}
-                duration={selectedDuration()!}
-                slot={selectedSlot()}
+                selectedSlot={selectedSlot()}
+                isSubmitting={isSubmitting()}
+                error={bookingError()}
                 onConfirm={handleBookingComplete}
                 onBack={handleBackToAvailability}
               />

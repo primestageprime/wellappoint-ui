@@ -38,7 +38,8 @@ export interface BookingFormProps {
 
 export interface ConfirmationPanelProps {
   service: BookingService;
-  selectedSlot: AvailableSlot;
+  duration: number;
+  slot: AvailableSlot;
   isSubmitting: boolean;
   error: string | null;
   onBack: () => void;

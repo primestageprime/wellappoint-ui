@@ -3,4 +3,5 @@ export * from './curried';
 export { TimeItem } from './curried/TimeItem';
 export { DurationCard } from './curried/DurationCard';
 export { AvailabilityCard } from './curried/AvailabilityCard';
+export { ConfirmationCard } from './curried/ConfirmationCard';
 export * from './icons';

@@ -1,7 +1,6 @@
 import { Show } from 'solid-js';
 import { useAuth } from '../auth/AuthProvider';
 import { useParams } from '@solidjs/router';
-import { ConfirmationPanel } from '../components/ConfirmationPanel';
 import { 
   AppointmentsCard, 
   ServicesCard, 
@@ -13,7 +12,8 @@ import {
   Split,
   Avatar,
   DurationCard,
-  AvailabilityCard
+  AvailabilityCard,
+  ConfirmationCard
 } from '../components/visual';
 import { type UserAppointment } from '../services/appointmentService';
 import { type UIService } from '../types/service';
@@ -90,16 +90,15 @@ export function ProviderBookingPage() {
               onBack={booking.handleBackToDurations}
             />
 
-            <Show when={booking.bookingStep() === 'confirmation'}>
-              <ConfirmationPanel 
-                service={booking.selectedServiceData(services.services)!}
-                selectedSlot={booking.selectedSlot()}
-                isSubmitting={booking.isSubmitting()}
-                error={booking.bookingError()}
-                onConfirm={handleBookingComplete}
-                onBack={booking.handleBackToAvailability}
-              />
-            </Show>
+            <ConfirmationCard 
+              bookingStep={booking.bookingStep}
+              selectedServiceData={() => booking.selectedServiceData(services.services)}
+              selectedSlot={booking.selectedSlot}
+              isSubmitting={booking.isSubmitting}
+              bookingError={booking.bookingError}
+              onConfirm={handleBookingComplete}
+              onBack={booking.handleBackToAvailability}
+            />
             </div>
           }
         />

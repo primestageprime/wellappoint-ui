@@ -1,8 +1,2 @@
-export interface Provider {
-  name: string;
-  email: string;
-  title: string;
-  phone: string;
-  bio: string;
-  specialties: string[];
-}
+// Re-export provider types from global types
+export type { Provider } from './global';

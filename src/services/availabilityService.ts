@@ -1,16 +1,7 @@
-export interface AvailableSlot {
-  startTime: string;
-  endTime: string;
-  durationMinutes: number;
-  location: string;
-  isOptimal: boolean;
-}
+import type { AvailableSlot, AvailabilityResponse } from '../types/global';
 
-export interface AvailabilityResponse {
-  success: boolean;
-  data?: AvailableSlot[];
-  error?: string;
-}
+// Re-export types from global
+export type { AvailableSlot, AvailabilityResponse };
 
 export async function getAvailableSlots(
   service: string,

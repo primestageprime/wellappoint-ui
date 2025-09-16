@@ -1,27 +1,8 @@
 import { formatTime, formatDateTime } from '../utils/dateUtils';
+import type { UserAppointment, UserAppointmentsResponse } from '../types/global';
 
-export interface UserAppointment {
-  id: string;
-  service: string;
-  duration: string;
-  date: string;
-  time: string;
-  startTime: string;
-  endTime: string;
-  description: string;
-  attendees: readonly string[];
-}
-
-export interface UserAppointmentsResponse {
-  success: boolean;
-  appointments: UserAppointment[];
-  count: number;
-  appointmentRequestCap: number;
-  dateRange: {
-    start: string;
-    end: string;
-  };
-}
+// Re-export types from global
+export type { UserAppointment, UserAppointmentsResponse };
 
 export async function getUserAppointments(userEmail: string, provider?: string): Promise<UserAppointmentsResponse> {
   try {

@@ -30,10 +30,7 @@ interface AvailabilityResponse {
 }
 
 import { type BookingService } from '../types/service';
-
-interface BookingFormProps {
-  services: BookingService[];
-}
+import { type BookingFormProps } from '../types/components';
 
 export function BookingForm(props: BookingFormProps) {
   const auth = useAuth();

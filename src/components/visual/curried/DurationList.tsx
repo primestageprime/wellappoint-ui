@@ -2,13 +2,7 @@ import { For } from 'solid-js';
 import { DurationItem } from './DurationItem';
 import { Card } from './Card';
 import { H3 } from '../base/H3';
-import { type UIDuration } from '../../../types/service';
-
-interface DurationListProps {
-  durations: UIDuration[];
-  title?: string;
-  class?: string;
-}
+import { type DurationListProps } from '../../../types/visual';
 
 export function DurationList(props: DurationListProps) {
   return (

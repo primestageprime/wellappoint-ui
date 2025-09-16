@@ -1,11 +1,7 @@
 import { ServicesCard, H3, H4, CenteredContent } from './visual';
 import { Heart, Craniosacral, FootReflexology } from './visual/icons';
 import { type BookingService } from '../types/service';
-
-interface ServicesListProps {
-  services: BookingService[];
-  onServiceSelect: (serviceName: string) => void;
-}
+import { type ServicesListProps } from '../types/components';
 
 const serviceData = {
   'Massage': {

@@ -1,13 +1,7 @@
 import { DurationList, H3, H4, CenteredContent } from './visual';
 import { Heart, Craniosacral, FootReflexology } from './visual/icons';
-import { type BookingService, type UIDuration } from '../types/service';
-
-interface DurationsListProps {
-  services: BookingService[];
-  selectedService: string;
-  onDurationSelect: (duration: number) => void;
-  onBack: () => void;
-}
+import { type UIDuration } from '../types/service';
+import { type DurationsListProps } from '../types/components';
 
 const serviceData = {
   'Massage': {

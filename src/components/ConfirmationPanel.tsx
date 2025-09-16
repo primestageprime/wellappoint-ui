@@ -16,21 +16,7 @@ import {
 import { Calendar, Globe, Currency } from './visual/icons';
 import { Clock } from 'lucide-solid';
 import { type BookingService } from '../types/service';
-
-interface AvailableSlot {
-  startTime: string;
-  endTime: string;
-  location: string;
-}
-
-interface ConfirmationPanelProps {
-  service: BookingService;
-  selectedSlot: AvailableSlot;
-  isSubmitting: boolean;
-  error: string | null;
-  onBack: () => void;
-  onConfirm: () => void;
-}
+import { type ConfirmationPanelProps } from '../types/components';
 
 const serviceIcons = {
   'Massage': PrimaryHeart,

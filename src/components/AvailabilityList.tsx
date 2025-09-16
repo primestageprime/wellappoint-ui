@@ -3,13 +3,7 @@ import { useAuth } from '../auth/AuthProvider';
 import { getAvailableSlots, type AvailableSlot } from '../services/availabilityService';
 import { TimeItem, H3, H4, CenteredContent } from './visual';
 import { formatDate } from '../utils/dateUtils';
-
-interface AvailabilityListProps {
-  service: string;
-  duration: number;
-  onSlotSelect: (slot: AvailableSlot) => void;
-  provider?: string;
-}
+import { type AvailabilityListProps } from '../types/components';
 
 export function AvailabilityList(props: AvailabilityListProps) {
   const auth = useAuth();

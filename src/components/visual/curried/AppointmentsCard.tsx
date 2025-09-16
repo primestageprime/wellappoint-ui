@@ -1,24 +1,11 @@
-import { JSX, For, Show } from 'solid-js';
+import { For, Show } from 'solid-js';
 import { IconWithText } from '../base/IconWithText';
 import { Ratio } from '../base/Ratio';
 import { AppointmentItem } from '../base/AppointmentItem';
 import { H3 } from '../base/H3';
 import { Card } from './Card';
 import { Calendar } from 'lucide-solid';
-
-interface Appointment {
-  service: string;
-  duration: string;
-  date: string;
-  time: string;
-  icon?: JSX.Element;
-}
-
-interface AppointmentsCardProps {
-  appointments: Appointment[];
-  appointmentRequestCap?: number;
-  class?: string;
-}
+import { type AppointmentsCardProps } from '../../../types/visual';
 
 export function AppointmentsCard(props: AppointmentsCardProps) {
   return (

@@ -2,13 +2,7 @@ import { For, Show } from 'solid-js';
 import { ServiceItem } from './ServiceItem';
 import { Card } from './Card';
 import { H3 } from '../base/H3';
-import { type UIService } from '../../../types/service';
-
-interface ServicesCardProps {
-  services: UIService[];
-  title?: string;
-  class?: string;
-}
+import { type ServicesCardProps } from '../../../types/visual';
 
 export function ServicesCard(props: ServicesCardProps) {
   return (

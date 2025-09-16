@@ -8,6 +8,8 @@ import {
 } from "solid-js";
 import { Auth0Client } from "@auth0/auth0-spa-js";
 import { setAuth0Client } from "./authUtils";
+import { type UserProfile, type AuthContextType } from '../types/global';
+import { type AuthProviderProps } from '../types/components';
 
 declare global {
   interface Window {
@@ -19,35 +21,10 @@ declare global {
   }
 }
 
-export interface UserProfile {
-  sub: string;
-  email: string;
-  email_verified: boolean;
-  name: string;
-  given_name?: string;
-  family_name?: string;
-  nickname?: string;
-  picture?: string;
-  phone_number?: string;
-  phone_number_verified?: boolean;
-  updated_at: string;
-}
-
-type AuthContextType = {
-  isAuthenticated: () => boolean;
-  user: () => UserProfile | null;
-  login: () => Promise<void>;
-  logout: () => void;
-  loading: () => boolean;
-  error: () => string | null;
-  getAccessToken: () => Promise<string>;
-};
+// Re-export UserProfile from global types
+export type { UserProfile };
 
 const AuthContext = createContext<AuthContextType>();
-
-interface AuthProviderProps {
-  children: JSX.Element;
-}
 
 // Utility to fetch runtime env
 function getRuntimeEnv() {

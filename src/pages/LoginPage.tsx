@@ -1,10 +1,7 @@
 import { WellAppointLogo } from '../components/visual/icons';
 import { useAuth } from '../auth/AuthProvider';
 import { createEffect } from 'solid-js';
-
-interface LoginPageProps {
-  intendedUrl?: string;
-}
+import { type LoginPageProps } from '../types/components';
 
 export function LoginPage(props: LoginPageProps) {
   const auth = useAuth();

@@ -49,9 +49,7 @@ export function ProviderBookingPage() {
         <Split 
           left={
             <CenteredContent>
-              <Show when={username()}>
-              <Avatar name={username()!} />
-              </Show>
+              <Avatar username={username} />
             </CenteredContent>
           }
           right={

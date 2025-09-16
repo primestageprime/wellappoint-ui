@@ -194,7 +194,7 @@ export interface ServiceSummaryCardProps {
 }
 
 export interface AvatarProps {
-  name: string;
+  username: () => string;
   class?: string;
 }
 

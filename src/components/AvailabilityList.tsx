@@ -2,7 +2,7 @@ import { createSignal, createEffect, createResource, For, Show } from 'solid-js'
 import { useAuth } from '../auth/AuthProvider';
 import { getAvailableSlots, type AvailableSlot } from '../services/availabilityService';
 import { TimeItem, H3, H4, CenteredContent } from './visual';
-import { formatDate } from '../utils/dateUtils';
+import { formatDate, formatTime } from '../utils/dateUtils';
 import { type AvailabilityListProps } from '../types/components';
 
 export function AvailabilityList(props: AvailabilityListProps) {
@@ -87,20 +87,13 @@ export function AvailabilityList(props: AvailabilityListProps) {
                   <H4 class="text-lg font-semibold text-primary">{formatDate(date)}</H4>
                   <div class="flex flex-wrap gap-2 w-full" style="max-width: 100%;">
                     <For each={slots}>
-                      {(slot) => {
-                        const time = new Date(slot.startTime).toLocaleTimeString('en-US', { 
-                          hour: 'numeric', 
-                          minute: '2-digit',
-                          hour12: true 
-                        });
-                        return (
-                          <TimeItem
-                            time={time}
-                            available={true}
-                            onClick={() => handleTimeSelect(slot)}
-                          />
-                        );
-                      }}
+                      {(slot) => (
+                        <TimeItem
+                          time={formatTime(slot.startTime)}
+                          available={true}
+                          onClick={() => handleTimeSelect(slot)}
+                        />
+                      )}
                     </For>
                   </div>
                 </div>

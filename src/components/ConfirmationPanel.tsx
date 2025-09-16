@@ -1,5 +1,4 @@
-import { createSignal, Show } from 'solid-js';
-import { useAuth } from '../auth/AuthProvider';
+import { Show } from 'solid-js';
 import { 
   Card, 
   H3, 
@@ -15,8 +14,8 @@ import {
 } from './visual';
 import { Calendar, Globe, Currency } from './visual/icons';
 import { Clock } from 'lucide-solid';
-import { type BookingService } from '../types/service';
 import { type ConfirmationPanelProps } from '../types/components';
+import { formatFullDate, formatTime } from '../utils/dateUtils';
 
 const serviceIcons = {
   'Massage': PrimaryHeart,
@@ -25,7 +24,6 @@ const serviceIcons = {
 };
 
 export function ConfirmationPanel(props: ConfirmationPanelProps) {
-  const auth = useAuth();
 
   // Temporary testing function - remove this in production
   const setupTestData = () => {
@@ -42,24 +40,6 @@ export function ConfirmationPanel(props: ConfirmationPanelProps) {
   // Call setup on component mount
   setupTestData();
 
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'long', 
-      month: 'long', 
-      day: 'numeric',
-      year: 'numeric'
-    });
-  };
-
-  const formatTime = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return date.toLocaleTimeString('en-US', { 
-      hour: 'numeric', 
-      minute: '2-digit',
-      hour12: true 
-    });
-  };
 
   const handleCreateAppointment = () => {
     props.onConfirm();
@@ -95,7 +75,7 @@ export function ConfirmationPanel(props: ConfirmationPanelProps) {
               details={[
                 {
                   label: 'Date & Time',
-                  value: `${formatDate(props.selectedSlot.startTime)} at ${formatTime(props.selectedSlot.startTime)}`,
+                  value: `${formatFullDate(props.selectedSlot.startTime)} at ${formatTime(props.selectedSlot.startTime)}`,
                   icon: <Calendar class="w-5 h-5 text-primary" />
                 },
                 {
@@ -109,7 +89,7 @@ export function ConfirmationPanel(props: ConfirmationPanelProps) {
                   icon: <Globe class="w-5 h-5 text-primary" />
                 },
                 {
-                  label: 'Sacred Exchange',
+                  label: 'Price',
                   value: `$${props.service.price}`,
                   icon: <Currency class="w-5 h-5 text-primary" />
                 }

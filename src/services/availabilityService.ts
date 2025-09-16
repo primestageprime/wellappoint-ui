@@ -1,4 +1,5 @@
 import type { AvailableSlot, AvailabilityResponse } from '../types/global';
+import { formatDateToISO } from '../utils/dateUtils';
 
 // Re-export types from global
 export type { AvailableSlot, AvailabilityResponse };
@@ -20,17 +21,13 @@ export async function getAvailableSlots(
     // Format dates as YYYY-MM-DD
     const today = new Date();
     const twoWeeksFromNow = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
-    
-    const formatDate = (date: Date) => {
-      return date.toISOString().split('T')[0]; // YYYY-MM-DD format
-    };
 
     const params = new URLSearchParams({
       service: String(service),
       duration: String(duration),
       email: String(email),
-      start: formatDate(today),
-      end: formatDate(twoWeeksFromNow)
+      start: formatDateToISO(today),
+      end: formatDateToISO(twoWeeksFromNow)
     });
     
     if (provider) {

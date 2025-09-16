@@ -18,6 +18,31 @@ export function formatDate(dateStr: string): string {
 }
 
 /**
+ * Format a datetime string to a full date format with year
+ * @param dateTimeStr - DateTime string in ISO format
+ * @param timeZone - Timezone to use (default: 'America/Los_Angeles')
+ * @returns Formatted full date string (e.g., "Thursday, August 28, 2025")
+ */
+export function formatFullDate(dateTimeStr: string, timeZone: string = 'America/Los_Angeles'): string {
+  return new Date(dateTimeStr).toLocaleDateString('en-US', {
+    timeZone,
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric'
+  });
+}
+
+/**
+ * Format a Date object to ISO date string (YYYY-MM-DD)
+ * @param date - Date object
+ * @returns ISO date string (e.g., "2025-08-28")
+ */
+export function formatDateToISO(date: Date): string {
+  return date.toISOString().split('T')[0];
+}
+
+/**
  * Format a datetime string to a readable time format
  * @param dateTimeStr - DateTime string in ISO format
  * @param timeZone - Timezone to use (default: 'America/Los_Angeles')

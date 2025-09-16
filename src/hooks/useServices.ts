@@ -2,7 +2,7 @@ import { createSignal, createEffect } from 'solid-js';
 import { type BookingService } from '../types/service';
 import { annotateOnClick } from '../utils/serviceUtils';
 
-export function useServices(username: () => string) {
+export function useServices(username: () => string, onServiceSelect?: (serviceName: string) => void) {
   const [services, setServices] = createSignal<BookingService[]>([]);
   const [loading, setLoading] = createSignal(true);
   const [error, setError] = createSignal<string | null>(null);
@@ -21,7 +21,13 @@ export function useServices(username: () => string) {
       
       const data = await response.json();
       console.log('🔍 Services data:', data);
-      setServices(data);
+      
+      // Annotate services with onClick handlers if callback is provided
+      const annotatedServices = onServiceSelect 
+        ? annotateOnClick(onServiceSelect, data)
+        : data;
+      
+      setServices(annotatedServices);
       console.log('🔍 Services set, setting loading to false');
     } catch (err) {
       console.error('Failed to fetch services:', err);

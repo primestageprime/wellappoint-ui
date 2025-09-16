@@ -31,8 +31,8 @@ export function ProviderBookingPage() {
   console.log('🔍 ProviderBookingPage - user:', auth.user());
   
   // Custom primitives
-  const services = useServices(username);
   const booking = useBookingFlow();
+  const services = useServices(username, booking.handleServiceSelect);
   const appointments = useAppointments(() => auth.user()?.email, username);
 
   // Enhanced booking complete handler

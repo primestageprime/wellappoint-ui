@@ -23,9 +23,15 @@ export interface UserAppointmentsResponse {
   };
 }
 
-export async function getUserAppointments(userEmail: string): Promise<UserAppointmentsResponse> {
+export async function getUserAppointments(userEmail: string, provider?: string): Promise<UserAppointmentsResponse> {
   try {
-    const response = await fetch(`/api/appointments/user?email=${encodeURIComponent(userEmail)}`);
+    const url = new URL('/api/appointments/user', window.location.origin);
+    url.searchParams.set('email', userEmail);
+    if (provider) {
+      url.searchParams.set('provider', provider);
+    }
+    
+    const response = await fetch(url.toString());
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

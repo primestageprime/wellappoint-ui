@@ -15,7 +15,8 @@ export interface AvailabilityResponse {
 export async function getAvailableSlots(
   service: string,
   duration: number,
-  email: string
+  email: string,
+  provider?: string
 ): Promise<AvailableSlot[]> {
   try {
     console.log('getAvailableSlots called with:', { service, duration, email });
@@ -40,6 +41,10 @@ export async function getAvailableSlots(
       start: formatDate(today),
       end: formatDate(twoWeeksFromNow)
     });
+    
+    if (provider) {
+      params.set('username', provider);
+    }
 
     console.log('Making request to:', `/availability?${params}`);
     const response = await fetch(`/availability?${params}`);

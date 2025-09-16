@@ -2,8 +2,20 @@ import { WellAppointLogo } from '../components/visual/icons';
 import { useAuth } from '../auth/AuthProvider';
 import { createEffect } from 'solid-js';
 
-export function LoginPage() {
+interface LoginPageProps {
+  intendedUrl?: string;
+}
+
+export function LoginPage(props: LoginPageProps) {
   const auth = useAuth();
+  
+  // Store the intended URL for post-login redirect
+  createEffect(() => {
+    if (props.intendedUrl) {
+      sessionStorage.setItem('intendedUrl', props.intendedUrl);
+      console.log('🔗 Stored intended URL:', props.intendedUrl);
+    }
+  });
   
   return (
     <div class="min-h-screen flex items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8">
@@ -20,14 +32,24 @@ export function LoginPage() {
               Keep coming back to the Well
             </p>
           </div>
+          
+          {/* Show intended URL for debugging */}
+          {props.intendedUrl && (
+            <div class="bg-blue-50 border border-blue-200 rounded-md p-3">
+              <p class="text-xs text-blue-700">
+                <strong>🔗 You'll be redirected to:</strong> {props.intendedUrl}
+              </p>
+            </div>
+          )}
+          
           <div class="mt-8 space-y-6">
             <div class="text-center">
               <p class="text-sm text-muted-foreground mb-4">
-                Sign in to continue
+                Sign in to continue to your booking
               </p>
               <button
                 onClick={auth.login}
-                class="group relative w-full flex justify-center py-2 px-4 border border-gray-300 text-sm font-medium rounded-md text-card-foreground bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring"
+                class="group relative w-full flex justify-center py-3 px-4 border border-gray-300 text-sm font-medium rounded-md text-card-foreground bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring transition-colors"
               >
                 <span class="absolute left-0 inset-y-0 flex items-center pl-3">
                   <svg class="h-5 w-5" viewBox="0 0 24 24">
@@ -40,6 +62,16 @@ export function LoginPage() {
                 Continue with Google
               </button>
             </div>
+            
+            {/* Show available providers */}
+            <div class="text-center">
+              <p class="text-xs text-muted-foreground mb-2">Available providers:</p>
+              <div class="flex justify-center space-x-4 text-xs">
+                <a href="/primestage" class="text-blue-600 hover:text-blue-800">PrimeStage Peter</a>
+                <a href="/emlprime" class="text-blue-600 hover:text-blue-800">Peter Stradinger</a>
+              </div>
+            </div>
+            
             <div class="text-center">
               <p class="text-xs text-muted-foreground">
                 By continuing, you agree to our Terms of Service and Privacy Policy

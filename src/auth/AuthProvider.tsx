@@ -74,7 +74,7 @@ export function AuthProvider(props: AuthProviderProps) {
         clientId: env.AUTH0_CLIENT_ID,
         authorizationParams: {
           redirect_uri: window.location.origin,
-          scope: "openid profile email phone offline_access", // Includes: name, given_name, family_name, nickname, picture, phone_number
+          scope: "openid profile email phone offline_access https://www.googleapis.com/auth/calendar.events", // Includes calendar events permission
           response_type: "code",
           ...(env.AUTH0_AUDIENCE && { audience: env.AUTH0_AUDIENCE }),
         },
@@ -90,13 +90,21 @@ export function AuthProvider(props: AuthProviderProps) {
       if (window.location.search.includes("code=")) {
         try {
           await auth0.handleRedirectCallback();
-          window.history.replaceState({}, document.title, "/");
-
+          
           // Set auth state after successful callback handling
           setIsAuthenticated(true);
           const userProfile = await auth0.getUser();
           if (userProfile) {
             setUser(userProfile as UserProfile);
+          }
+          
+          // Check for intended URL and redirect
+          const intendedUrl = sessionStorage.getItem('intendedUrl');
+          if (intendedUrl && intendedUrl !== '/') {
+            sessionStorage.removeItem('intendedUrl');
+            window.history.replaceState({}, document.title, intendedUrl);
+          } else {
+            window.history.replaceState({}, document.title, "/");
           }
         } catch (e) {
           setError(
@@ -157,7 +165,7 @@ export function AuthProvider(props: AuthProviderProps) {
         authorizationParams: {
           connection: "google-oauth2",
           redirect_uri: window.location.origin,
-          scope: "openid profile email phone offline_access",
+          scope: "openid profile email phone offline_access https://www.googleapis.com/auth/calendar.events",
           prompt: "login",
         },
       });

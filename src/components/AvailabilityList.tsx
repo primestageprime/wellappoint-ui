@@ -13,11 +13,10 @@ interface Service {
 }
 
 interface AvailabilityListProps {
-  services: Service[];
-  selectedService: string;
-  selectedDuration: number;
-  onBack: () => void;
-  onTimeSelect: (slot: AvailableSlot) => void;
+  service: string;
+  duration: number;
+  onSlotSelect: (slot: AvailableSlot) => void;
+  provider?: string;
 }
 
 export function AvailabilityList(props: AvailabilityListProps) {
@@ -26,16 +25,17 @@ export function AvailabilityList(props: AvailabilityListProps) {
   const [selectedTime, setSelectedTime] = createSignal<string | null>(null);
 
   console.log('AvailabilityList props:', {
-    selectedService: props.selectedService,
-    selectedDuration: props.selectedDuration,
+    service: props.service,
+    duration: props.duration,
+    provider: props.provider,
     userEmail: auth.user()?.email
   });
 
   // Get available slots
   const userEmail = () => auth.user()?.email || '';
   const [availability] = createResource(
-    () => ({ service: props.selectedService, duration: props.selectedDuration, email: userEmail() }),
-    ({ service, duration, email }) => getAvailableSlots(service, duration, email)
+    () => ({ service: props.service, duration: props.duration, email: userEmail(), provider: props.provider }),
+    ({ service, duration, email, provider }) => getAvailableSlots(service, duration, email, provider)
   );
 
   // Group slots by date

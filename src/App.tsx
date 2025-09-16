@@ -1,48 +1,33 @@
-import { Show, createSignal } from 'solid-js';
+import { Show } from 'solid-js';
+import { Router, Route, Navigate, useLocation } from '@solidjs/router';
 import { AuthProvider, useAuth } from './auth/AuthProvider';
 import { LoginPage } from './pages/LoginPage';
 import { BookingPage } from './pages/BookingPage';
+import { ProviderBookingPage } from './pages/ProviderBookingPage';
 import { DesignSystemPage } from './pages/DesignSystemPage';
+
+function LoginWrapper() {
+  const location = useLocation();
+  return <LoginPage intendedUrl={location.pathname} />;
+}
 
 function App() {
   const auth = useAuth();
-  const [currentPage, setCurrentPage] = createSignal<'services' | 'design-system'>('services');
 
   return (
-    <Show when={auth.isAuthenticated()} fallback={<LoginPage />}>
-      <div>
-        {/* Navigation */}
-        <nav class="bg-background border-b border-border/20 p-4">
-          <div class="max-w-7xl mx-auto flex gap-4">
-            <button
-              onClick={() => setCurrentPage('services')}
-              class={`px-3 py-2 rounded text-sm font-medium transition-colors ${
-                currentPage() === 'services'
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-primary hover:bg-primary/10'
-              }`}
-            >
-              Booking
-            </button>
-            <button
-              onClick={() => setCurrentPage('design-system')}
-              class={`px-3 py-2 rounded text-sm font-medium transition-colors ${
-                currentPage() === 'design-system'
-                  ? 'bg-primary text-primary-foreground'
-                  : 'text-primary hover:bg-primary/10'
-              }`}
-            >
-              Design System
-            </button>
-          </div>
-        </nav>
-
-        {/* Page Content */}
-        <Show when={currentPage() === 'services'} fallback={<DesignSystemPage />}>
-          <BookingPage />
-        </Show>
-      </div>
-    </Show>
+    <Router>
+      <Show when={auth.isAuthenticated()} fallback={<LoginWrapper />}>
+        {/* Default route - redirect to primestage */}
+        <Route path="/" component={() => <Navigate href="/primestage" />} />
+        
+        {/* Provider-specific booking pages */}
+        <Route path="/:username" component={ProviderBookingPage} />
+        
+        {/* Legacy routes for backward compatibility */}
+        <Route path="/booking" component={BookingPage} />
+        <Route path="/design-system" component={DesignSystemPage} />
+      </Show>
+    </Router>
   );
 }
 

@@ -222,6 +222,15 @@ export interface DurationListProps {
   class?: string;
 }
 
+export interface DurationCardProps {
+  bookingStep: () => 'services' | 'durations' | 'availability' | 'confirmation';
+  selectedService: () => string | null;
+  services: () => import('./global').BookingService[];
+  onDurationSelect: (duration: number) => void;
+  onBack: () => void;
+  class?: string;
+}
+
 export interface AppointmentsCardProps {
   appointments: import('./global').Appointment[];
   appointmentRequestCap?: number;

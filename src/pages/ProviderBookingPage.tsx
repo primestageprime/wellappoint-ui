@@ -1,7 +1,6 @@
 import { Show } from 'solid-js';
 import { useAuth } from '../auth/AuthProvider';
 import { useParams } from '@solidjs/router';
-import { DurationsList } from '../components/DurationsList';
 import { AvailabilityList } from '../components/AvailabilityList';
 import { ConfirmationPanel } from '../components/ConfirmationPanel';
 import { 
@@ -15,7 +14,8 @@ import {
   Content,
   Card,
   Split,
-  Avatar
+  Avatar,
+  DurationCard
 } from '../components/visual';
 import { type UserAppointment } from '../services/appointmentService';
 import { type UIService } from '../types/service';
@@ -75,29 +75,13 @@ export function ProviderBookingPage() {
           }
           right={
             <div class="space-y-6">
-            <Show when={booking.bookingStep() === 'services'}>
-              <Card>
-                <H4>Select a Service</H4>
-                <p class="text-muted-foreground text-sm mb-4">
-                  Choose from the available services to get started.
-                </p>
-              </Card>
-            </Show>
-
-            <Show when={booking.bookingStep() === 'durations'}>
-              <Card>
-                <H4>Select Duration</H4>
-                <p class="text-muted-foreground text-sm mb-4">
-                  Choose your preferred duration for {booking.selectedService()}.
-                </p>
-                <DurationsList 
-                  services={services.services()}
-                  selectedService={booking.selectedService()!}
-                  onDurationSelect={booking.handleDurationSelect}
-                  onBack={booking.handleBackToServices}
-                />
-              </Card>
-            </Show>
+            <DurationCard 
+              bookingStep={booking.bookingStep}
+              selectedService={booking.selectedService}
+              services={services.services}
+              onDurationSelect={booking.handleDurationSelect}
+              onBack={booking.handleBackToServices}
+            />
 
             <Show when={booking.bookingStep() === 'availability'}>
               <Card>

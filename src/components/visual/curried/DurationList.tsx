@@ -1,18 +1,11 @@
-import { JSX, For } from 'solid-js';
+import { For } from 'solid-js';
 import { DurationItem } from './DurationItem';
 import { Card } from './Card';
 import { H3 } from '../base/H3';
-
-interface Duration {
-  duration: string;
-  description: string;
-  price: string;
-  icon?: JSX.Element;
-  onClick?: () => void;
-}
+import { type UIDuration } from '../../../types/service';
 
 interface DurationListProps {
-  durations: Duration[];
+  durations: UIDuration[];
   title?: string;
   class?: string;
 }
@@ -27,9 +20,9 @@ export function DurationList(props: DurationListProps) {
           <For each={props.durations}>
             {(duration) => (
               <DurationItem
-                duration={duration.duration}
+                duration={`${duration.minutes} minutes`}
                 description={duration.description}
-                price={duration.price}
+                price={`$${duration.price}`}
                 icon={duration.icon}
                 onClick={duration.onClick}
               />

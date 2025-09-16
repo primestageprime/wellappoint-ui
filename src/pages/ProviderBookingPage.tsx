@@ -9,7 +9,6 @@ import {
   AppointmentsCard, 
   ServicesCard, 
   LogoutButton, 
-  H3, 
   H4, 
   CenteredContent,
   PageFrame,
@@ -23,7 +22,8 @@ import {
 } from '../components/visual';
 import { getProviderDetails } from '../services/providerService';
 import { getUserAppointments, type UserAppointment } from '../services/appointmentService';
-import { type BookingService } from '../types/service';
+import { type BookingService, type UIService } from '../types/service';
+import { annotateOnClick } from '../utils/serviceUtils';
 
 
 export function ProviderBookingPage() {
@@ -67,6 +67,7 @@ export function ProviderBookingPage() {
       }
       
       const data = await response.json();
+      const services = annotateOnClick(setSelectedService, data);
       console.log('🔍 Services data:', data);
       setServices(data);
       console.log('🔍 Services set, setting loading to false');
@@ -95,8 +96,10 @@ export function ProviderBookingPage() {
   });
 
   const handleServiceSelect = (serviceName: string) => {
+    console.log('🔍 handleServiceSelect called with:', serviceName);
     setSelectedService(serviceName);
     setBookingStep('durations');
+    console.log('🔍 Booking step set to durations, selected service:', serviceName);
   };
 
   const handleDurationSelect = (duration: number) => {
@@ -178,56 +181,8 @@ export function ProviderBookingPage() {
               Debug: loading={loading()}, error={error()}, services={services().length}
             </div>
             
-            <ServicesCard services={services()}>
-              <H4>Services</H4>
-              <Show when={loading()}>
-                <LoadingCard>Loading services...</LoadingCard>
-              </Show>
-              <Show when={error()}>
-                <ErrorCard>{error()}</ErrorCard>
-              </Show>
-              <Show when={!loading() && !error() && services().length > 0}>
-                <ServicesList 
-                  services={services()} 
-                  onServiceSelect={handleServiceSelect}
-                />
-              </Show>
-              <Show when={!loading() && !error() && services().length === 0}>
-                <ErrorCard>No services available</ErrorCard>
-              </Show>
-            </ServicesCard>
-
-            <AppointmentsCard>
-              <H4>Your Appointments</H4>
-              <Show when={appointments.loading}>
-                <LoadingCard>Loading appointments...</LoadingCard>
-              </Show>
-              <Show when={appointments.error}>
-                <ErrorCard>Failed to load appointments</ErrorCard>
-              </Show>
-              <Show when={appointments() && appointments()!.length > 0}>
-                <div class="space-y-2">
-                  {appointments()!.map(appointment => (
-                    <Card key={`${appointment.date}-${appointment.time}`}>
-                      <div class="flex justify-between items-center">
-                        <div>
-                          <div class="font-medium">{appointment.service}</div>
-                          <div class="text-sm text-muted-foreground">
-                            {appointment.date} at {appointment.time}
-                          </div>
-                        </div>
-                        <div class="text-sm text-muted-foreground">
-                          {appointment.duration} min
-                        </div>
-                      </div>
-                    </Card>
-                  ))}
-                </div>
-              </Show>
-              <Show when={appointments() && appointments()!.length === 0}>
-                <p class="text-muted-foreground text-sm">No appointments scheduled</p>
-              </Show>
-            </AppointmentsCard>
+            <ServicesCard services={services() as UIService[]} />
+            <AppointmentsCard appointments={appointments() as UserAppointment[]} />
             </div>
           }
           right={
@@ -248,15 +203,11 @@ export function ProviderBookingPage() {
                   Choose your preferred duration for {selectedService()}.
                 </p>
                 <DurationsList 
-                  durations={filteredDurations()} 
+                  services={services()}
+                  selectedService={selectedService()!}
                   onDurationSelect={handleDurationSelect}
+                  onBack={handleBackToServices}
                 />
-                <button 
-                  onClick={handleBackToServices}
-                  class="mt-4 text-sm text-muted-foreground hover:text-foreground"
-                >
-                  ← Back to Services
-                </button>
               </Card>
             </Show>
 

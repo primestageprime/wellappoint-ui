@@ -17,3 +17,12 @@ export interface UIService {
   icon?: JSX.Element;
   onClick?: () => void;
 }
+
+// Duration interface for UI components
+export interface UIDuration {
+  minutes: number;
+  description: string;
+  price: number;
+  icon?: JSX.Element;
+  onClick?: () => void;
+}

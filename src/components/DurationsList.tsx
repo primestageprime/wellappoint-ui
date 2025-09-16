@@ -1,6 +1,6 @@
 import { DurationList, H3, H4, CenteredContent } from './visual';
 import { Heart, Craniosacral, FootReflexology } from './visual/icons';
-import { type BookingService } from '../types/service';
+import { type BookingService, type UIDuration } from '../types/service';
 
 interface DurationsListProps {
   services: BookingService[];
@@ -25,7 +25,24 @@ const serviceData = {
 };
 
 export function DurationsList(props: DurationsListProps) {
-  const serviceDurations = props.services.filter(s => s.name === props.selectedService);
+  // Filter services for the selected service and build duration list
+  const serviceDurations = () => {
+    return props.services
+      .filter(service => service.name === props.selectedService)
+      .map(service => {
+        console.log('🔍 Mapping duration for service:', service.name, 'duration:', service.duration, 'price:', service.price);
+        return {
+          minutes: service.duration,
+          description: service.durationDescription || service.description || 'Professional wellness service',
+          price: service.price,
+          icon: serviceData[service.name as keyof typeof serviceData]?.icon,
+          onClick: () => {
+            console.log('🔍 Duration clicked:', service.duration, 'minutes for', service.name);
+            props.onDurationSelect(service.duration);
+          }
+        } as UIDuration;
+      });
+  };
 
   return (
     <div class="space-y-4">
@@ -45,13 +62,7 @@ export function DurationsList(props: DurationsListProps) {
       
       <DurationList 
         title="Available Durations"
-        durations={serviceDurations.map(service => ({
-          duration: `${service.duration} minutes`,
-          description: service.durationDescription || service.description || 'Professional wellness service',
-          price: `$${service.price}`,
-          icon: serviceData[service.name as keyof typeof serviceData]?.icon,
-          onClick: () => props.onDurationSelect(service.duration)
-        }))}
+        durations={serviceDurations()}
       />
     </div>
   );

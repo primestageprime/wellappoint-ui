@@ -24,6 +24,23 @@ const serviceIcons = {
 };
 
 export function ConfirmationPanel(props: ConfirmationPanelProps) {
+  console.log('🔍 ConfirmationPanel render - props.service:', props.service);
+  
+  // Safety check - if service is undefined, show error
+  if (!props.service) {
+    console.log('🔍 ConfirmationPanel - service is undefined, showing error');
+    return (
+      <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+        <p class="text-red-600">Error: Service data not found. Please go back and select a service again.</p>
+        <button 
+          onClick={props.onBack}
+          class="mt-2 text-sm text-red-600 hover:text-red-800"
+        >
+          ← Go Back
+        </button>
+      </div>
+    );
+  }
 
   // Temporary testing function - remove this in production
   const setupTestData = () => {
@@ -96,8 +113,8 @@ export function ConfirmationPanel(props: ConfirmationPanelProps) {
               ]}
             />
 
-            <Show when={props.service.durationDescription}>
-              <SessionDescription description={props.service.durationDescription || ''} />
+            <Show when={props.service?.durationDescription}>
+              <SessionDescription description={props.service?.durationDescription || ''} />
             </Show>
           </div>
 

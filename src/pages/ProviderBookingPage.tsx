@@ -44,9 +44,18 @@ export function ProviderBookingPage() {
   const appointments = useAppointments(() => auth.user()?.email, username);
 
   // Enhanced booking complete handler
-  const handleBookingComplete = () => {
-    booking.handleBookingComplete();
-    appointments.refetchAppointments();
+  const handleBookingComplete = async () => {
+    const userEmail = auth.user()?.email;
+    if (!userEmail) {
+      console.error('❌ No user email available for booking');
+      return;
+    }
+    
+    await booking.handleBookingComplete(userEmail);
+    // Only refetch appointments if booking was successful
+    if (!booking.bookingError()) {
+      appointments.refetchAppointments();
+    }
   };
 
   return (
@@ -100,7 +109,7 @@ export function ProviderBookingPage() {
 
             <ConfirmationCard 
               bookingStep={booking.bookingStep}
-              selectedServiceData={() => booking.selectedServiceData(services.services)}
+              selectedServiceData={() => booking.selectedServiceData(services.services() || [])}
               selectedSlot={booking.selectedSlot}
               isSubmitting={booking.isSubmitting}
               bookingError={booking.bookingError}

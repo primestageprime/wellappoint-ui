@@ -1,5 +1,6 @@
 import { createSignal } from 'solid-js';
 import { type BookingService } from '../types/service';
+import { createAppointment, createBookingRequest } from '../services/bookingService';
 
 export function useBookingFlow() {
   const [selectedService, setSelectedService] = createSignal<string | null>(null);
@@ -16,6 +17,7 @@ export function useBookingFlow() {
     console.log('🔍 Booking step set to durations, selected service:', serviceName);
   };
 
+
   const handleDurationSelect = (duration: number) => {
     setSelectedDuration(duration);
     setBookingStep('availability');
@@ -26,12 +28,43 @@ export function useBookingFlow() {
     setBookingStep('confirmation');
   };
 
-  const handleBookingComplete = () => {
-    // Reset the booking flow
-    setSelectedService(null);
-    setSelectedDuration(null);
-    setSelectedSlot(null);
-    setBookingStep('services');
+  const handleBookingComplete = async (userEmail: string) => {
+    const service = selectedService();
+    const duration = selectedDuration();
+    const slot = selectedSlot();
+
+    if (!service || !duration || !slot) {
+      setBookingError('Missing booking information. Please try again.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setBookingError(null);
+
+    try {
+      const bookingRequest = createBookingRequest(service, duration, slot, userEmail);
+      console.log('🔍 Creating appointment with request:', bookingRequest);
+      
+      const result = await createAppointment(bookingRequest);
+      
+      if (result.success) {
+        console.log('✅ Appointment created successfully:', result.appointmentId);
+        // Only reset state after successful booking
+        setSelectedService(null);
+        setSelectedDuration(null);
+        setSelectedSlot(null);
+        setBookingStep('services');
+      } else {
+        console.error('❌ Appointment creation failed:', result.error);
+        setBookingError(result.error || 'Failed to create appointment');
+      }
+    } catch (error) {
+      console.error('❌ Booking error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create appointment';
+      setBookingError(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleBackToServices = () => {
@@ -52,9 +85,16 @@ export function useBookingFlow() {
     setBookingStep('availability');
   };
 
-  const selectedServiceData = (services: () => BookingService[]) => {
+  const selectedServiceData = (services: BookingService[]) => {
     const serviceName = selectedService();
-    return services().find(s => s.name === serviceName);
+    
+    // Safety check for undefined services
+    if (!services || !Array.isArray(services)) {
+      return undefined;
+    }
+    
+    const found = services.find(s => s.name === serviceName);
+    return found;
   };
 
   return {

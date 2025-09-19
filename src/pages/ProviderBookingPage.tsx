@@ -25,7 +25,15 @@ import { useAppointments } from '../hooks/useAppointments';
 export function ProviderBookingPage() {
   const auth = useAuth();
   const params = useParams();
-  const username = () => params.username;
+  
+  // Use the user's nickname as the provider username, fallback to URL param
+  const username = () => {
+    const user = auth.user();
+    if (user?.nickname) {
+      return user.nickname;
+    }
+    return params.username;
+  };
   
   console.log('🔍 ProviderBookingPage - username:', username());
   console.log('🔍 ProviderBookingPage - user:', auth.user());

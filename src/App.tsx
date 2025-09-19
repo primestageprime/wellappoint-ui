@@ -20,11 +20,20 @@ function App() {
   console.log('🔍 App - isAuthenticated:', auth.isAuthenticated());
   console.log('🔍 App - loading:', auth.loading());
 
+  // Get the user's provider username for the default route
+  const getDefaultRoute = () => {
+    const user = auth.user();
+    if (user?.nickname) {
+      return `/${user.nickname}`;
+    }
+    return '/primestage'; // fallback
+  };
+
   return (
     <Router>
-      <Show when={auth.isAuthenticated()} fallback={<LoginWrapper />}>
-        {/* Default route - redirect to primestage */}
-        <Route path="/" component={() => <Navigate href="/primestage" />} />
+      <Show when={auth.isAuthenticated()}>
+        {/* Default route - redirect to user's provider page */}
+        <Route path="/" component={() => <Navigate href={getDefaultRoute()} />} />
         
         {/* Provider-specific booking pages */}
         <Route path="/:username" component={ProviderBookingPage} />
@@ -37,6 +46,9 @@ function App() {
         <Route path="/booking" component={BookingPage} />
         <Route path="/design-system" component={DesignSystemPage} />
       </Show>
+      
+      {/* Login route - accessible when not authenticated */}
+      <Route path="*" component={LoginWrapper} />
     </Router>
   );
 }

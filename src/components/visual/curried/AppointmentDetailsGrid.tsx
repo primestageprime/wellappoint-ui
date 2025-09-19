@@ -21,7 +21,7 @@ export function AppointmentDetailsGrid(props: AppointmentDetailsGridProps) {
         <VerticallySpacedContent>
           <IconWithText icon={detail.icon}>{detail.label}</IconWithText>
           <div class={`text-lg font-semibold ${
-            detail.label === 'Sacred Exchange' ? 'text-2xl font-bold text-primary' : 'text-foreground'
+            detail.label === 'Price' ? 'text-2xl font-bold text-primary' : 'text-foreground'
           }`}>
             {detail.value}
           </div>

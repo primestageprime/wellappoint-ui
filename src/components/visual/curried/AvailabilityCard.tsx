@@ -16,6 +16,7 @@ export function AvailabilityCard(props: AvailabilityCardProps) {
           service={props.selectedService()!}
           duration={props.selectedDuration()!}
           onSlotSelect={props.onSlotSelect}
+          onBack={props.onBack}
           provider={props.provider()}
         />
         <button 

@@ -29,6 +29,7 @@ export interface AvailabilityListProps {
   service: string;
   duration: number;
   onSlotSelect: (slot: AvailableSlot) => void;
+  onBack: () => void;
   provider?: string;
 }
 

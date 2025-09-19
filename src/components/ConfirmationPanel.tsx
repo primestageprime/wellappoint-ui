@@ -110,7 +110,7 @@ export function ConfirmationPanel(props: ConfirmationPanelProps) {
           <ActionButtons
             buttons={[
               {
-                text: props.isSubmitting ? 'Creating Appointment...' : 'Confirm Your Sacred Session',
+                text: props.isSubmitting ? 'Creating Appointment...' : 'Confirm Your Session',
                 onClick: handleCreateAppointment,
                 variant: 'primary',
                 disabled: props.isSubmitting

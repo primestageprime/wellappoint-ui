@@ -346,7 +346,7 @@ const provider = {
               icon: <Globe class="w-5 h-5 text-primary" />
             },
             {
-              label: 'Sacred Exchange',
+              label: 'Price',
               value: '$100',
               icon: <Currency class="w-5 h-5 text-primary" />
             }
@@ -396,7 +396,7 @@ const provider = {
               variant: 'secondary'
             },
             {
-              text: 'Confirm Your Sacred Session',
+              text: 'Confirm Your Session',
               onClick: () => console.log('Confirm clicked'),
               variant: 'primary'
             }

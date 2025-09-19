@@ -41,7 +41,7 @@ export function AvailabilityList(props: AvailabilityListProps) {
   };
 
   const handleTimeSelect = (slot: AvailableSlot) => {
-    props.onTimeSelect(slot);
+    props.onSlotSelect(slot);
   };
 
   const handleBackToDurations = () => {

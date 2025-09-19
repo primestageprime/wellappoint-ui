@@ -45,7 +45,7 @@ export async function getAvailableSlots(
     
     const data = await response.json();
     console.log('Availability response:', data);
-    return data as AvailableSlot[];
+    return data.data as AvailableSlot[];
   } catch (error) {
     console.error('Failed to fetch available slots:', error);
     throw error;

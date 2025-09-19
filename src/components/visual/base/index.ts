@@ -16,3 +16,5 @@ export { SectionHeading } from './SectionHeading';
 export { SmallText } from './SmallText';
 export { Split } from './Split';
 export { VerticallySpacedContent } from './VerticallySpacedContent';
+export { Input } from './Input';
+export { Label } from './Label';

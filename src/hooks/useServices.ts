@@ -22,10 +22,13 @@ export function useServices(username: () => string, onServiceSelect?: (serviceNa
       const data = await response.json();
       console.log('🔍 Services data:', data);
       
+      // Extract services array from response
+      const servicesArray = data.data || data;
+      
       // Annotate services with onClick handlers if callback is provided
       const annotatedServices = onServiceSelect 
-        ? annotateOnClick(onServiceSelect, data)
-        : data;
+        ? annotateOnClick(onServiceSelect, servicesArray)
+        : servicesArray;
       
       setServices(annotatedServices);
       console.log('🔍 Services set, setting loading to false');

@@ -28,7 +28,7 @@ export function useBookingFlow() {
     setBookingStep('confirmation');
   };
 
-  const handleBookingComplete = async (userEmail: string) => {
+  const handleBookingComplete = async (userEmail: string, username?: string) => {
     const service = selectedService();
     const duration = selectedDuration();
     const slot = selectedSlot();
@@ -42,7 +42,7 @@ export function useBookingFlow() {
     setBookingError(null);
 
     try {
-      const bookingRequest = createBookingRequest(service, duration, slot, userEmail);
+      const bookingRequest = createBookingRequest(service, duration, slot, userEmail, username);
       console.log('🔍 Creating appointment with request:', bookingRequest);
       
       const result = await createAppointment(bookingRequest);

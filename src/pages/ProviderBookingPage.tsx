@@ -51,7 +51,7 @@ export function ProviderBookingPage() {
       return;
     }
     
-    await booking.handleBookingComplete(userEmail);
+    await booking.handleBookingComplete(userEmail, username());
     // Only refetch appointments if booking was successful
     if (!booking.bookingError()) {
       appointments.refetchAppointments();

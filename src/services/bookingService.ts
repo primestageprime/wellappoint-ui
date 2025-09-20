@@ -6,6 +6,7 @@ export interface BookingRequest {
   location: string;
   email: string;
   start: string; // ISO string
+  username?: string;
   userProfile?: {
     name?: string;
     phone?: string;
@@ -50,14 +51,20 @@ export function createBookingRequest(
   duration: number,
   slot: AvailableSlot,
   userEmail: string,
+  username?: string,
   location: string = 'OFFICE'
 ): BookingRequest {
+  // Convert ISO string to "YYYY-MM-DD HH:mm" format expected by backend
+  const startDate = new Date(slot.startTime);
+  const formattedStart = startDate.toISOString().slice(0, 16).replace('T', ' ');
+  
   return {
     service,
     duration,
     location,
     email: userEmail,
-    start: slot.startTime,
+    start: formattedStart,
+    username,
     userProfile: {
       name: userEmail.split('@')[0], // Use email prefix as name for now
     },

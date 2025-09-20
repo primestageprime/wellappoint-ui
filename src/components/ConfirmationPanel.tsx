@@ -42,6 +42,31 @@ export function ConfirmationPanel(props: ConfirmationPanelProps) {
     );
   }
 
+  // Show success message if booking was successful
+  // We'll check for success by looking at the bookingSuccess prop or by checking if there's no error and not submitting
+  const showSuccess = props.error === null && !props.isSubmitting && props.service && props.selectedSlot;
+  
+  if (showSuccess) {
+    return (
+      <div class="p-6 bg-green-50 border border-green-200 rounded-lg text-center">
+        <div class="text-green-600 text-lg font-semibold mb-2">✅ Appointment Created Successfully!</div>
+        <p class="text-green-700 mb-4">Your appointment has been confirmed and added to your calendar.</p>
+        <div class="text-sm text-green-600 mb-4">
+          <p><strong>Service:</strong> {props.service.name}</p>
+          <p><strong>Date & Time:</strong> {formatFullDate(props.selectedSlot.startTime)} at {formatTime(props.selectedSlot.startTime)}</p>
+          <p><strong>Duration:</strong> {props.service.duration} minutes</p>
+          <p><strong>Price:</strong> ${props.service.price}</p>
+        </div>
+        <button 
+          onClick={props.onBack}
+          class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+        >
+          Book Another Appointment
+        </button>
+      </div>
+    );
+  }
+
   // Temporary testing function - remove this in production
   const setupTestData = () => {
     console.log('Setting up test data for confirmation panel');

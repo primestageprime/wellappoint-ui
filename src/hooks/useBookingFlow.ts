@@ -6,9 +6,10 @@ export function useBookingFlow() {
   const [selectedService, setSelectedService] = createSignal<string | null>(null);
   const [selectedDuration, setSelectedDuration] = createSignal<number | null>(null);
   const [selectedSlot, setSelectedSlot] = createSignal<any | null>(null);
-  const [bookingStep, setBookingStep] = createSignal<'services' | 'durations' | 'availability' | 'confirmation'>('services');
+  const [bookingStep, setBookingStep] = createSignal<'services' | 'durations' | 'availability' | 'confirmation' | 'success'>('services');
   const [isSubmitting, setIsSubmitting] = createSignal(false);
   const [bookingError, setBookingError] = createSignal<string | null>(null);
+  const [bookingSuccess, setBookingSuccess] = createSignal<string | null>(null);
 
   const handleServiceSelect = (serviceName: string) => {
     console.log('🔍 handleServiceSelect called with:', serviceName);
@@ -49,11 +50,9 @@ export function useBookingFlow() {
       
       if (result.success) {
         console.log('✅ Appointment created successfully:', result.appointmentId);
-        // Only reset state after successful booking
-        setSelectedService(null);
-        setSelectedDuration(null);
-        setSelectedSlot(null);
-        setBookingStep('services');
+        // Don't clear state immediately - let user see success and manually go back
+        setBookingSuccess('Appointment created successfully!');
+        // Keep the confirmation step active so user can see the success
       } else {
         console.error('❌ Appointment creation failed:', result.error);
         setBookingError(result.error || 'Failed to create appointment');
@@ -105,6 +104,7 @@ export function useBookingFlow() {
     bookingStep,
     isSubmitting,
     bookingError,
+    bookingSuccess,
     
     // Actions
     handleServiceSelect,

@@ -55,8 +55,14 @@ export function createBookingRequest(
   location: string = 'OFFICE'
 ): BookingRequest {
   // Convert ISO string to "YYYY-MM-DD HH:mm" format expected by backend
+  // Use local timezone instead of UTC to avoid timezone conversion issues
   const startDate = new Date(slot.startTime);
-  const formattedStart = startDate.toISOString().slice(0, 16).replace('T', ' ');
+  const year = startDate.getFullYear();
+  const month = String(startDate.getMonth() + 1).padStart(2, '0');
+  const day = String(startDate.getDate()).padStart(2, '0');
+  const hours = String(startDate.getHours()).padStart(2, '0');
+  const minutes = String(startDate.getMinutes()).padStart(2, '0');
+  const formattedStart = `${year}-${month}-${day} ${hours}:${minutes}`;
   
   return {
     service,

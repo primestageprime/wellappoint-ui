@@ -42,6 +42,7 @@ export interface ConfirmationPanelProps {
   selectedSlot: AvailableSlot;
   isSubmitting: boolean;
   error: string | null;
+  success: string | null;
   onBack: () => void;
   onConfirm: () => void;
 }

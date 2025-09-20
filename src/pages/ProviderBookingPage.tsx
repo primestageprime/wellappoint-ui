@@ -113,6 +113,7 @@ export function ProviderBookingPage() {
               selectedSlot={booking.selectedSlot}
               isSubmitting={booking.isSubmitting}
               bookingError={booking.bookingError}
+              bookingSuccess={booking.bookingSuccess}
               onConfirm={handleBookingComplete}
               onBack={booking.handleBackToAvailability}
             />

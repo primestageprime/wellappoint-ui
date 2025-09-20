@@ -43,8 +43,7 @@ export function ConfirmationPanel(props: ConfirmationPanelProps) {
   }
 
   // Show success message if booking was successful
-  // We'll check for success by looking at the bookingSuccess prop or by checking if there's no error and not submitting
-  const showSuccess = props.error === null && !props.isSubmitting && props.service && props.selectedSlot;
+  const showSuccess = props.success && props.service && props.selectedSlot;
   
   if (showSuccess) {
     return (

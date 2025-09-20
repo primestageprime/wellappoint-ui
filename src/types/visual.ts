@@ -223,7 +223,7 @@ export interface DurationListProps {
 }
 
 export interface DurationCardProps {
-  bookingStep: () => 'services' | 'durations' | 'availability' | 'confirmation';
+  bookingStep: () => 'services' | 'durations' | 'availability' | 'confirmation' | 'success';
   selectedService: () => string | null;
   services: () => import('./global').BookingService[];
   onDurationSelect: (duration: number) => void;
@@ -232,7 +232,7 @@ export interface DurationCardProps {
 }
 
 export interface AvailabilityCardProps {
-  bookingStep: () => 'services' | 'durations' | 'availability' | 'confirmation';
+  bookingStep: () => 'services' | 'durations' | 'availability' | 'confirmation' | 'success';
   selectedService: () => string | null;
   selectedDuration: () => number | null;
   provider: () => string | undefined;
@@ -242,11 +242,12 @@ export interface AvailabilityCardProps {
 }
 
 export interface ConfirmationCardProps {
-  bookingStep: () => 'services' | 'durations' | 'availability' | 'confirmation';
+  bookingStep: () => 'services' | 'durations' | 'availability' | 'confirmation' | 'success';
   selectedServiceData: () => import('./global').BookingService | undefined;
   selectedSlot: () => import('./global').AvailableSlot | null;
   isSubmitting: () => boolean;
   bookingError: () => string | null;
+  bookingSuccess: () => string | null;
   onConfirm: () => void;
   onBack: () => void;
   class?: string;

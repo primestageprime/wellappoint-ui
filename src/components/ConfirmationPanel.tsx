@@ -25,6 +25,9 @@ const serviceIcons = {
 
 export function ConfirmationPanel(props: ConfirmationPanelProps) {
   console.log('🔍 ConfirmationPanel render - props.service:', props.service);
+  console.log('🔍 ConfirmationPanel render - props.success:', props.success);
+  console.log('🔍 ConfirmationPanel render - props.error:', props.error);
+  console.log('🔍 ConfirmationPanel render - props.isSubmitting:', props.isSubmitting);
   
   // Safety check - if service is undefined, show error
   if (!props.service) {
@@ -44,8 +47,10 @@ export function ConfirmationPanel(props: ConfirmationPanelProps) {
 
   // Show success message if booking was successful
   const showSuccess = props.success && props.service && props.selectedSlot;
+  console.log('🔍 ConfirmationPanel - showSuccess:', showSuccess, 'props.success:', props.success, 'props.service:', !!props.service, 'props.selectedSlot:', !!props.selectedSlot);
   
   if (showSuccess) {
+    console.log('🔍 ConfirmationPanel - Showing success message');
     return (
       <div class="p-6 bg-green-50 border border-green-200 rounded-lg text-center">
         <div class="text-green-600 text-lg font-semibold mb-2">✅ Appointment Created Successfully!</div>

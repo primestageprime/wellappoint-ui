@@ -24,7 +24,7 @@ export function AvailabilityList(props: AvailabilityListProps) {
     ({ service, duration, email, provider }) => getAvailableSlots(service, duration, email, provider)
   );
 
-  // Group slots by date
+  // Group slots by date and sort them chronologically
   const groupedSlots = () => {
     if (!availability()) return {};
     
@@ -35,6 +35,13 @@ export function AvailabilityList(props: AvailabilityListProps) {
         groups[date] = [];
       }
       groups[date].push(slot);
+    });
+    
+    // Sort slots within each day by start time
+    Object.keys(groups).forEach(date => {
+      groups[date].sort((a, b) => {
+        return new Date(a.startTime).getTime() - new Date(b.startTime).getTime();
+      });
     });
     
     return groups;
@@ -80,11 +87,13 @@ export function AvailabilityList(props: AvailabilityListProps) {
 
       <Show when={!availability.loading && !availability.error && availability()}>
         <Show when={Object.keys(groupedSlots()).length === 0} fallback={
-          <div class="space-y-6 max-h-96 overflow-y-auto w-full">
-            <For each={Object.entries(groupedSlots())}>
+          <div class="space-y-8 max-h-96 overflow-y-auto w-full">
+            <For each={Object.entries(groupedSlots()).sort(([dateA], [dateB]) => dateA.localeCompare(dateB))}>
               {([date, slots]) => (
-                <div class="space-y-3 w-full">
-                  <H4 class="text-lg font-semibold text-primary">{formatDate(date)}</H4>
+                <div class="space-y-4 w-full">
+                  <div class="border-b border-primary/20 pb-2">
+                    <H4 class="text-xl font-bold text-primary">{formatDate(date)}</H4>
+                  </div>
                   <div class="flex flex-wrap gap-2 w-full" style="max-width: 100%;">
                     <For each={slots}>
                       {(slot) => (

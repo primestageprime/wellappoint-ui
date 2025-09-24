@@ -124,8 +124,10 @@ export function BookingPage() {
   };
 
   const handleConfirmAppointment = async () => {
+    console.log('🔍 Starting appointment creation...');
     setIsSubmitting(true);
     setConfirmationError(null);
+    setAppointmentConfirmed(undefined); // Reset any previous state
 
     try {
       const userEmail = auth.user()?.email;
@@ -158,7 +160,7 @@ export function BookingPage() {
         }
       };
 
-      console.log('Creating appointment:', requestBody);
+      console.log('🔍 Creating appointment with request:', requestBody);
 
       const response = await fetch('/appointment_request', {
         method: 'POST',
@@ -174,7 +176,7 @@ export function BookingPage() {
       }
 
       const result = await response.json();
-      console.log('Appointment created successfully:', result);
+      console.log('✅ Appointment created successfully:', result);
       
       // Set appointment as confirmed and start loading appointments
       setAppointmentConfirmed(true);
@@ -184,8 +186,9 @@ export function BookingPage() {
       refetchAppointments();
 
     } catch (err) {
-      console.error('Failed to create appointment:', err);
+      console.error('❌ Failed to create appointment:', err);
       setConfirmationError(err instanceof Error ? err.message : 'Failed to create appointment');
+      setAppointmentConfirmed(false); // Explicitly set to false on error
     } finally {
       setIsSubmitting(false);
     }

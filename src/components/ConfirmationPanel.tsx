@@ -62,7 +62,7 @@ export function ConfirmationPanel(props: ConfirmationPanelProps) {
           <p><strong>Price:</strong> ${props.service.price}</p>
         </div>
         <button 
-          onClick={props.onBack}
+          onClick={props.onBookAnother}
           class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
         >
           Book Another Appointment

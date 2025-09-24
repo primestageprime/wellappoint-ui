@@ -115,6 +115,14 @@ export function BookingPage() {
     setSelectedSlot(null);
   };
 
+  const handleBookAnotherSession = () => {
+    setSelectedService(null);
+    setSelectedDuration(null);
+    setSelectedSlot(null);
+    setAppointmentConfirmed(undefined);
+    setConfirmationError(null);
+  };
+
   const handleConfirmAppointment = async () => {
     setIsSubmitting(true);
     setConfirmationError(null);
@@ -172,15 +180,8 @@ export function BookingPage() {
       setAppointmentConfirmed(true);
       setLoadingAppointments(true);
       
-      // Reset all selections and refresh appointments after a delay
-      setTimeout(() => {
-        setSelectedService(null);
-        setSelectedDuration(null);
-        setSelectedSlot(null);
-        setAppointmentConfirmed(undefined);
-        // Refresh appointments by refetching
-        refetchAppointments();
-      }, 2000);
+      // Refresh appointments immediately
+      refetchAppointments();
 
     } catch (err) {
       console.error('Failed to create appointment:', err);
@@ -273,37 +274,19 @@ export function BookingPage() {
                 />
               )}
               
-              {selectedService() && selectedDuration() && selectedSlot() && appointmentConfirmed() === undefined && (
+              {selectedService() && selectedDuration() && selectedSlot() && (
                 <ConfirmationPanel
                   service={services().find(s => s.name === selectedService() && s.duration === selectedDuration())!}
                   selectedSlot={selectedSlot()}
                   isSubmitting={isSubmitting()}
                   error={confirmationError()}
+                  success={appointmentConfirmed() === true ? 'Appointment created successfully!' : undefined}
                   onBack={handleBackToTimeSelection}
                   onConfirm={handleConfirmAppointment}
+                  onBookAnother={handleBookAnotherSession}
                 />
               )}
               
-              {selectedService() && selectedDuration() && selectedSlot() && appointmentConfirmed() === true && (
-                <div class="text-center space-y-4">
-                  <div class="p-4 sm:p-6 bg-gradient-to-r from-green-50 to-yellow-50 border border-primary/20 rounded-xl">
-                    <div class="text-6xl">✨</div>
-                    <H3>Your healing session is confirmed!</H3>
-                    <p class="text-muted-foreground">Your appointment has been scheduled. You'll receive a confirmation with details shortly.</p>
-                  </div>
-                  <button 
-                    onClick={() => {
-                      setSelectedService(null);
-                      setSelectedDuration(null);
-                      setSelectedSlot(null);
-                      setAppointmentConfirmed(undefined);
-                    }}
-                    class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
-                  >
-                    Book Another Session
-                  </button>
-                </div>
-              )}
             </>
           </Show>
         )}

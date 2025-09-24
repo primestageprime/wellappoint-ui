@@ -45,6 +45,7 @@ export interface ConfirmationPanelProps {
   success: string | null;
   onBack: () => void;
   onConfirm: () => void;
+  onBookAnother: () => void;
 }
 
 // ============================================================================

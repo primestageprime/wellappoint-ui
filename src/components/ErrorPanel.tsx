@@ -1,27 +1,16 @@
 import { H3, H4, CenteredContent, ActionButtons } from './visual';
 import { AppointmentDetails } from './AppointmentDetails';
-import { type ConfirmationPanelProps } from '../types/components';
+import { type BookingService, type AvailableSlot } from '../types/global';
 
-export function ConfirmationPanel(props: ConfirmationPanelProps) {
-  // Safety check - if service is undefined, show error
-  if (!props.service) {
-    return (
-      <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
-        <p class="text-red-600">Error: Service data not found. Please go back and select a service again.</p>
-        <button 
-          onClick={props.onBack}
-          class="mt-2 text-sm text-red-600 hover:text-red-800"
-        >
-          ← Go Back
-        </button>
-      </div>
-    );
-  }
+interface ErrorPanelProps {
+  service: BookingService;
+  selectedSlot: AvailableSlot;
+  error: string;
+  onBack: () => void;
+  onRetry: () => void;
+}
 
-  const handleCreateAppointment = () => {
-    props.onConfirm();
-  };
-
+export function ErrorPanel(props: ErrorPanelProps) {
   return (
     <div class="space-y-6">
       <div class="flex items-center space-x-4">
@@ -43,11 +32,15 @@ export function ConfirmationPanel(props: ConfirmationPanelProps) {
         selectedSlot={props.selectedSlot}
       />
 
+      <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+        <p class="text-red-600">{props.error}</p>
+      </div>
+
       <ActionButtons
         buttons={[
           {
-            text: 'Confirm Your Session',
-            onClick: handleCreateAppointment,
+            text: 'Try Again',
+            onClick: props.onRetry,
             variant: 'primary',
             disabled: false
           }

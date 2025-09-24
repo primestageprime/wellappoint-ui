@@ -4,14 +4,13 @@ import { ServicesList } from '../components/ServicesList';
 import { DurationsList } from '../components/DurationsList';
 import { AvailabilityList } from '../components/AvailabilityList';
 import { ConfirmationPanel } from '../components/ConfirmationPanel';
+import { LoadingPanel } from '../components/LoadingPanel';
+import { SuccessPanel } from '../components/SuccessPanel';
 import { 
   ProviderContent, 
   AppointmentsCard, 
-  ServicesCard, 
   LogoutButton, 
   H3, 
-  H4, 
-  CenteredContent,
   PageFrame,
   HeaderCard,
   Content,
@@ -24,6 +23,9 @@ import {
 import { getProviderDetails } from '../services/providerService';
 import { getUserAppointments, type UserAppointment } from '../services/appointmentService';
 import { type BookingService } from '../types/service';
+import { getBookingState, type BookingState } from '../utils/bookingStateMachine';
+import { runTests } from '../utils/testStateMachine';
+import { debugBookingFlow } from '../utils/debugStateMachine';
 
 // Helper function to convert UserAppointment to the format expected by AppointmentsCard
 const convertToAppointmentCardFormat = (appointment: UserAppointment) => ({
@@ -41,15 +43,15 @@ export function BookingPage() {
   const [selectedService, setSelectedService] = createSignal<string | null>(null);
   const [selectedDuration, setSelectedDuration] = createSignal<number | null>(null);
   const [selectedSlot, setSelectedSlot] = createSignal<any | null>(null);
-  const [appointmentConfirmed, setAppointmentConfirmed] = createSignal<boolean | undefined>(undefined);
+  const [appointmentConfirmed, setAppointmentConfirmed] = createSignal<boolean | null>(null);
   const [isSubmitting, setIsSubmitting] = createSignal(false);
   const [confirmationError, setConfirmationError] = createSignal<string | null>(null);
-  const [loadingAppointments, setLoadingAppointments] = createSignal(false);
+  const [, setLoadingAppointments] = createSignal(false);
   const [provider] = createResource(getProviderDetails);
   
   // Get user appointments
   const userEmail = () => auth.user()?.email || '';
-  const [appointments, { refetch: refetchAppointments }] = createResource(userEmail, getUserAppointments);
+  const [appointments, { refetch: refetchAppointments }] = createResource(userEmail, (email) => getUserAppointments(email));
 
   const fetchServices = async () => {
     try {
@@ -108,7 +110,7 @@ export function BookingPage() {
 
   const handleTimeSelect = (slot: any) => {
     setSelectedSlot(slot);
-    setAppointmentConfirmed(undefined); // Reset to show confirmation screen
+    setAppointmentConfirmed(null); // Reset to show confirmation screen
   };
 
   const handleBackToTimeSelection = () => {
@@ -119,7 +121,7 @@ export function BookingPage() {
     setSelectedService(null);
     setSelectedDuration(null);
     setSelectedSlot(null);
-    setAppointmentConfirmed(undefined);
+    setAppointmentConfirmed(null);
     setConfirmationError(null);
   };
 
@@ -127,7 +129,7 @@ export function BookingPage() {
     console.log('🔍 Starting appointment creation...');
     setIsSubmitting(true);
     setConfirmationError(null);
-    setAppointmentConfirmed(undefined); // Reset any previous state
+    setAppointmentConfirmed(null); // Reset any previous state
 
     try {
       const userEmail = auth.user()?.email;
@@ -179,17 +181,23 @@ export function BookingPage() {
       console.log('✅ Appointment created successfully:', result);
       
       // Set appointment as confirmed and start loading appointments
+      console.log('🔍 Setting appointmentConfirmed to true');
       setAppointmentConfirmed(true);
       setLoadingAppointments(true);
       
       // Refresh appointments immediately
       refetchAppointments();
+      
+      // Keep loading state for a moment to show the loading animation
+      setTimeout(() => {
+        console.log('🔍 Setting isSubmitting to false');
+        setIsSubmitting(false);
+      }, 1000);
 
     } catch (err) {
       console.error('❌ Failed to create appointment:', err);
       setConfirmationError(err instanceof Error ? err.message : 'Failed to create appointment');
       setAppointmentConfirmed(false); // Explicitly set to false on error
-    } finally {
       setIsSubmitting(false);
     }
   };
@@ -202,11 +210,27 @@ export function BookingPage() {
            'User';
   };
 
+  // State machine for booking flow
+  const bookingState = (): BookingState => ({
+    selectedService: selectedService(),
+    selectedDuration: selectedDuration(),
+    selectedSlot: selectedSlot(),
+    isLoadingSlots: false, // TODO: Add loading slots state when needed
+    isSubmitting: isSubmitting(),
+    appointmentConfirmed: appointmentConfirmed(),
+  });
+
+  const bookingFlow = () => getBookingState(bookingState());
+
+  // Make test functions available globally for debugging
+  (window as any).runBookingTests = runTests;
+  (window as any).debugBookingFlow = debugBookingFlow;
+
   return (
     <PageFrame>
       <HeaderCard>
         <Split 
-          left={<Avatar name={userName()} />}
+          left={<Avatar username={userName} />}
           right={<LogoutButton onLogout={handleLogout}>Logout</LogoutButton>}
         />
       </HeaderCard>
@@ -222,7 +246,7 @@ export function BookingPage() {
           </Card>
         )}
         
-        {appointments() && (
+        {appointments() && typeof appointments() === 'object' && (
           <AppointmentsCard 
             appointments={appointments()!.appointments.map(convertToAppointmentCardFormat)}
             appointmentRequestCap={appointments()!.appointmentRequestCap}
@@ -239,7 +263,7 @@ export function BookingPage() {
 
         {!loading() && !error() && (
           <Show 
-            when={!appointments() || appointments()!.appointments.length < appointments()!.appointmentRequestCap}
+            when={!appointments() || typeof appointments() !== 'object' || appointments()!.appointments.length < appointments()!.appointmentRequestCap}
             fallback={
               <Card class="p-6 text-center space-y-4">
                 <div class="text-4xl">📋</div>
@@ -251,14 +275,14 @@ export function BookingPage() {
             }
           >
                            <>
-                 {!selectedService() && !loadingAppointments() && (
+                 {bookingFlow().showServices && (
                    <ServicesList
                      services={services()}
                      onServiceSelect={handleServiceSelect}
                    />
                  )}
               
-              {selectedService() && !selectedDuration() && (
+              {bookingFlow().showDurations && (
                 <DurationsList 
                   services={services()}
                   selectedService={selectedService()!}
@@ -267,28 +291,43 @@ export function BookingPage() {
                 />
               )}
               
-              {selectedService() && selectedDuration() && !selectedSlot() && (
+              {bookingFlow().showSlotSelection && (
                 <AvailabilityList 
-                  services={services()}
-                  selectedService={selectedService()!}
-                  selectedDuration={selectedDuration()!}
+                  service={selectedService()!}
+                  duration={selectedDuration()!}
                   onBack={handleBackToDurations}
-                  onTimeSelect={handleTimeSelect}
+                  onSlotSelect={handleTimeSelect}
                 />
               )}
               
-              {selectedService() && selectedDuration() && selectedSlot() && (
+              {bookingFlow().showConfirmation && (
                 <ConfirmationPanel
                   service={services().find(s => s.name === selectedService() && s.duration === selectedDuration())!}
                   selectedSlot={selectedSlot()}
-                  isSubmitting={isSubmitting()}
-                  error={confirmationError()}
-                  success={appointmentConfirmed() === true ? 'Appointment created successfully!' : undefined}
                   onBack={handleBackToTimeSelection}
                   onConfirm={handleConfirmAppointment}
+                />
+              )}
+
+              {bookingFlow().showCreatingAppointment && (
+                <LoadingPanel
+                  service={services().find(s => s.name === selectedService() && s.duration === selectedDuration())!}
+                  selectedSlot={selectedSlot()}
+                />
+              )}
+
+              {bookingFlow().showAppointmentConfirmed && (
+                <SuccessPanel
+                  service={services().find(s => s.name === selectedService() && s.duration === selectedDuration())!}
+                  selectedSlot={selectedSlot()}
                   onBookAnother={handleBookAnotherSession}
                 />
               )}
+              
+              {/* Debug info */}
+              <div class="text-xs text-gray-500 mt-2 p-2 bg-gray-100 rounded">
+                State Machine Debug: step={bookingFlow().step}, appointmentConfirmed={String(appointmentConfirmed())}, isSubmitting={String(isSubmitting())}, error={confirmationError() || 'none'}
+              </div>
               
             </>
           </Show>

@@ -7,6 +7,7 @@ import { ProviderBookingPage } from './pages/ProviderBookingPage';
 import { DesignSystemPage } from './pages/DesignSystemPage';
 import { CreateProviderPage } from './pages/CreateProviderPage';
 import { OAuthSetupPage } from './pages/OAuthSetupPage';
+import { ProviderReauthPage } from './pages/ProviderReauthPage';
 
 function LoginWrapper() {
   const location = useLocation();
@@ -37,6 +38,9 @@ function App() {
         
         {/* Provider-specific booking pages */}
         <Route path="/:username" component={ProviderBookingPage} />
+        
+        {/* Provider re-authentication */}
+        <Route path="/:username/authorize" component={ProviderReauthPage} />
         
         {/* Admin routes */}
         <Route path="/admin/create-provider" component={CreateProviderPage} />

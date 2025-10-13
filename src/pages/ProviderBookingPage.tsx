@@ -26,12 +26,8 @@ export function ProviderBookingPage() {
   const auth = useAuth();
   const params = useParams();
   
-  // Use the user's nickname as the provider username, fallback to URL param
+  // Use the URL parameter as the provider username
   const username = () => {
-    const user = auth.user();
-    if (user?.nickname) {
-      return user.nickname;
-    }
     return params.username;
   };
   

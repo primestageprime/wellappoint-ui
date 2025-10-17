@@ -1,4 +1,4 @@
-import { ServicesCard, H3, H4, CenteredContent } from './visual';
+import { ServicesCard } from './visual';
 import { Heart, Craniosacral, FootReflexology } from './visual/icons';
 import { type BookingService } from '../types/service';
 import { type ServicesListProps } from '../types/components';
@@ -48,11 +48,6 @@ export function ServicesList(props: ServicesListProps) {
 
   return (
     <div class="space-y-4">
-      <CenteredContent>
-        <H3>Choose Your Healing Journey</H3>
-        <H4>Select a service to continue</H4>
-      </CenteredContent>
-      
       <ServicesCard 
         title="Available Services"
         services={uiServices()}

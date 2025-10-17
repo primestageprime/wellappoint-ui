@@ -1,7 +1,7 @@
 import { createSignal } from 'solid-js';
-import { For } from 'solid-js';
-import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, CenteredContent, H3, H4, TimeItem } from '../../components/visual';
+import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, ServiceSummaryCard, DurationSummaryCard, PrimaryHeart } from '../../components/visual';
 import { AppointmentsCard } from '../../components/AppointmentsCard';
+import { TimeSlotList } from '../../components/TimeSlotList';
 import { DemoLayout } from './DemoLayout';
 
 export function ChooseSlotStatePage() {
@@ -50,44 +50,23 @@ export function ChooseSlotStatePage() {
       <Content>
         <AppointmentsCard />
         
-        <div class="space-y-4">
-          <div class="flex items-center space-x-4">
-            <button
-              onClick={() => console.log('Back')}
-              class="text-primary hover:text-primary/80 text-sm font-medium"
-            >
-              ← Back to durations
-            </button>
-          </div>
-
-          <CenteredContent>
-            <H3>Select Appointment Time</H3>
-            <H4>Choose your preferred date and time</H4>
-          </CenteredContent>
-
-          <div class="space-y-8 max-h-96 overflow-y-auto w-full">
-            <For each={availableSlots}>
-              {(daySlots) => (
-                <div class="space-y-4 w-full">
-                  <div class="border-b border-primary/20 pb-2">
-                    <H4 class="text-xl font-bold text-primary">{daySlots.date}</H4>
-                  </div>
-                  <div class="flex flex-wrap gap-2 w-full">
-                    <For each={daySlots.times}>
-                      {(slot) => (
-                        <TimeItem
-                          time={slot.time}
-                          available={slot.available}
-                          onClick={() => console.log('Selected time:', slot.time)}
-                        />
-                      )}
-                    </For>
-                  </div>
-                </div>
-              )}
-            </For>
-          </div>
-        </div>
+        <ServiceSummaryCard
+          icon={<PrimaryHeart />}
+          title="Massage"
+          subtitle="Deep tissue & relaxation therapy"
+          onEdit={() => console.log('Edit service - unset selection')}
+        />
+        
+        <DurationSummaryCard
+          duration={60}
+          price={140}
+          onEdit={() => console.log('Edit duration - back to durations')}
+        />
+        
+        <TimeSlotList 
+          slots={availableSlots}
+          onSlotSelect={(time) => console.log('Selected time:', time)}
+        />
       </Content>
     </PageFrame>
     </DemoLayout>

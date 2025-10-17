@@ -1,5 +1,5 @@
 import { createSignal } from 'solid-js';
-import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, CenteredContent, H3, H4 } from '../../components/visual';
+import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, ServiceSummaryCard, DurationSummaryCard, LoadingState, PrimaryHeart } from '../../components/visual';
 import { DemoLayout } from './DemoLayout';
 
 export function ProcessingStatePage() {
@@ -16,18 +16,24 @@ export function ProcessingStatePage() {
       </HeaderCard>
       
       <Content>
-        <div class="space-y-6">
-          <CenteredContent>
-            <H3>Processing Your Request</H3>
-            <H4>Please wait while we confirm your appointment...</H4>
-          </CenteredContent>
-
-          <div class="text-center py-12">
-            <div class="inline-block animate-spin rounded-full h-16 w-16 border-b-2 border-primary"></div>
-            <p class="text-primary mt-6 text-lg">Submitting your appointment request...</p>
-            <p class="text-muted-foreground mt-2 text-sm">This should only take a moment</p>
-          </div>
+        <ServiceSummaryCard
+          icon={<PrimaryHeart />}
+          title="Massage"
+          subtitle="Deep tissue & relaxation therapy"
+        />
+        
+        <DurationSummaryCard
+          duration={60}
+          price={140}
+        />
+        
+        <div class="p-4 bg-primary/5 rounded-lg">
+          <p class="text-sm text-muted-foreground">
+            <span class="font-semibold text-primary">Monday, October 20, 2025</span> at <span class="font-semibold text-primary">2:00 PM</span>
+          </p>
         </div>
+        
+        <LoadingState message="Submitting your appointment request..." />
       </Content>
     </PageFrame>
     </DemoLayout>

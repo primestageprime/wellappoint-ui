@@ -1,5 +1,5 @@
 import { createSignal } from 'solid-js';
-import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton } from '../../components/visual';
+import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, ServiceSummaryCard, PrimaryHeart } from '../../components/visual';
 import { DurationsList } from '../../components/DurationsList';
 import { AppointmentsCard } from '../../components/AppointmentsCard';
 import { type BookingService } from '../../types/service';
@@ -44,6 +44,13 @@ export function ChooseDurationStatePage() {
       
       <Content>
         <AppointmentsCard />
+        
+        <ServiceSummaryCard
+          icon={<PrimaryHeart />}
+          title="Massage"
+          subtitle="Deep tissue & relaxation therapy"
+          onEdit={() => console.log('Edit service - unset selection')}
+        />
         
         <DurationsList 
           services={services()}

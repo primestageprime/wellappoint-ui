@@ -1,4 +1,4 @@
-import { DurationList, H3, H4, CenteredContent } from './visual';
+import { DurationList } from './visual';
 import { Heart, Craniosacral, FootReflexology } from './visual/icons';
 import { type UIDuration } from '../types/service';
 import { type DurationsListProps } from '../types/components';
@@ -40,20 +40,6 @@ export function DurationsList(props: DurationsListProps) {
 
   return (
     <div class="space-y-4">
-      <div class="flex items-center space-x-4">
-        <button
-          onClick={props.onBack}
-          class="text-primary hover:text-primary/80 text-sm font-medium"
-        >
-          ← Back to services
-        </button>
-      </div>
-      
-      <CenteredContent>
-        <H3>Select Duration for {props.selectedService}</H3>
-        <H4>Choose your preferred session length</H4>
-      </CenteredContent>
-      
       <DurationList 
         title="Available Durations"
         durations={serviceDurations()}

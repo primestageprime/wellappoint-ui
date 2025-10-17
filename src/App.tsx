@@ -5,9 +5,20 @@ import { LoginPage } from './pages/LoginPage';
 import { BookingPage } from './pages/BookingPage';
 import { ProviderBookingPage } from './pages/ProviderBookingPage';
 import { DesignSystemPage } from './pages/DesignSystemPage';
+import { LayoutDemoPage } from './pages/LayoutDemoPage';
 import { CreateProviderPage } from './pages/CreateProviderPage';
 import { OAuthSetupPage } from './pages/OAuthSetupPage';
 import { ProviderReauthPage } from './pages/ProviderReauthPage';
+import { DemoIndexPage } from './pages/demo/DemoIndexPage';
+import { ComponentsStatePage } from './pages/demo/ComponentsStatePage';
+import { LoginStatePage } from './pages/demo/LoginStatePage';
+import { ChooseServiceStatePage } from './pages/demo/ChooseServiceStatePage';
+import { ChooseDurationStatePage } from './pages/demo/ChooseDurationStatePage';
+import { FindingSlotsStatePage } from './pages/demo/FindingSlotsStatePage';
+import { ChooseSlotStatePage } from './pages/demo/ChooseSlotStatePage';
+import { ConfirmStatePage } from './pages/demo/ConfirmStatePage';
+import { ProcessingStatePage } from './pages/demo/ProcessingStatePage';
+import { ReceiptStatePage } from './pages/demo/ReceiptStatePage';
 
 function LoginWrapper() {
   const location = useLocation();
@@ -49,6 +60,19 @@ function App() {
         {/* Legacy routes for backward compatibility */}
         <Route path="/booking" component={BookingPage} />
         <Route path="/design-system" component={DesignSystemPage} />
+        <Route path="/layout-demo" component={LayoutDemoPage} />
+        
+        {/* Demo state pages */}
+        <Route path="/demo" component={DemoIndexPage} />
+        <Route path="/demo/components" component={ComponentsStatePage} />
+        <Route path="/demo/login" component={LoginStatePage} />
+        <Route path="/demo/choose-service" component={ChooseServiceStatePage} />
+        <Route path="/demo/choose-duration" component={ChooseDurationStatePage} />
+        <Route path="/demo/finding-slots" component={FindingSlotsStatePage} />
+        <Route path="/demo/choose-slot" component={ChooseSlotStatePage} />
+        <Route path="/demo/confirm" component={ConfirmStatePage} />
+        <Route path="/demo/processing" component={ProcessingStatePage} />
+        <Route path="/demo/receipt" component={ReceiptStatePage} />
       </Show>
       
       {/* Login route - accessible when not authenticated */}

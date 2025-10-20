@@ -1,7 +1,6 @@
 import { createSignal } from 'solid-js';
-import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, CenteredContent, H3, AppointmentDetailsGrid, ActionButtons, PrimaryHeart } from '../../components/visual';
-import { Calendar, Globe, Currency } from '../../components/visual/icons';
-import { Clock, CheckCircle } from 'lucide-solid';
+import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, CenteredContent, H3, AppointmentDetailsGrid, ServiceDetailItem, DescriptionDetailItem, TimeSlotDetailItem, DurationDetailItem, LocationDetailItem, PriceDetailItem, ActionButtons } from '../../components/visual';
+import { CheckCircle } from 'lucide-solid';
 import { DemoLayout } from './DemoLayout';
 
 export function ReceiptStatePage() {
@@ -38,39 +37,14 @@ export function ReceiptStatePage() {
             </ul>
           </div>
 
-          <AppointmentDetailsGrid
-            details={[
-              {
-                label: 'Service',
-                value: 'Massage',
-                icon: <PrimaryHeart />
-              },
-              {
-                label: 'Date & Time',
-                value: 'Monday, October 20, 2025 at 2:00 PM',
-                icon: <Calendar class="w-5 h-5 text-primary" />
-              },
-              {
-                label: 'Duration',
-                value: '60 minutes',
-                icon: <Clock class="w-5 h-5 text-primary" />
-              },
-              {
-                label: 'Location',
-                value: '123 Main Street, Suite 200, San Francisco, CA 94102',
-                icon: <Globe class="w-5 h-5 text-primary" />
-              },
-              {
-                label: 'Price',
-                value: '$140',
-                icon: <Currency class="w-5 h-5 text-primary" />
-              }
-            ]}
-          />
-          
-          <div class="text-sm text-muted-foreground">
-            A comprehensive 60-minute full body massage with essential oils and healing crystals.
-          </div>
+          <AppointmentDetailsGrid>
+            <ServiceDetailItem value="Massage" />
+            <DescriptionDetailItem value="A comprehensive 60-minute full body massage with essential oils and healing crystals." />
+            <TimeSlotDetailItem value="Monday, October 20, 2025 at 2:00 PM" />
+            <DurationDetailItem value="60 minutes" />
+            <LocationDetailItem value="123 Main Street, Suite 200, San Francisco, CA 94102" />
+            <PriceDetailItem value="$140" />
+          </AppointmentDetailsGrid>
 
           <ActionButtons
             buttons={[

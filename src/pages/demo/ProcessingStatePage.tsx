@@ -1,5 +1,6 @@
 import { createSignal } from 'solid-js';
 import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, BookingConfirmationContainer, AppointmentDetailsGrid, ServiceDetailItem, DescriptionDetailItem, TimeSlotDetailItem, DurationDetailItem, LocationDetailItem, PriceDetailItem, LoadingState } from '../../components/visual';
+import { AppointmentsCard } from '../../components/AppointmentsCard';
 import { DemoLayout } from './DemoLayout';
 
 export function ProcessingStatePage() {
@@ -16,6 +17,8 @@ export function ProcessingStatePage() {
       </HeaderCard>
       
       <Content>
+        <AppointmentsCard />
+        
         <BookingConfirmationContainer title="Processing Your Appointment">
           <AppointmentDetailsGrid>
             <ServiceDetailItem value="Massage" />

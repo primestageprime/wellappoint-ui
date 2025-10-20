@@ -1,5 +1,6 @@
 import { createSignal } from 'solid-js';
 import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, BookingConfirmationContainer, AppointmentDetailsGrid, ServiceDetailItem, DescriptionDetailItem, TimeSlotDetailItem, DurationDetailItem, LocationDetailItem, PriceDetailItem, ActionButtons, SecondaryButton, PrimaryButton } from '../../components/visual';
+import { AppointmentsCard } from '../../components/AppointmentsCard';
 import { DemoLayout } from './DemoLayout';
 
 export function ConfirmStatePage() {
@@ -16,6 +17,8 @@ export function ConfirmStatePage() {
       </HeaderCard>
       
       <Content>
+        <AppointmentsCard />
+        
         <BookingConfirmationContainer title="Confirm Your Appointment">
           <AppointmentDetailsGrid>
             <ServiceDetailItem value="Massage" />

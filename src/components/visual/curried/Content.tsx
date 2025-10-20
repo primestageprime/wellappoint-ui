@@ -16,7 +16,9 @@ export function Content(props: ContentProps) {
         {/* Company Name */}
         <h1 class="text-lg font-bold text-primary">WellAppoint</h1>
       </CenteredContent>
-      {props.children}
+      <div class="space-y-4 mt-4">
+        {props.children}
+      </div>
     </div>
   );
 }

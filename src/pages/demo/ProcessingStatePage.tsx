@@ -1,5 +1,5 @@
 import { createSignal } from 'solid-js';
-import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, ServiceSummaryCard, DurationSummaryCard, LoadingState, PrimaryHeart } from '../../components/visual';
+import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, BookingConfirmationContainer, AppointmentDetailsGrid, ServiceDetailItem, DescriptionDetailItem, TimeSlotDetailItem, DurationDetailItem, LocationDetailItem, PriceDetailItem, LoadingState } from '../../components/visual';
 import { DemoLayout } from './DemoLayout';
 
 export function ProcessingStatePage() {
@@ -16,26 +16,18 @@ export function ProcessingStatePage() {
       </HeaderCard>
       
       <Content>
-        <ServiceSummaryCard
-          icon={<PrimaryHeart />}
-          title="Massage"
-          subtitle="Deep tissue & relaxation therapy"
-        />
-        
-        <DurationSummaryCard
-          duration={60}
-          price={140}
-          description="A comprehensive 60-minute full body massage"
-        />
-        
-        <div class="p-4 bg-card rounded-lg border-2 border-primary/30">
-          <p class="text-sm text-muted-foreground mb-1">Selected Time</p>
-          <p class="text-lg font-semibold text-primary">
-            Monday, October 20, 2025 at 2:00 PM
-          </p>
-        </div>
-        
-        <LoadingState message="Submitting your appointment request..." />
+        <BookingConfirmationContainer title="Processing Your Appointment">
+          <AppointmentDetailsGrid>
+            <ServiceDetailItem value="Massage" />
+            <DescriptionDetailItem value="A comprehensive 60-minute full body massage with essential oils and healing crystals." />
+            <TimeSlotDetailItem value="Monday, October 20, 2025 at 2:00 PM" />
+            <DurationDetailItem value="60 minutes" />
+            <LocationDetailItem value="123 Main Street, Suite 200, San Francisco, CA 94102" />
+            <PriceDetailItem value="$140" />
+          </AppointmentDetailsGrid>
+          
+          <LoadingState message="Submitting your appointment request..." />
+        </BookingConfirmationContainer>
       </Content>
     </PageFrame>
     </DemoLayout>

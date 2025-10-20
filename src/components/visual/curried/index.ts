@@ -37,6 +37,7 @@ export { PrimaryCraniosacral } from './PrimaryCraniosacral';
 export { PrimaryFootReflexology } from './PrimaryFootReflexology';
 export { ServiceSummaryCard } from './ServiceSummaryCard';
 export { AppointmentDetailsGrid } from './AppointmentDetailsGrid';
+export { BookingConfirmationContainer } from './BookingConfirmationContainer';
 export { ActionButtons } from './ActionButtons';
 export { PrimaryButton } from './PrimaryButton';
 export { SecondaryButton } from './SecondaryButton';

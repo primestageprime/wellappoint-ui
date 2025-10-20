@@ -1,5 +1,5 @@
 import { createSignal } from 'solid-js';
-import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, CenteredContent, H3, AppointmentDetailsGrid, ServiceDetailItem, DescriptionDetailItem, TimeSlotDetailItem, DurationDetailItem, LocationDetailItem, PriceDetailItem, ActionButtons, SecondaryButton, PrimaryButton } from '../../components/visual';
+import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, BookingConfirmationContainer, AppointmentDetailsGrid, ServiceDetailItem, DescriptionDetailItem, TimeSlotDetailItem, DurationDetailItem, LocationDetailItem, PriceDetailItem, ActionButtons, SecondaryButton, PrimaryButton } from '../../components/visual';
 import { DemoLayout } from './DemoLayout';
 
 export function ConfirmStatePage() {
@@ -16,11 +16,7 @@ export function ConfirmStatePage() {
       </HeaderCard>
       
       <Content>
-        <div class="space-y-6">
-          <CenteredContent>
-            <H3>Confirm Your Appointment</H3>
-          </CenteredContent>
-
+        <BookingConfirmationContainer title="Confirm Your Appointment">
           <AppointmentDetailsGrid>
             <ServiceDetailItem value="Massage" />
             <DescriptionDetailItem value="A comprehensive 60-minute full body massage with essential oils and healing crystals." />
@@ -35,7 +31,7 @@ export function ConfirmStatePage() {
             <SecondaryButton onClick={() => console.log('Back clicked')}>Back</SecondaryButton>
             <PrimaryButton onClick={() => console.log('Confirm clicked')}>Confirm Your Session</PrimaryButton>
           </ActionButtons>
-        </div>
+        </BookingConfirmationContainer>
       </Content>
     </PageFrame>
     </DemoLayout>

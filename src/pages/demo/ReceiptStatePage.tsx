@@ -1,5 +1,5 @@
 import { createSignal } from 'solid-js';
-import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, CenteredContent, H3, AppointmentDetailsGrid, ServiceDetailItem, DescriptionDetailItem, TimeSlotDetailItem, DurationDetailItem, LocationDetailItem, PriceDetailItem, ActionButtons } from '../../components/visual';
+import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, CenteredContent, H3, AppointmentDetailsGrid, ServiceDetailItem, DescriptionDetailItem, TimeSlotDetailItem, DurationDetailItem, LocationDetailItem, PriceDetailItem, ActionButtons, PrimaryButton } from '../../components/visual';
 import { CheckCircle } from 'lucide-solid';
 import { DemoLayout } from './DemoLayout';
 
@@ -46,15 +46,11 @@ export function ReceiptStatePage() {
             <PriceDetailItem value="$140" />
           </AppointmentDetailsGrid>
 
-          <ActionButtons
-            buttons={[
-              {
-                text: 'Book Another Appointment',
-                onClick: () => console.log('Book another clicked'),
-                variant: 'primary'
-              }
-            ]}
-          />
+          <ActionButtons>
+            <PrimaryButton onClick={() => console.log('Book another clicked')}>
+              Book Another Appointment
+            </PrimaryButton>
+          </ActionButtons>
         </div>
       </Content>
     </PageFrame>

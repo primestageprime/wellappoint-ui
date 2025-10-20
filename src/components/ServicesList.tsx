@@ -1,4 +1,5 @@
-import { ServicesCard } from './visual';
+import { For } from 'solid-js';
+import { ServicesContainer, ServiceItem } from './visual';
 import { Heart, Craniosacral, FootReflexology } from './visual/icons';
 import { type BookingService } from '../types/service';
 import { type ServicesListProps } from '../types/components';
@@ -30,28 +31,20 @@ export function ServicesList(props: ServicesListProps) {
     return Array.from(serviceMap.values());
   };
 
-  // Transform BookingService to UIService with proper onClick handlers
-  const uiServices = () => {
-    return uniqueServices().map(service => {
-      console.log('🔍 Mapping service:', service.name);
-      return {
-        name: service.name,
-        description: service.description || serviceData[service.name as keyof typeof serviceData]?.description || 'Professional wellness service',
-        icon: serviceData[service.name as keyof typeof serviceData]?.icon,
-        onClick: () => {
-          console.log('🔍 Service clicked:', service.name);
-          props.onServiceSelect(service.name);
-        }
-      };
-    });
-  };
-
   return (
     <div class="space-y-4">
-      <ServicesCard 
-        title="Available Services"
-        services={uiServices()}
-      />
+      <ServicesContainer title="Available Services">
+        <For each={uniqueServices()}>
+          {(service) => (
+            <ServiceItem
+              name={service.name}
+              description={service.description || serviceData[service.name as keyof typeof serviceData]?.description || 'Professional wellness service'}
+              icon={serviceData[service.name as keyof typeof serviceData]?.icon}
+              onClick={() => props.onServiceSelect(service.name)}
+            />
+          )}
+        </For>
+      </ServicesContainer>
     </div>
   );
 }

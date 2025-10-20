@@ -1,5 +1,5 @@
 import { createSignal } from 'solid-js';
-import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, CenteredContent, H3, AppointmentDetailsGrid, ServiceDetailItem, DescriptionDetailItem, TimeSlotDetailItem, DurationDetailItem, LocationDetailItem, PriceDetailItem, ActionButtons } from '../../components/visual';
+import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, CenteredContent, H3, AppointmentDetailsGrid, ServiceDetailItem, DescriptionDetailItem, TimeSlotDetailItem, DurationDetailItem, LocationDetailItem, PriceDetailItem, ActionButtons, SecondaryButton, PrimaryButton } from '../../components/visual';
 import { DemoLayout } from './DemoLayout';
 
 export function ConfirmStatePage() {
@@ -30,20 +30,11 @@ export function ConfirmStatePage() {
             <PriceDetailItem value="$140" />
           </AppointmentDetailsGrid>
 
-          <ActionButtons
-            buttons={[
-              {
-                text: 'Back',
-                onClick: () => console.log('Back clicked'),
-                variant: 'secondary'
-              },
-              {
-                text: 'Confirm Your Session',
-                onClick: () => console.log('Confirm clicked'),
-                variant: 'primary'
-              }
-            ]}
-          />
+          {/* Note: If this Back+Confirm pattern repeats, consider creating ConfirmationButtons curried component */}
+          <ActionButtons>
+            <SecondaryButton onClick={() => console.log('Back clicked')}>Back</SecondaryButton>
+            <PrimaryButton onClick={() => console.log('Confirm clicked')}>Confirm Your Session</PrimaryButton>
+          </ActionButtons>
         </div>
       </Content>
     </PageFrame>

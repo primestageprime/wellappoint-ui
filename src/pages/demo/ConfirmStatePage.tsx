@@ -1,7 +1,7 @@
 import { createSignal } from 'solid-js';
-import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, CenteredContent, H3, ServiceSummaryCard, AppointmentDetailsGrid, SessionDescription, ActionButtons, PrimaryHeart } from '../../components/visual';
+import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, CenteredContent, H3, AppointmentDetailsGrid, ActionButtons, PrimaryHeart } from '../../components/visual';
 import { Calendar, Globe, Currency } from '../../components/visual/icons';
-import { Clock } from 'lucide-solid';
+import { Clock, Info } from 'lucide-solid';
 import { DemoLayout } from './DemoLayout';
 
 export function ConfirmStatePage() {
@@ -23,14 +23,17 @@ export function ConfirmStatePage() {
             <H3>Confirm Your Appointment</H3>
           </CenteredContent>
 
-          <ServiceSummaryCard
-            icon={<PrimaryHeart />}
-            title="Therapeutic Massage"
-            subtitle="Deep tissue & relaxation therapy"
-          />
-
           <AppointmentDetailsGrid
             details={[
+              {
+                label: 'Service',
+                value: 'Massage',
+                icon: <PrimaryHeart />
+              },
+              { label: 'Description',
+                value: 'A comprehensive 60-minute full body massage with essential oils and healing crystals.',
+                icon: <Info class="w-5 h-5 text-primary" />
+              },
               {
                 label: 'Date & Time',
                 value: 'Monday, October 20, 2025 at 2:00 PM',
@@ -43,7 +46,7 @@ export function ConfirmStatePage() {
               },
               {
                 label: 'Location',
-                value: 'OFFICE',
+                value: '123 Main Street, Suite 200, San Francisco, CA 94102',
                 icon: <Globe class="w-5 h-5 text-primary" />
               },
               {
@@ -54,9 +57,6 @@ export function ConfirmStatePage() {
             ]}
           />
 
-          <SessionDescription 
-            description="A comprehensive 60-minute full body massage with essential oils and healing crystals."
-          />
 
           <ActionButtons
             buttons={[

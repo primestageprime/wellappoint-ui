@@ -25,11 +25,13 @@ export function ProcessingStatePage() {
         <DurationSummaryCard
           duration={60}
           price={140}
+          description="A comprehensive 60-minute full body massage"
         />
         
-        <div class="p-4 bg-primary/5 rounded-lg">
-          <p class="text-sm text-muted-foreground">
-            <span class="font-semibold text-primary">Monday, October 20, 2025</span> at <span class="font-semibold text-primary">2:00 PM</span>
+        <div class="p-4 bg-card rounded-lg border-2 border-primary/30">
+          <p class="text-sm text-muted-foreground mb-1">Selected Time</p>
+          <p class="text-lg font-semibold text-primary">
+            Monday, October 20, 2025 at 2:00 PM
           </p>
         </div>
         

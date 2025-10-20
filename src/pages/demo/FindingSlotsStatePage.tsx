@@ -29,6 +29,7 @@ export function FindingSlotsStatePage() {
         <DurationSummaryCard
           duration={60}
           price={140}
+          description="A comprehensive 60-minute full body massage"
           onEdit={() => console.log('Edit duration - back to durations')}
         />
         

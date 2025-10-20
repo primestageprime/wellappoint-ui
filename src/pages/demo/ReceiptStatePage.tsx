@@ -1,5 +1,5 @@
 import { createSignal } from 'solid-js';
-import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, CenteredContent, H3, ServiceSummaryCard, AppointmentDetailsGrid, ActionButtons, PrimaryHeart } from '../../components/visual';
+import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, CenteredContent, H3, AppointmentDetailsGrid, ActionButtons, PrimaryHeart } from '../../components/visual';
 import { Calendar, Globe, Currency } from '../../components/visual/icons';
 import { Clock, CheckCircle } from 'lucide-solid';
 import { DemoLayout } from './DemoLayout';
@@ -38,14 +38,13 @@ export function ReceiptStatePage() {
             </ul>
           </div>
 
-          <ServiceSummaryCard
-            icon={<PrimaryHeart />}
-            title="Therapeutic Massage"
-            subtitle="Deep tissue & relaxation therapy"
-          />
-
           <AppointmentDetailsGrid
             details={[
+              {
+                label: 'Service',
+                value: 'Massage',
+                icon: <PrimaryHeart />
+              },
               {
                 label: 'Date & Time',
                 value: 'Monday, October 20, 2025 at 2:00 PM',
@@ -58,7 +57,7 @@ export function ReceiptStatePage() {
               },
               {
                 label: 'Location',
-                value: 'OFFICE',
+                value: '123 Main Street, Suite 200, San Francisco, CA 94102',
                 icon: <Globe class="w-5 h-5 text-primary" />
               },
               {
@@ -68,6 +67,10 @@ export function ReceiptStatePage() {
               }
             ]}
           />
+          
+          <div class="text-sm text-muted-foreground">
+            A comprehensive 60-minute full body massage with essential oils and healing crystals.
+          </div>
 
           <ActionButtons
             buttons={[

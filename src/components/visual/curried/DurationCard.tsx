@@ -1,3 +1,9 @@
+/**
+ * @deprecated This component uses a data-driven anti-pattern.
+ * Use ServiceSummaryCard + DurationListContainer with composed DurationItem components instead.
+ * See ProviderBookingPage for the new pattern.
+ */
+
 import { Show } from 'solid-js';
 import { Card } from './Card';
 import { H4 } from '../base/H4';

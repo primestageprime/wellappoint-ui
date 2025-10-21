@@ -1,3 +1,9 @@
+/**
+ * @deprecated This component uses a data-driven anti-pattern.
+ * Use ServicesContainer with composed ServiceItem components instead.
+ * See ProviderBookingPage for the new pattern.
+ */
+
 import { For, Show } from 'solid-js';  
 import { ServiceItem } from './ServiceItem';
 import { Card } from './Card';

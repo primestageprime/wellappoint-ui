@@ -1,3 +1,9 @@
+/**
+ * @deprecated This component uses a data-driven anti-pattern.
+ * Use DurationListContainer with composed DurationItem components instead.
+ * See ProviderBookingPage for the new pattern.
+ */
+
 import { For } from 'solid-js';
 import { DurationItem } from './DurationItem';
 import { Card } from './Card';

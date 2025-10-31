@@ -267,12 +267,12 @@ export function CreateProviderPage() {
                     value={authCode()}
                     onInput={(e) => setAuthCode(e.currentTarget.value)}
                     placeholder="Paste the authorization code here"
-                    class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                    class="flex-1 h-12 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
                   />
                   <button
                     onClick={handleExchangeCode}
                     disabled={isExchangingCode() || !authCode()}
-                    class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    class="h-12 px-4 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     {isExchangingCode() ? 'Exchanging...' : 'Exchange'}
                   </button>
@@ -307,7 +307,7 @@ export function CreateProviderPage() {
                     onInput={(e) => setUsername(e.currentTarget.value)}
                     placeholder="emlprime-2025-09-19"
                     required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent bg-gray-50"
+                    class="w-full h-12 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent bg-gray-50"
                   />
                   <p class="text-xs text-gray-500 mt-1">
                     URL-safe username for the provider (defaults to emlprime-{new Date().toISOString().split('T')[0]})
@@ -325,7 +325,7 @@ export function CreateProviderPage() {
                     onInput={(e) => setProviderName(e.currentTarget.value)}
                     placeholder="Peter Stradinger"
                     required
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                    class="w-full h-12 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
                   />
                 </div>
 
@@ -341,7 +341,7 @@ export function CreateProviderPage() {
                     placeholder="1//04..."
                     required
                     disabled={!refreshToken()}
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500"
+                    class="w-full h-12 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500"
                   />
                   <p class="text-xs text-gray-500 mt-1">
                     {refreshToken() 
@@ -397,13 +397,6 @@ export function CreateProviderPage() {
             </div>
           </div>
 
-          <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
-            <h4 class="font-medium text-gray-900 mb-2">Alternative:</h4>
-            <p class="text-sm text-gray-600">
-              You can also run <code class="px-1.5 py-0.5 bg-gray-100 border border-gray-200 rounded text-sm font-mono">deno task oauth:setup</code> in the terminal
-              to get a refresh token, then paste it in Step 2.
-            </p>
-          </div>
         </div>
       </Content>
     </PageFrame>

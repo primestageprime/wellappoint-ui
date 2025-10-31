@@ -1,4 +1,4 @@
-import { createContext, useContext, JSX } from 'solid-js';
+import { createContext, useContext, JSX, createMemo } from 'solid-js';
 import { createStore } from 'solid-js/store';
 import { getBookingState, type BookingState, type BookingStateMachineResult } from '../utils/bookingStateMachine';
 
@@ -32,8 +32,14 @@ export function BookingProvider(props: { children: JSX.Element }) {
     appointmentConfirmed: null,
   });
 
-  // Derived state using the state machine
-  const currentStep = () => getBookingState(state);
+  // Derived state using the state machine - use createMemo for proper reactivity
+  const stepMemo = createMemo(() => {
+    const result = getBookingState(state);
+    console.log('🔄 State machine updated:', result.step, state);
+    return result;
+  });
+  
+  const currentStep = () => stepMemo();
 
   const actions: BookingActions = {
     selectService: (serviceName: string) => {

@@ -58,14 +58,19 @@ export function ProviderBookingPage() {
   const booking = useBooking();
   const servicesStore = useServices();
   
-  const username = () => params.username as string;
+  const providerUsername = () => params.username as string;
   const userEmail = () => auth.user()?.email;
+  const loggedInUsername = () => auth.user()?.nickname || auth.user()?.email?.split('@')[0] || '';
   
   // Appointments (existing hook)
-  const appointments = useAppointments(() => userEmail(), username);
+  const appointments = useAppointments(() => userEmail(), providerUsername);
   
   // Current step from state machine
-  const step = () => booking.currentStep();
+  const step = () => {
+    const result = booking.currentStep();
+    console.log('📊 Current step:', result.step, 'State:', booking.state);
+    return result;
+  };
   
   // Get unique services (for services list)
   const uniqueServices = createMemo(() => {
@@ -106,7 +111,7 @@ export function ProviderBookingPage() {
       const service = booking.state.selectedService;
       const duration = booking.state.selectedDuration;
       const email = userEmail();
-      const provider = username();
+      const provider = providerUsername();
       
       return service && duration && email ? 
         { service, duration, email, provider } : null;
@@ -191,7 +196,7 @@ export function ProviderBookingPage() {
         duration,
         slot,
         email,
-        username()
+        providerUsername()
       );
       
       console.log('🔍 Creating appointment:', bookingRequest);
@@ -218,7 +223,7 @@ export function ProviderBookingPage() {
     <PageFrame>
       <HeaderCard>
         <Split 
-          left={<Avatar username={username} />}
+          left={<Avatar username={loggedInUsername} />}
           right={<LogoutButton onLogout={() => auth.logout()}>Logout</LogoutButton>}
         />
       </HeaderCard>

@@ -180,6 +180,16 @@ export function ProviderBookingPage() {
         <Show when={step().showServices}>
           <ServiceSelectionStep
             services={uniqueServices()}
+            appointmentCount={
+              appointments.appointments() && typeof appointments.appointments() === 'object' && 'appointments' in appointments.appointments()!
+                ? (appointments.appointments() as UserAppointmentsResponse).appointments.length
+                : 0
+            }
+            appointmentRequestCap={
+              appointments.appointments() && typeof appointments.appointments() === 'object' && 'appointmentRequestCap' in appointments.appointments()!
+                ? (appointments.appointments() as UserAppointmentsResponse).appointmentRequestCap
+                : 1
+            }
             onSelectService={booking.actions.selectService}
           />
         </Show>

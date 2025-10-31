@@ -43,7 +43,7 @@ import { useAppointments } from '../hooks/useAppointments';
 import { getAvailableSlots } from '../services/availabilityService';
 import { createAppointment, createBookingRequest } from '../services/bookingService';
 import { type BookingService } from '../types/service';
-import { type AvailableSlot } from '../types/global';
+import { type AvailableSlot, type UserAppointmentsResponse } from '../types/global';
 
 export function ProviderBookingPage() {
   const auth = useAuth();
@@ -75,11 +75,12 @@ export function ProviderBookingPage() {
   const loggedInUsername = createMemo(() => {
     const apts = appointments.appointments();
     
-
-    
-    // Check if appointments resource has loaded and has displayName
-    if (apts && typeof apts === 'object' && apts.displayName) {
-      return apts.displayName;
+    // Check if we have valid appointments data (not an array, but the UserAppointmentsResponse object)
+    if (apts && typeof apts === 'object' && !Array.isArray(apts) && 'displayName' in apts) {
+      const response = apts as UserAppointmentsResponse;
+      if (response.displayName) {
+        return response.displayName;
+      }
     }
     // Fallback to email username while loading or if displayName not available
     return auth.user()?.nickname || auth.user()?.email?.split('@')[0] || '';

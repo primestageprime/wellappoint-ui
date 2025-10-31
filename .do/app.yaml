@@ -1,0 +1,16 @@
+name: wellappoint-ui
+region: nyc
+static_sites:
+  - name: web
+    source_dir: /
+    github:
+      repo: aarnold/wellappoint-ui
+      branch: main
+      deploy_on_push: true
+    build_command: npm install && npm run build
+    output_dir: dist
+    environment_slug: node-js
+    envs:
+      - key: NODE_ENV
+        value: production
+

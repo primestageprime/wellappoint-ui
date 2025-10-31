@@ -1,7 +1,6 @@
-import { Show, For, createMemo, createResource, type JSX } from 'solid-js';
+import { Show, createMemo, createResource } from 'solid-js';
 import { useAuth } from '../auth/AuthProvider';
 import { useParams } from '@solidjs/router';
-import { CheckCircle } from 'lucide-solid';
 import { 
   PageFrame,
   HeaderCard,
@@ -9,61 +8,30 @@ import {
   Split,
   Avatar,
   LogoutButton,
-  AppointmentsContainer,
-  AppointmentItem,
-  ServicesContainer,
-  ServiceItem,
-  ServiceSummaryCard,
-  DurationListContainer,
-  DurationItem,
-  DurationSummaryCard,
-  LoadingState,
-  TimeSlotListContainer,
-  DaySlotGroup,
-  TimeItem,
-  BookingConfirmationContainer,
-  AppointmentDetailsGrid,
-  ServiceDetailItem,
-  DescriptionDetailItem,
-  TimeSlotDetailItem,
-  DurationDetailItem,
-  LocationDetailItem,
-  PriceDetailItem,
-  ActionButtons,
-  SecondaryButton,
-  PrimaryButton,
-  CenteredContent,
-  PrimaryHeart,
-  PrimaryCraniosacral,
-  PrimaryFootReflexology,
 } from '../components/visual';
+import {
+  AppointmentsList,
+  ServiceSelectionStep,
+  DurationSelectionStep,
+  LoadingSlotsStep,
+  TimeSlotSelectionStep,
+  BookingConfirmationStep,
+  BookingSuccessStep,
+} from '../components/booking';
 import { useBooking } from '../stores/bookingStore';
 import { useServices } from '../stores/servicesStore';
 import { useAppointments } from '../hooks/useAppointments';
 import { getAvailableSlots } from '../services/availabilityService';
 import { createAppointment, createBookingRequest } from '../services/bookingService';
 import { type BookingService } from '../types/service';
-import { type AvailableSlot, type UserAppointmentsResponse } from '../types/global';
+import { type UserAppointmentsResponse } from '../types/global';
+import { groupSlotsByDate } from '../utils/slotFormatting';
 
 export function ProviderBookingPage() {
   const auth = useAuth();
   const params = useParams();
   const booking = useBooking();
   const servicesStore = useServices();
-  
-  // Service icons helper function - must be inside component to avoid SolidJS warnings
-  const getServiceIcon = (serviceName: string): JSX.Element | undefined => {
-    switch (serviceName) {
-      case 'Massage':
-        return <PrimaryHeart />;
-      case 'Cranial Sacral Massage':
-        return <PrimaryCraniosacral />;
-      case 'Reflexology':
-        return <PrimaryFootReflexology />;
-      default:
-        return undefined;
-    }
-  };
   
   const providerUsername = () => params.username as string;
   const userEmail = () => auth.user()?.email;
@@ -148,51 +116,8 @@ export function ProviderBookingPage() {
   // Group slots by date
   const groupedSlots = createMemo(() => {
     const slots = availableSlots();
-    if (!slots || slots.length === 0) return [];
-    
-    const grouped = new Map<string, AvailableSlot[]>();
-    
-    slots.forEach(slot => {
-      const date = new Date(slot.startTime);
-      const dateKey = date.toLocaleDateString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
-      
-      if (!grouped.has(dateKey)) {
-        grouped.set(dateKey, []);
-      }
-      grouped.get(dateKey)!.push(slot);
-    });
-    
-    return Array.from(grouped.entries()).map(([date, times]) => ({
-      date,
-      times: times.map(slot => ({
-        time: new Date(slot.startTime).toLocaleTimeString('en-US', {
-          hour: 'numeric',
-          minute: '2-digit'
-        }),
-        available: true,
-        slot // Store the original slot for booking
-      }))
-    }));
+    return groupSlotsByDate(slots || []);
   });
-  
-  // Format slot time for display
-  const formatSlotTime = (slot: AvailableSlot) => {
-    const date = new Date(slot.startTime);
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }) + ' at ' + date.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit'
-    });
-  };
   
   // Handle booking confirmation
   const handleConfirm = async () => {
@@ -248,203 +173,74 @@ export function ProviderBookingPage() {
       <Content>
         {/* Show appointments if they exist - but not on receipt page (receipt has its own) */}
         <Show when={!step().showAppointmentConfirmed && appointments.appointments() && typeof appointments.appointments() === 'object' && 'appointments' in appointments.appointments()!}>
-          <AppointmentsContainer 
-            appointmentRequestCap={(appointments.appointments() as any).appointmentRequestCap}
-            appointmentCount={(appointments.appointments() as any).appointments.length}
-          >
-            <For each={(appointments.appointments() as any).appointments}>
-              {(apt) => (
-                <AppointmentItem
-                  service={apt.service}
-                  duration={apt.duration}
-                  date={apt.date}
-                  time={apt.time}
-                />
-              )}
-            </For>
-          </AppointmentsContainer>
+          <AppointmentsList appointments={appointments.appointments() as UserAppointmentsResponse} />
         </Show>
         
         {/* STEP 1: Choose Service */}
         <Show when={step().showServices}>
-          <ServicesContainer title="Available Services">
-            <For each={uniqueServices()}>
-              {(service) => {
-                const desc = service.description || '';
-                return (
-                  <ServiceItem
-                    name={service.name}
-                    description={desc}
-                    icon={getServiceIcon(service.name) || <PrimaryHeart />}
-                    onClick={() => booking.actions.selectService(service.name)}
-                  />
-                );
-              }}
-            </For>
-          </ServicesContainer>
+          <ServiceSelectionStep
+            services={uniqueServices()}
+            onSelectService={booking.actions.selectService}
+          />
         </Show>
         
         {/* STEP 2: Choose Duration */}
         <Show when={step().showDurations}>
-          <ServiceSummaryCard
-            icon={getServiceIcon(booking.state.selectedService!) || <PrimaryHeart />}
-            title={booking.state.selectedService!}
-            subtitle={uniqueServices().find(s => s.name === booking.state.selectedService)?.description ?? ''}
-            onEdit={() => booking.actions.unselectService()}
+          <DurationSelectionStep
+            selectedServiceName={booking.state.selectedService!}
+            serviceDescription={uniqueServices().find(s => s.name === booking.state.selectedService)?.description ?? ''}
+            durations={serviceDurations()}
+            onSelectDuration={booking.actions.selectDuration}
+            onEditService={booking.actions.unselectService}
           />
-          
-          <DurationListContainer title="Available Durations">
-            <For each={serviceDurations()}>
-              {(service) => (
-                <DurationItem
-                  duration={`${service.duration} minutes`}
-                  description={service.durationDescription ?? service.description ?? ''}
-                  price={`$${service.price}`}
-                  onClick={() => booking.actions.selectDuration(service.duration)}
-                />
-              )}
-            </For>
-          </DurationListContainer>
         </Show>
         
         {/* STEP 3: Loading Slots - Show when state machine says loading OR when resource is still loading */}
         <Show when={step().showLoadingSlots || (booking.state.selectedDuration !== null && availableSlots.loading)}>
-          <ServiceSummaryCard
-            icon={getServiceIcon(booking.state.selectedService!) || <PrimaryHeart />}
-            title={booking.state.selectedService!}
-            subtitle={selectedServiceData()?.description ?? ''}
-          />
-          
-          <DurationSummaryCard
-            duration={booking.state.selectedDuration!}
+          <LoadingSlotsStep
+            selectedServiceName={booking.state.selectedService!}
+            serviceDescription={selectedServiceData()?.description ?? ''}
+            selectedDuration={booking.state.selectedDuration!}
+            durationDescription={selectedServiceData()?.durationDescription || ''}
             price={selectedServiceData()?.price || 0}
-            description={selectedServiceData()?.durationDescription || ''}
           />
-          
-          <LoadingState message="Finding available times..." />
         </Show>
         
         {/* STEP 4: Choose Slot - Only show when NOT loading and we have a duration selected */}
         <Show when={step().showSlotSelection && !availableSlots.loading && booking.state.selectedDuration !== null}>
-          <ServiceSummaryCard
-            icon={getServiceIcon(booking.state.selectedService!) || <PrimaryHeart />}
-            title={booking.state.selectedService!}
-            subtitle={selectedServiceData()?.description || ''}
-            onEdit={() => booking.actions.unselectService()}
-          />
-          
-          <DurationSummaryCard
-            duration={booking.state.selectedDuration!}
+          <TimeSlotSelectionStep
+            selectedServiceName={booking.state.selectedService!}
+            serviceDescription={selectedServiceData()?.description || ''}
+            selectedDuration={booking.state.selectedDuration!}
+            durationDescription={selectedServiceData()?.durationDescription || ''}
             price={selectedServiceData()?.price || 0}
-            description={selectedServiceData()?.durationDescription || ''}
-            onEdit={() => booking.actions.unselectDuration()}
+            groupedSlots={groupedSlots()}
+            onSelectSlot={booking.actions.selectSlot}
+            onEditService={booking.actions.unselectService}
+            onEditDuration={booking.actions.unselectDuration}
           />
-          
-          <Show when={groupedSlots().length > 0} fallback={
-            <div class="text-center py-8 text-muted-foreground">
-              No available time slots found. Please try a different service or duration.
-            </div>
-          }>
-            <TimeSlotListContainer>
-              <For each={groupedSlots()}>
-                {(daySlots) => (
-                  <DaySlotGroup date={daySlots.date}>
-                    <For each={daySlots.times}>
-                      {(timeSlot) => (
-                        <TimeItem
-                          time={timeSlot.time}
-                          available={timeSlot.available}
-                          onClick={() => booking.actions.selectSlot((timeSlot as any).slot)}
-                        />
-                      )}
-                    </For>
-                  </DaySlotGroup>
-                )}
-              </For>
-            </TimeSlotListContainer>
-          </Show>
         </Show>
         
-        {/* STEP 5: Confirmation */}
-        <Show when={step().showConfirmation}>
-          <BookingConfirmationContainer title="Confirm Your Appointment">
-            <AppointmentDetailsGrid>
-              <ServiceDetailItem value={booking.state.selectedService!} />
-              <DescriptionDetailItem value={selectedServiceData()?.description || ''} />
-              <TimeSlotDetailItem value={formatSlotTime(booking.state.selectedSlot!)} />
-              <DurationDetailItem value={`${booking.state.selectedDuration} minutes`} />
-              <LocationDetailItem value={booking.state.selectedSlot?.location || 'Location TBD'} />
-              <PriceDetailItem value={`$${selectedServiceData()?.price || 0}`} />
-            </AppointmentDetailsGrid>
-            
-            <ActionButtons>
-              <SecondaryButton onClick={() => booking.actions.goBackToSlots()}>Back</SecondaryButton>
-              <PrimaryButton onClick={handleConfirm}>Confirm Your Session</PrimaryButton>
-            </ActionButtons>
-          </BookingConfirmationContainer>
-        </Show>
-        
-        {/* STEP 6: Processing */}
-        <Show when={step().showCreatingAppointment}>
-          <BookingConfirmationContainer title="Processing Your Appointment">
-            <AppointmentDetailsGrid>
-              <ServiceDetailItem value={booking.state.selectedService!} />
-              <DescriptionDetailItem value={selectedServiceData()?.description || ''} />
-              <TimeSlotDetailItem value={formatSlotTime(booking.state.selectedSlot!)} />
-              <DurationDetailItem value={`${booking.state.selectedDuration} minutes`} />
-              <LocationDetailItem value={booking.state.selectedSlot?.location || 'Location TBD'} />
-              <PriceDetailItem value={`$${selectedServiceData()?.price || 0}`} />
-            </AppointmentDetailsGrid>
-            
-            <LoadingState message="Submitting your appointment request..." />
-          </BookingConfirmationContainer>
+        {/* STEP 5: Confirmation & STEP 6: Processing */}
+        <Show when={step().showConfirmation || step().showCreatingAppointment}>
+          <BookingConfirmationStep
+            serviceName={booking.state.selectedService!}
+            serviceDescription={selectedServiceData()?.description || ''}
+            duration={booking.state.selectedDuration!}
+            slot={booking.state.selectedSlot!}
+            price={selectedServiceData()?.price || 0}
+            isSubmitting={step().showCreatingAppointment}
+            onConfirm={handleConfirm}
+            onBack={booking.actions.goBackToSlots}
+          />
         </Show>
         
         {/* STEP 7: Success */}
         <Show when={step().showAppointmentConfirmed}>
-          {/* Show updated appointments list */}
-          <Show when={appointments.appointments() && typeof appointments.appointments() === 'object' && 'appointments' in appointments.appointments()!}>
-            <AppointmentsContainer 
-              appointmentRequestCap={(appointments.appointments() as any).appointmentRequestCap}
-              appointmentCount={(appointments.appointments() as any).appointments.length}
-            >
-              <For each={(appointments.appointments() as any).appointments}>
-                {(apt) => (
-                  <AppointmentItem
-                    service={apt.service}
-                    duration={apt.duration}
-                    date={apt.date}
-                    time={apt.time}
-                  />
-                )}
-              </For>
-            </AppointmentsContainer>
-          </Show>
-          
-          <CenteredContent>
-            <div class="flex justify-center mb-4">
-              <CheckCircle class="w-16 h-16 text-green-600" />
-            </div>
-            <p class="text-card-foreground font-semibold text-lg">Appointment Request Confirmed!</p>
-            <p class="text-muted-foreground text-center max-w-md">
-              Your appointment request has been submitted successfully. You'll receive a confirmation email shortly.
-            </p>
-          </CenteredContent>
-          
-          <div class="bg-green-50 border border-green-200 rounded-lg p-6">
-            <h4 class="font-semibold text-green-900 mb-2">What happens next?</h4>
-            <ul class="text-sm text-green-800 space-y-1">
-              <li>• Check your email for confirmation details</li>
-              <li>• Your provider will review and confirm your appointment</li>
-              <li>• You'll receive a calendar invitation once confirmed</li>
-            </ul>
-          </div>
-          
-          <ActionButtons>
-            <PrimaryButton onClick={() => booking.actions.reset()}>
-              Book Another Appointment
-            </PrimaryButton>
-          </ActionButtons>
+          <BookingSuccessStep
+            appointments={(appointments.appointments() || undefined) as UserAppointmentsResponse | undefined}
+            onBookAnother={booking.actions.reset}
+          />
         </Show>
       </Content>
     </PageFrame>

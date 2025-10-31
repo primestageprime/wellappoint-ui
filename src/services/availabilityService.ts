@@ -11,8 +11,7 @@ export async function getAvailableSlots(
   provider?: string
 ): Promise<AvailableSlot[]> {
   try {
-    console.log('getAvailableSlots called with:', { service, duration, email });
-    
+
     // Validate inputs
     if (!service || !duration || !email) {
       throw new Error(`Missing required parameters: service=${service}, duration=${duration}, email=${email}`);
@@ -34,7 +33,6 @@ export async function getAvailableSlots(
       params.set('username', provider);
     }
 
-    console.log('Making request to:', `/availability?${params}`);
     const response = await fetch(`/availability?${params}`);
     
     if (!response.ok) {
@@ -44,7 +42,6 @@ export async function getAvailableSlots(
     }
     
     const data = await response.json();
-    console.log('Availability response:', data);
     return data.data as AvailableSlot[];
   } catch (error) {
     console.error('Failed to fetch available slots:', error);

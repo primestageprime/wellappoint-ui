@@ -21,7 +21,7 @@ export async function getUserAppointments(userEmail: string, provider?: string):
     const rawData = await response.json();
 
     // Log the full response including displayName for debugging
-    console.log('📋 Raw appointments response:', JSON.stringify(rawData, null, 2));
+    // console.log('📋 Raw appointments response:', JSON.stringify(rawData, null, 2));
 
     // Preserve displayName and other metadata from the response
     const data = rawData.appointments.map((appointment: UserAppointment) => ({

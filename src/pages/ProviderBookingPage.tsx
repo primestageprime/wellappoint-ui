@@ -75,12 +75,7 @@ export function ProviderBookingPage() {
   const loggedInUsername = createMemo(() => {
     const apts = appointments.appointments();
     
-    // Log appointments data for debugging
-    console.log('📋 Appointments resource data:', apts);
-    if (apts && typeof apts === 'object') {
-      console.log('📋 DisplayName in appointments:', apts.displayName);
-      console.log('📋 Client object in appointments:', apts.client);
-    }
+
     
     // Check if appointments resource has loaded and has displayName
     if (apts && typeof apts === 'object' && apts.displayName) {

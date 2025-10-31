@@ -206,6 +206,7 @@ export function ProviderBookingPage() {
       const result = await createAppointment(bookingRequest);
       
       if (result.success) {
+        booking.actions.setSubmitting(false);
         booking.actions.setConfirmed(true);
         // Refetch appointments to show the new one
         appointments.refetchAppointments();

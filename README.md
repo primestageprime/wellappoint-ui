@@ -82,3 +82,20 @@ The app proxies API requests to your backend server running on `localhost:8000`.
 Ensure your backend server (appointed) is running and accessible at `http://localhost:8000` with the following endpoint:
 
 - `GET /services` - Returns JSON array of services with `name`, `duration`, and `price` fields
+
+## License
+
+This project uses a dual licensing model:
+
+### MIT License (Core Software)
+The core software is available under the MIT License for open source and educational use.
+
+### Commercial License (Support & Custom Development)
+For commercial use, custom functions, code modifications, configuration assistance, support, and bug fixes, a monthly/annual subscription is required.
+
+## Contact
+
+For commercial licensing, support, and custom development:
+
+- **Phone**: (805) 637-8126
+- **Email**: peter.stradinger@primestagetechnology.com

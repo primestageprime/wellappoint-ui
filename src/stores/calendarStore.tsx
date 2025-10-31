@@ -23,7 +23,16 @@ interface CalendarContextValue {
 const CalendarContext = createContext<CalendarContextValue>();
 
 async function fetchCalendarEvents(username: string, email: string): Promise<CalendarData> {
-  console.log('📅 fetchCalendarEvents called for:', { username, email });
+  // Calendar endpoint not implemented yet - skip fetch to avoid 404 errors
+  // TODO: Enable calendar fetching when /api/calendar/events endpoint is implemented
+  const CALENDAR_ENABLED = false;
+  
+  if (!CALENDAR_ENABLED) {
+    return {
+      events: [],
+      fetchedAt: new Date()
+    };
+  }
   
   // Calculate date range (next 2 weeks)
   const today = new Date();
@@ -38,12 +47,11 @@ async function fetchCalendarEvents(username: string, email: string): Promise<Cal
     end: formatDateToISO(twoWeeksFromNow)
   });
   
-  // Try to fetch calendar events - endpoint doesn't exist yet, so gracefully handle 404
+  // Try to fetch calendar events
   try {
     const response = await fetch(`/api/calendar/events?${params}`);
     
     if (response.status === 404) {
-      console.log('⚠️ Calendar endpoint not implemented yet, returning empty events');
       return {
         events: [],
         fetchedAt: new Date()
@@ -55,14 +63,13 @@ async function fetchCalendarEvents(username: string, email: string): Promise<Cal
     }
     
     const data = await response.json();
-    console.log('✅ Calendar events fetched');
     
     return {
       events: data.events || [],
       fetchedAt: new Date()
     };
   } catch (error) {
-    console.warn('⚠️ Calendar fetch failed, returning empty events:', error);
+    console.error('Calendar fetch failed:', error);
     return {
       events: [],
       fetchedAt: new Date()
@@ -93,12 +100,10 @@ export function CalendarProvider(props: { children: JSX.Element }) {
   // Auto-refresh every 5 minutes
   onMount(() => {
     const intervalId = setInterval(() => {
-      console.log('🔄 Auto-refreshing calendar data');
       refetch();
     }, 5 * 60 * 1000); // 5 minutes
     
     onCleanup(() => {
-      console.log('🛑 Clearing calendar auto-refresh interval');
       clearInterval(intervalId);
     });
   });

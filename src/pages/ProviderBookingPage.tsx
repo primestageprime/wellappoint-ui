@@ -45,18 +45,25 @@ import { createAppointment, createBookingRequest } from '../services/bookingServ
 import { type BookingService } from '../types/service';
 import { type AvailableSlot } from '../types/global';
 
-// Service icons mapping
-const serviceIcons: Record<string, JSX.Element> = {
-  'Massage': <PrimaryHeart />,
-  'Cranial Sacral Massage': <PrimaryCraniosacral />,
-  'Reflexology': <PrimaryFootReflexology />,
-};
-
 export function ProviderBookingPage() {
   const auth = useAuth();
   const params = useParams();
   const booking = useBooking();
   const servicesStore = useServices();
+  
+  // Service icons helper function - must be inside component to avoid SolidJS warnings
+  const getServiceIcon = (serviceName: string): JSX.Element | undefined => {
+    switch (serviceName) {
+      case 'Massage':
+        return <PrimaryHeart />;
+      case 'Cranial Sacral Massage':
+        return <PrimaryCraniosacral />;
+      case 'Reflexology':
+        return <PrimaryFootReflexology />;
+      default:
+        return undefined;
+    }
+  };
   
   const providerUsername = () => params.username as string;
   const userEmail = () => auth.user()?.email;
@@ -67,9 +74,7 @@ export function ProviderBookingPage() {
   
   // Current step from state machine
   const step = () => {
-    const result = booking.currentStep();
-    console.log('📊 Current step:', result.step, 'State:', booking.state);
-    return result;
+    return booking.currentStep();
   };
   
   // Get unique services (for services list)
@@ -117,7 +122,6 @@ export function ProviderBookingPage() {
         { service, duration, email, provider } : null;
     },
     async (params) => {
-      console.log('🔍 Fetching slots for:', params);
       return await getAvailableSlots(
         params.service,
         params.duration,
@@ -184,7 +188,7 @@ export function ProviderBookingPage() {
     const email = userEmail();
     
     if (!service || !duration || !slot || !email) {
-      console.error('❌ Missing booking information');
+      console.error('Missing booking information');
       return;
     }
     
@@ -199,21 +203,19 @@ export function ProviderBookingPage() {
         providerUsername()
       );
       
-      console.log('🔍 Creating appointment:', bookingRequest);
       const result = await createAppointment(bookingRequest);
       
       if (result.success) {
-        console.log('✅ Appointment created successfully');
         booking.actions.setConfirmed(true);
         // Refetch appointments to show the new one
         appointments.refetchAppointments();
       } else {
-        console.error('❌ Appointment creation failed:', result.error);
+        console.error('Appointment creation failed:', result.error);
         alert(result.error || 'Failed to create appointment');
         booking.actions.setSubmitting(false);
       }
     } catch (error) {
-      console.error('❌ Booking error:', error);
+      console.error('Booking error:', error);
       alert('Failed to create appointment');
       booking.actions.setSubmitting(false);
     }
@@ -258,7 +260,7 @@ export function ProviderBookingPage() {
                   <ServiceItem
                     name={service.name}
                     description={desc}
-                    icon={serviceIcons[service.name] || <PrimaryHeart />}
+                    icon={getServiceIcon(service.name) || <PrimaryHeart />}
                     onClick={() => booking.actions.selectService(service.name)}
                   />
                 );
@@ -270,7 +272,7 @@ export function ProviderBookingPage() {
         {/* STEP 2: Choose Duration */}
         <Show when={step().showDurations}>
           <ServiceSummaryCard
-            icon={serviceIcons[booking.state.selectedService!] || <PrimaryHeart />}
+            icon={getServiceIcon(booking.state.selectedService!) || <PrimaryHeart />}
             title={booking.state.selectedService!}
             subtitle={uniqueServices().find(s => s.name === booking.state.selectedService)?.description ?? ''}
             onEdit={() => booking.actions.unselectService()}
@@ -290,10 +292,10 @@ export function ProviderBookingPage() {
           </DurationListContainer>
         </Show>
         
-        {/* STEP 3: Loading Slots */}
-        <Show when={step().showLoadingSlots}>
+        {/* STEP 3: Loading Slots - Show when state machine says loading OR when resource is still loading */}
+        <Show when={step().showLoadingSlots || (booking.state.selectedDuration !== null && availableSlots.loading)}>
           <ServiceSummaryCard
-            icon={serviceIcons[booking.state.selectedService!] || <PrimaryHeart />}
+            icon={getServiceIcon(booking.state.selectedService!) || <PrimaryHeart />}
             title={booking.state.selectedService!}
             subtitle={selectedServiceData()?.description ?? ''}
           />
@@ -307,10 +309,10 @@ export function ProviderBookingPage() {
           <LoadingState message="Finding available times..." />
         </Show>
         
-        {/* STEP 4: Choose Slot */}
-        <Show when={step().showSlotSelection}>
+        {/* STEP 4: Choose Slot - Only show when NOT loading and we have a duration selected */}
+        <Show when={step().showSlotSelection && !availableSlots.loading && booking.state.selectedDuration !== null}>
           <ServiceSummaryCard
-            icon={serviceIcons[booking.state.selectedService!] || <PrimaryHeart />}
+            icon={getServiceIcon(booking.state.selectedService!) || <PrimaryHeart />}
             title={booking.state.selectedService!}
             subtitle={selectedServiceData()?.description || ''}
             onEdit={() => booking.actions.unselectService()}

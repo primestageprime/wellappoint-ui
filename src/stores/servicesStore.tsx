@@ -9,15 +9,12 @@ interface ServicesContextValue {
 const ServicesContext = createContext<ServicesContextValue>();
 
 async function fetchServices(username: string): Promise<BookingService[]> {
-  console.log('🔍 fetchServices called for username:', username);
-  
   const response = await fetch(`/services?username=${username}`);
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
   
   const data = await response.json();
-  console.log('✅ Services fetched:', data);
   
   // Extract services array from response
   return data.data || data;

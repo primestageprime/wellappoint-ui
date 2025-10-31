@@ -25,7 +25,6 @@ import { ReceiptStatePage } from './pages/demo/ReceiptStatePage';
 
 function LoginWrapper() {
   const location = useLocation();
-  console.log('🔍 LoginWrapper - pathname:', location.pathname);
   return <LoginPage intendedUrl={location.pathname} />;
 }
 
@@ -42,9 +41,6 @@ function ProviderBookingPageWrapper() {
 
 function App() {
   const auth = useAuth();
-  
-  console.log('🔍 App - isAuthenticated:', auth.isAuthenticated());
-  console.log('🔍 App - loading:', auth.loading());
 
   // Get the user's provider username for the default route
   const getDefaultRoute = () => {

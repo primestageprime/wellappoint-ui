@@ -35,7 +35,6 @@ export function BookingProvider(props: { children: JSX.Element }) {
   // Derived state using the state machine - use createMemo for proper reactivity
   const stepMemo = createMemo(() => {
     const result = getBookingState(state);
-    console.log('🔄 State machine updated:', result.step, state);
     return result;
   });
   
@@ -43,7 +42,6 @@ export function BookingProvider(props: { children: JSX.Element }) {
 
   const actions: BookingActions = {
     selectService: (serviceName: string) => {
-      console.log('📦 BookingStore: selectService', serviceName);
       setState({
         selectedService: serviceName,
         selectedDuration: null,
@@ -53,7 +51,6 @@ export function BookingProvider(props: { children: JSX.Element }) {
     },
 
     unselectService: () => {
-      console.log('📦 BookingStore: unselectService');
       setState({
         selectedService: null,
         selectedDuration: null,
@@ -63,7 +60,6 @@ export function BookingProvider(props: { children: JSX.Element }) {
     },
 
     selectDuration: (duration: number) => {
-      console.log('📦 BookingStore: selectDuration', duration);
       setState('selectedDuration', duration);
       setState('selectedSlot', null);
       setState('isLoadingSlots', true);
@@ -73,7 +69,6 @@ export function BookingProvider(props: { children: JSX.Element }) {
     },
 
     unselectDuration: () => {
-      console.log('📦 BookingStore: unselectDuration');
       setState({
         selectedDuration: null,
         selectedSlot: null,
@@ -81,27 +76,22 @@ export function BookingProvider(props: { children: JSX.Element }) {
     },
 
     selectSlot: (slot: any) => {
-      console.log('📦 BookingStore: selectSlot', slot);
       setState('selectedSlot', slot);
     },
 
     goBackToSlots: () => {
-      console.log('📦 BookingStore: goBackToSlots');
       setState('selectedSlot', null);
     },
 
     setSubmitting: (isSubmitting: boolean) => {
-      console.log('📦 BookingStore: setSubmitting', isSubmitting);
       setState('isSubmitting', isSubmitting);
     },
 
     setConfirmed: (confirmed: boolean) => {
-      console.log('📦 BookingStore: setConfirmed', confirmed);
       setState('appointmentConfirmed', confirmed);
     },
 
     reset: () => {
-      console.log('📦 BookingStore: reset');
       setState({
         selectedService: null,
         selectedDuration: null,

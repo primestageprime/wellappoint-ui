@@ -7,19 +7,30 @@ import { type ServicesListProps } from '../types/components';
 const serviceData = {
   'Massage': {
     description: 'Deep tissue & relaxation therapy',
-    icon: <Heart class="w-5 h-5 text-primary" />
   },
   'Cranial Sacral Massage': {
     description: 'Gentle energy work & alignment',
-    icon: <Craniosacral class="w-5 h-5 text-primary" />
   },
   'Reflexology': {
     description: 'Pressure point healing',
-    icon: <FootReflexology class="w-5 h-5 text-primary" />
   }
 };
 
 export function ServicesList(props: ServicesListProps) {
+  // Service icons helper function - must be inside component to avoid SolidJS warnings
+  const getServiceIcon = (serviceName: string) => {
+    switch (serviceName) {
+      case 'Massage':
+        return <Heart class="w-5 h-5 text-primary" />;
+      case 'Cranial Sacral Massage':
+        return <Craniosacral class="w-5 h-5 text-primary" />;
+      case 'Reflexology':
+        return <FootReflexology class="w-5 h-5 text-primary" />;
+      default:
+        return null;
+    }
+  };
+  
   // Get unique service names
   const uniqueServices = () => {
     const serviceMap = new Map<string, BookingService>();
@@ -39,7 +50,7 @@ export function ServicesList(props: ServicesListProps) {
             <ServiceItem
               name={service.name}
               description={service.description || serviceData[service.name as keyof typeof serviceData]?.description || 'Professional wellness service'}
-              icon={serviceData[service.name as keyof typeof serviceData]?.icon}
+              icon={getServiceIcon(service.name)}
               onClick={() => props.onServiceSelect(service.name)}
             />
           )}

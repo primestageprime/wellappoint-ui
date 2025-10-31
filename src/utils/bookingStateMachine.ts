@@ -50,7 +50,10 @@ export function getBookingState(state: BookingState): BookingStateMachineResult 
   // Determine the current step
   let step: BookingStep;
   
-  if (!selectedService) {
+  // Check submission state first - if submitting, show processing regardless of other states
+  if (isSubmitting) {
+    step = 'creating_appointment';
+  } else if (!selectedService) {
     step = 'choose_services';
   } else if (!selectedDuration) {
     step = 'choose_duration';
@@ -60,10 +63,10 @@ export function getBookingState(state: BookingState): BookingStateMachineResult 
     step = 'choose_slot';
   } else if (selectedSlot && appointmentConfirmed === null) {
     step = 'confirmation';
-  } else if (isSubmitting) {
-    step = 'creating_appointment';
-  } else {
+  } else if (appointmentConfirmed === true) {
     step = 'appointment_confirmed';
+  } else {
+    step = 'choose_services'; // fallback
   }
 
   // Return which components should be visible

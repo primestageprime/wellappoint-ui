@@ -232,8 +232,8 @@ export function ProviderBookingPage() {
       </HeaderCard>
       
       <Content>
-        {/* Show appointments if they exist */}
-        <Show when={appointments.appointments() && typeof appointments.appointments() === 'object' && 'appointments' in appointments.appointments()!}>
+        {/* Show appointments if they exist - but not on receipt page (receipt has its own) */}
+        <Show when={!step().showAppointmentConfirmed && appointments.appointments() && typeof appointments.appointments() === 'object' && 'appointments' in appointments.appointments()!}>
           <AppointmentsContainer 
             appointmentRequestCap={(appointments.appointments() as any).appointmentRequestCap}
             appointmentCount={(appointments.appointments() as any).appointments.length}

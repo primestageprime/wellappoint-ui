@@ -20,15 +20,22 @@ export async function getUserAppointments(userEmail: string, provider?: string):
     
     const rawData = await response.json();
 
-    
+    // Log the full response including displayName for debugging
+    console.log('📋 Raw appointments response:', JSON.stringify(rawData, null, 2));
+
+    // Preserve displayName and other metadata from the response
     const data = rawData.appointments.map((appointment: UserAppointment) => ({
       ...appointment,
       startTime: formatDateTime(appointment.startTime),
       endTime: formatDateTime(appointment.endTime),
       time: formatTime(appointment.startTime)
     }));
-    rawData.appointments = data;
-    return rawData as UserAppointmentsResponse;
+    
+    // Return the full response with displayName preserved
+    return {
+      ...rawData,
+      appointments: data
+    } as UserAppointmentsResponse;
   } catch (error) {
     console.error('Failed to fetch user appointments:', error);
     throw new Error('Failed to fetch user appointments');

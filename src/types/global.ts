@@ -48,6 +48,13 @@ export interface UserAppointment {
 }
 
 export interface UserAppointmentsResponse {
+  displayName?: string; // Preferred Name > Name > email username
+  client?: {
+    email: string;
+    name?: string;
+    preferredName?: string;
+    appointmentRequestCap: number;
+  };
   success: boolean;
   appointments: UserAppointment[];
   count: number;

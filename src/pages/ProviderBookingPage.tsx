@@ -67,10 +67,28 @@ export function ProviderBookingPage() {
   
   const providerUsername = () => params.username as string;
   const userEmail = () => auth.user()?.email;
-  const loggedInUsername = () => auth.user()?.nickname || auth.user()?.email?.split('@')[0] || '';
   
   // Appointments (existing hook)
   const appointments = useAppointments(() => userEmail(), providerUsername);
+  
+  // Use display name from appointments (Preferred Name > Name > email username), fallback to email username
+  const loggedInUsername = createMemo(() => {
+    const apts = appointments.appointments();
+    
+    // Log appointments data for debugging
+    console.log('📋 Appointments resource data:', apts);
+    if (apts && typeof apts === 'object') {
+      console.log('📋 DisplayName in appointments:', apts.displayName);
+      console.log('📋 Client object in appointments:', apts.client);
+    }
+    
+    // Check if appointments resource has loaded and has displayName
+    if (apts && typeof apts === 'object' && apts.displayName) {
+      return apts.displayName;
+    }
+    // Fallback to email username while loading or if displayName not available
+    return auth.user()?.nickname || auth.user()?.email?.split('@')[0] || '';
+  });
   
   // Current step from state machine
   const step = () => {

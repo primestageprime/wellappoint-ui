@@ -261,22 +261,22 @@ export function CreateProviderPage() {
                 <label class="block text-sm font-medium text-gray-700 mb-2">
                   Authorization Code
                 </label>
-                <div class="flex gap-2">
-                  <input
-                    type="text"
-                    value={authCode()}
-                    onInput={(e) => setAuthCode(e.currentTarget.value)}
-                    placeholder="Paste the authorization code here"
-                    class="flex-1 h-12 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                  />
-                  <button
-                    onClick={handleExchangeCode}
-                    disabled={isExchangingCode() || !authCode()}
-                    class="h-12 px-4 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    {isExchangingCode() ? 'Exchanging...' : 'Exchange'}
-                  </button>
-                </div>
+                       <div class="flex gap-2">
+                         <input
+                           type="text"
+                           value={authCode()}
+                           onInput={(e) => setAuthCode(e.currentTarget.value)}
+                           placeholder="Paste the authorization code here"
+                           class="flex-1 h-6 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                         />
+                         <button
+                           onClick={handleExchangeCode}
+                           disabled={isExchangingCode() || !authCode()}
+                           class="h-6 px-4 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                         >
+                           {isExchangingCode() ? 'Exchanging...' : 'Exchange'}
+                         </button>
+                       </div>
                 <p class="text-xs text-gray-500 mt-2">
                   After completing OAuth, copy the authorization code from the Google page and paste it above.
                 </p>
@@ -296,60 +296,60 @@ export function CreateProviderPage() {
               <h3 class="text-base font-semibold text-gray-900 mb-4">2. Provider Configuration</h3>
               
               <form onSubmit={handleProviderSetup} class="space-y-4">
-                <div>
-                  <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
-                    Username
-                  </label>
-                  <input
-                    id="username"
-                    type="text"
-                    value={username()}
-                    onInput={(e) => setUsername(e.currentTarget.value)}
-                    placeholder="emlprime-2025-09-19"
-                    required
-                    class="w-full h-12 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent bg-gray-50"
-                  />
-                  <p class="text-xs text-gray-500 mt-1">
-                    URL-safe username for the provider (defaults to emlprime-{new Date().toISOString().split('T')[0]})
-                  </p>
-                </div>
+                       <div>
+                         <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
+                           Username
+                         </label>
+                         <input
+                           id="username"
+                           type="text"
+                           value={username()}
+                           onInput={(e) => setUsername(e.currentTarget.value)}
+                           placeholder="emlprime-2025-09-19"
+                           required
+                           class="w-full h-6 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent bg-gray-50"
+                         />
+                         <p class="text-xs text-gray-500 mt-1">
+                           URL-safe username for the provider (defaults to emlprime-{new Date().toISOString().split('T')[0]})
+                         </p>
+                       </div>
 
-                <div>
-                  <label for="providerName" class="block text-sm font-medium text-gray-700 mb-2">
-                    Provider Name
-                  </label>
-                  <input
-                    id="providerName"
-                    type="text"
-                    value={providerName()}
-                    onInput={(e) => setProviderName(e.currentTarget.value)}
-                    placeholder="Peter Stradinger"
-                    required
-                    class="w-full h-12 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                  />
-                </div>
+                       <div>
+                         <label for="providerName" class="block text-sm font-medium text-gray-700 mb-2">
+                           Provider Name
+                         </label>
+                         <input
+                           id="providerName"
+                           type="text"
+                           value={providerName()}
+                           onInput={(e) => setProviderName(e.currentTarget.value)}
+                           placeholder="Peter Stradinger"
+                           required
+                           class="w-full h-6 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                         />
+                       </div>
 
-                <div>
-                  <label for="refreshToken" class="block text-sm font-medium text-gray-700 mb-2">
-                    Refresh Token
-                  </label>
-                  <input
-                    id="refreshToken"
-                    type="text"
-                    value={refreshToken()}
-                    onInput={(e) => setRefreshToken(e.currentTarget.value)}
-                    placeholder="1//04..."
-                    required
-                    disabled={!refreshToken()}
-                    class="w-full h-12 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500"
-                  />
-                  <p class="text-xs text-gray-500 mt-1">
-                    {refreshToken() 
-                      ? "Complete OAuth setup above to get your refresh token"
-                      : "Complete OAuth setup above to get your refresh token"
-                    }
-                  </p>
-                </div>
+                       <div>
+                         <label for="refreshToken" class="block text-sm font-medium text-gray-700 mb-2">
+                           Refresh Token
+                         </label>
+                         <input
+                           id="refreshToken"
+                           type="text"
+                           value={refreshToken()}
+                           onInput={(e) => setRefreshToken(e.currentTarget.value)}
+                           placeholder="1//04..."
+                           required
+                           disabled={!refreshToken()}
+                           class="w-full h-6 px-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500"
+                         />
+                         <p class="text-xs text-gray-500 mt-1">
+                           {refreshToken() 
+                             ? "Complete OAuth setup above to get your refresh token"
+                             : "Complete OAuth setup above to get your refresh token"
+                           }
+                         </p>
+                       </div>
 
                 <button
                   type="submit"

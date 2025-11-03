@@ -1,6 +1,7 @@
 import { createSignal, createEffect } from 'solid-js';
 import { type BookingService } from '../types/service';
 import { annotateOnClick } from '../utils/serviceUtils';
+import { apiFetch } from '../config/api';
 
 export function useServices(username: () => string, onServiceSelect?: (serviceName: string) => void) {
   const [services, setServices] = createSignal<BookingService[]>([]);
@@ -13,7 +14,7 @@ export function useServices(username: () => string, onServiceSelect?: (serviceNa
       setLoading(true);
       setError(null);
       
-      const response = await fetch(`/services?username=${username()}`);
+      const response = await apiFetch(`/services?username=${username()}`);
       console.log('🔍 Services response status:', response.status);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

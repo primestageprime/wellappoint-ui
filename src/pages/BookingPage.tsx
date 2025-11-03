@@ -6,6 +6,7 @@ import { AvailabilityList } from '../components/AvailabilityList';
 import { ConfirmationPanel } from '../components/ConfirmationPanel';
 import { LoadingPanel } from '../components/LoadingPanel';
 import { SuccessPanel } from '../components/SuccessPanel';
+import { apiFetch } from '../config/api';
 import { 
   ProviderContent, 
   AppointmentsCard, 
@@ -58,7 +59,7 @@ export function BookingPage() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/services');
+      const response = await apiFetch('/services');
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -164,7 +165,7 @@ export function BookingPage() {
 
       console.log('🔍 Creating appointment with request:', requestBody);
 
-      const response = await fetch('/appointment_request', {
+      const response = await apiFetch('/appointment_request', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

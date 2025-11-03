@@ -1,8 +1,9 @@
 import { Provider } from '../types/provider';
+import { apiFetch } from '../config/api';
 
 export async function getProviderDetails(): Promise<Provider | null> {
   try {
-    const response = await fetch('/api/provider');
+    const response = await apiFetch('/api/provider');
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

@@ -1,6 +1,7 @@
 import { createContext, useContext, JSX, createResource, Resource } from 'solid-js';
 import { useParams } from '@solidjs/router';
 import { type BookingService } from '../types/service';
+import { apiFetch } from '../config/api';
 
 interface ServicesContextValue {
   services: Resource<BookingService[]>;
@@ -9,7 +10,7 @@ interface ServicesContextValue {
 const ServicesContext = createContext<ServicesContextValue>();
 
 async function fetchServices(username: string): Promise<BookingService[]> {
-  const response = await fetch(`/services?username=${username}`);
+  const response = await apiFetch(`/services?username=${username}`);
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }

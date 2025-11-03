@@ -1,6 +1,7 @@
 import { createSignal, createEffect, For, Show } from 'solid-js';
 import { Clock } from 'lucide-solid';
 import { useAuth } from '../auth/AuthProvider';
+import { apiFetch } from '../config/api';
 
 interface AvailabilityRequest {
   duration: number;
@@ -147,7 +148,7 @@ export function BookingForm(props: BookingFormProps) {
       };
 
       // Make POST request to availability endpoint
-      const response = await fetch('/availability', {
+      const response = await apiFetch('/availability', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -218,7 +219,7 @@ export function BookingForm(props: BookingFormProps) {
 
       console.log('Submitting appointment request:', requestBody);
 
-      const response = await fetch('/appointment-request', {
+      const response = await apiFetch('/appointment-request', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

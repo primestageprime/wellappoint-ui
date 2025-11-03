@@ -1,4 +1,5 @@
 import type { AvailableSlot } from '../types/global';
+import { apiFetch } from '../config/api';
 
 export interface BookingRequest {
   service: string;
@@ -21,7 +22,7 @@ export interface BookingResponse {
 
 export async function createAppointment(bookingData: BookingRequest): Promise<BookingResponse> {
   try {
-    const response = await fetch('/appointment_request', {
+    const response = await apiFetch('/appointment_request', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

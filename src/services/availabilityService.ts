@@ -1,5 +1,6 @@
 import type { AvailableSlot, AvailabilityResponse } from '../types/global';
 import { formatDateToISO } from '../utils/dateUtils';
+import { apiFetch } from '../config/api';
 
 // Re-export types from global
 export type { AvailableSlot, AvailabilityResponse };
@@ -33,7 +34,7 @@ export async function getAvailableSlots(
       params.set('username', provider);
     }
 
-    const response = await fetch(`/availability?${params}`);
+    const response = await apiFetch(`/availability?${params}`);
     
     if (!response.ok) {
       const errorText = await response.text();

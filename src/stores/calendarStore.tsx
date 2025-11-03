@@ -1,6 +1,7 @@
 import { createContext, useContext, JSX, createResource, Resource, onMount, onCleanup } from 'solid-js';
 import { useParams } from '@solidjs/router';
 import { useAuth } from '../auth/AuthProvider';
+import { apiFetch } from '../config/api';
 
 // Raw calendar event structure
 export interface CalendarEvent {
@@ -49,7 +50,7 @@ async function fetchCalendarEvents(username: string, email: string): Promise<Cal
   
   // Try to fetch calendar events
   try {
-    const response = await fetch(`/api/calendar/events?${params}`);
+    const response = await apiFetch(`/api/calendar/events?${params}`);
     
     if (response.status === 404) {
       return {

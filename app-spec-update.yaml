@@ -1,0 +1,30 @@
+domains:
+- domain: wellappoint.com
+  type: PRIMARY
+  zone: wellappoint.com
+ingress:
+  rules:
+  - component:
+      name: web
+    match:
+      path:
+        prefix: /
+name: wellappoint-ui
+region: nyc
+static_sites:
+- build_command: pnpm install && pnpm run build
+  environment_slug: node-js
+  envs:
+  - key: NODE_ENV
+    scope: BUILD_TIME
+    value: production
+  - key: VITE_API_BASE_URL
+    scope: BUILD_TIME
+    value: https://wellappoint-api-mlt3a.ondigitalocean.app
+  github:
+    branch: main
+    deploy_on_push: true
+    repo: primestageprime/wellappoint-ui
+  name: web
+  output_dir: dist
+  error_document: index.html

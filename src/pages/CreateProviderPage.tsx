@@ -18,15 +18,8 @@ export function CreateProviderPage() {
   const auth = useAuth();
   const navigate = useNavigate();
   
-  // Generate default username with ISO date
-  const generateDefaultUsername = () => {
-    const now = new Date();
-    const isoDate = now.toISOString().split('T')[0]; // YYYY-MM-DD format
-    return `emlprime-${isoDate}`;
-  };
-
-  const [username, setUsername] = createSignal(generateDefaultUsername());
-  const [providerName, setProviderName] = createSignal('Peter Stradinger');
+  const [username, setUsername] = createSignal('');
+  const [providerName, setProviderName] = createSignal('');
   const [refreshToken, setRefreshToken] = createSignal('');
   const [authCode, setAuthCode] = createSignal('');
   const [isSubmitting, setIsSubmitting] = createSignal(false);

@@ -5,7 +5,8 @@
  * In production, uses the full backend API URL from environment variable.
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+// Vite replaces import.meta.env.VITE_* at build time
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string | undefined;
 
 /**
  * Constructs a full API URL for the given endpoint.
@@ -17,9 +18,9 @@ export function getApiUrl(endpoint: string): string {
   // Ensure endpoint starts with /
   const normalizedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
   
-  // In development, use relative URLs for Vite proxy
-  // In production, prepend the API base URL
-  if (API_BASE_URL) {
+  // In production (when VITE_API_BASE_URL is set), use full URL
+  // In development (no VITE_API_BASE_URL), use relative URL for Vite proxy
+  if (API_BASE_URL && API_BASE_URL.length > 0) {
     return `${API_BASE_URL}${normalizedEndpoint}`;
   }
   
@@ -31,6 +32,7 @@ export function getApiUrl(endpoint: string): string {
  */
 export async function apiFetch(endpoint: string, options?: RequestInit): Promise<Response> {
   const url = getApiUrl(endpoint);
+  console.log('[API] Fetching:', url); // Debug log
   return fetch(url, options);
 }
 

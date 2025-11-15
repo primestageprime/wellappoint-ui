@@ -18,6 +18,7 @@ import {
   BookingConfirmationStep,
   BookingSuccessStep,
 } from '../components/booking';
+import { ProviderCard } from '../components/ProviderCard';
 import { useBooking } from '../stores/bookingStore';
 import { useServices } from '../stores/servicesStore';
 import { useAppointments } from '../hooks/useAppointments';
@@ -171,6 +172,9 @@ export function ProviderBookingPage() {
       </HeaderCard>
       
       <Content>
+        {/* Provider Profile Card */}
+        <ProviderCard username={providerUsername()} />
+        
         {/* Show appointments if they exist - but not on receipt page (receipt has its own) */}
         <Show when={!step().showAppointmentConfirmed && appointments.appointments() && typeof appointments.appointments() === 'object' && 'appointments' in appointments.appointments()!}>
           <AppointmentsList appointments={appointments.appointments() as UserAppointmentsResponse} />

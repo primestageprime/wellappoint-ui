@@ -48,7 +48,38 @@ const AdminContext = createContext<AdminContextValue>();
 
 async function fetchAdminData(username: string): Promise<AdminData | null> {
   try {
-    // Fetch services - this endpoint exists and works
+    // Fetch provider config from /api/provider endpoint
+    let config: AdminConfig = {
+      name: username,
+      title: '',
+      email: '',
+      phone: '',
+    };
+    
+    try {
+      const providerResponse = await apiFetch(`/api/provider?username=${username}`);
+      if (providerResponse.ok) {
+        const providerData = await providerResponse.json();
+        console.log('Provider config response:', JSON.stringify(providerData, null, 2));
+        if (providerData.success) {
+          // Data is at root level, not nested under 'data'
+          config = {
+            name: providerData.name || username,
+            title: providerData.title || '',
+            email: providerData.email || '',
+            phone: providerData.phone || '',
+            headshot: providerData.headshot,
+            minimumAppointmentDelay: providerData.minimumAppointmentDelayMinutes,
+          };
+        }
+      } else {
+        console.warn('Provider config response not ok:', providerResponse.status, providerResponse.statusText);
+      }
+    } catch (e) {
+      console.warn('Failed to fetch provider config:', e);
+    }
+    
+    // Fetch services
     let services: AdminService[] = [];
     try {
       const servicesResponse = await apiFetch(`/services?username=${username}`);
@@ -60,16 +91,9 @@ async function fetchAdminData(username: string): Promise<AdminData | null> {
       console.warn('Failed to fetch services:', e);
     }
     
-    // For now, return placeholder config since /provider/config endpoint doesn't exist yet
-    // TODO: Create backend endpoint for provider config
     return {
       username,
-      config: {
-        name: username,
-        title: 'Provider',
-        email: '',
-        phone: '',
-      },
+      config,
       services,
       clients: [], // TODO: Create backend endpoint for clients
     };
@@ -93,7 +117,7 @@ function transformServicesToAdmin(services: any[]): AdminService[] {
     serviceMap.get(name)!.durations.push({
       duration: svc.duration || 0,
       price: svc.price || 0,
-      description: svc.description || '',
+      description: svc.durationDescription || '',
       prep: svc.prep,
       cleanup: svc.cleanup,
     });

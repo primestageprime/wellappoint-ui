@@ -218,10 +218,10 @@ export function CreateProviderPage() {
       }
 
       if (data.success) {
-        setSuccess(`Provider ${username()} setup successfully! Redirecting to booking page...`);
-        // Navigate to the provider's booking page after a short delay
+        setSuccess(`Provider ${username()} setup successfully! Redirecting to admin page...`);
+        // Navigate to the provider's admin page after a short delay
         setTimeout(() => {
-          navigate(`/${username()}`);
+          navigate(`/admin/${username()}`);
         }, 2000);
       } else {
         throw new Error(data.error || 'Provider setup failed');

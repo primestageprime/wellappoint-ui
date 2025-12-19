@@ -10,6 +10,7 @@ import { ProviderBookingPage } from './pages/ProviderBookingPage';
 import { DesignSystemPage } from './pages/DesignSystemPage';
 import { LayoutDemoPage } from './pages/LayoutDemoPage';
 import { CreateProviderPage } from './pages/CreateProviderPage';
+import { AdminPage } from './pages/AdminPage';
 import { OAuthSetupPage } from './pages/OAuthSetupPage';
 import { ProviderReauthPage } from './pages/ProviderReauthPage';
 import { DemoIndexPage } from './pages/demo/DemoIndexPage';
@@ -62,6 +63,7 @@ function App() {
           
           {/* Admin routes */}
           <Route path="/admin/create-provider" component={CreateProviderPage} />
+          <Route path="/admin/:username" component={AdminPage} />
           <Route path="/admin/oauth-setup" component={OAuthSetupPage} />
           
           {/* Legacy routes for backward compatibility */}

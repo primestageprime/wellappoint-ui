@@ -10,10 +10,10 @@ import {
   Input,
   Label,
   CenteredContent,
-  LogoutButton
+  LogoutButton,
+  WellAppointLogo
 } from '../components/visual';
 import { useAuth } from '../auth/AuthProvider';
-import wellLogo from '../assets/well-logo.png';
 
 export function CreateProviderPage() {
   const auth = useAuth();
@@ -226,7 +226,7 @@ export function CreateProviderPage() {
         {/* Logo Header */}
         <div class="text-center mb-8 pt-8">
           <div class="inline-flex items-center justify-center mb-3">
-            <img src={wellLogo} alt="WellAppoint" class="w-16 h-16" />
+            <WellAppointLogo size={64} />
           </div>
           <h1 class="text-2xl font-semibold text-[#8B6914]">WellAppoint</h1>
         </div>

@@ -51,3 +51,7 @@ export { InfoCard } from './InfoCard';
 export { InputWithButton } from './InputWithButton';
 export { SubmitButton } from './SubmitButton';
 export { ActionButton } from './ActionButton';
+export { AdminCard } from './AdminCard';
+export { ConfigTable } from './ConfigTable';
+export { ServiceAdminCard } from './ServiceAdminCard';
+export { ClientsTable } from './ClientsTable';

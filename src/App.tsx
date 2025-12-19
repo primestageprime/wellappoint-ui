@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './auth/AuthProvider';
 import { BookingProvider } from './stores/bookingStore';
 import { ServicesProvider } from './stores/servicesStore';
 import { CalendarProvider } from './stores/calendarStore';
+import { AdminProvider } from './stores/adminStore';
 import { LoginPage } from './pages/LoginPage';
 import { BookingPage } from './pages/BookingPage';
 import { ProviderBookingPage } from './pages/ProviderBookingPage';
@@ -40,6 +41,15 @@ function ProviderBookingPageWrapper() {
   );
 }
 
+// Wrapper component for admin page with data provider
+function AdminPageWrapper() {
+  return (
+    <AdminProvider>
+      <AdminPage />
+    </AdminProvider>
+  );
+}
+
 function App() {
   const auth = useAuth();
 
@@ -63,7 +73,7 @@ function App() {
           
           {/* Admin routes */}
           <Route path="/admin/create-provider" component={CreateProviderPage} />
-          <Route path="/admin/:username" component={AdminPage} />
+          <Route path="/admin/:username" component={AdminPageWrapper} />
           <Route path="/admin/oauth-setup" component={OAuthSetupPage} />
           
           {/* Legacy routes for backward compatibility */}

@@ -42,13 +42,9 @@ function ProviderBookingPageWrapper() {
 function App() {
   const auth = useAuth();
 
-  // Get the user's provider username for the default route
+  // Default route when no provider is in the URL - go to provider signup
   const getDefaultRoute = () => {
-    const user = auth.user();
-    if (user?.nickname) {
-      return `/${user.nickname}`;
-    }
-    return '/primestage'; // fallback
+    return '/admin/create-provider';
   };
 
   return (

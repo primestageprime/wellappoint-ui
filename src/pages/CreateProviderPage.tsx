@@ -10,8 +10,7 @@ import {
   Input,
   Label,
   CenteredContent,
-  LogoutButton,
-  WellAppointLogo
+  LogoutButton
 } from '../components/visual';
 import { useAuth } from '../auth/AuthProvider';
 
@@ -223,20 +222,13 @@ export function CreateProviderPage() {
   return (
     <PageFrame>
       <Content>
-        {/* Logo Header */}
-        <div class="text-center mb-8 pt-8">
-          <div class="inline-flex items-center justify-center mb-3">
-            <WellAppointLogo size={64} />
-          </div>
-          <h1 class="text-2xl font-semibold text-[#8B6914]">WellAppoint</h1>
-        </div>
 
         {/* Provider Setup Card */}
         <div class="max-w-3xl mx-auto bg-white rounded-lg border border-gray-200 shadow-sm mb-6">
           <div class="p-6 border-b border-gray-200">
             <h2 class="text-lg font-semibold text-gray-900">Provider Setup</h2>
             <p class="text-sm text-gray-600 mt-1">
-              Set up a new provider by authenticating with Google and creating the necessary resources.
+              Log in to Google to grant us access to read and write to Google Calendar. We'll create a new calendar called WellAppoint for you. By dragging blocks of time named "Available" into that calendar, you can make your time available to clients.
             </p>
           </div>
           <div class="p-6">

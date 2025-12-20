@@ -90,6 +90,9 @@ export function AdminPage() {
                         <div class="flex justify-center">
                           <QRCode content={getScheduleLink()} size={120} />
                         </div>
+                        <p class="text-xs text-[#5a4510] mt-3 max-w-xs mx-auto">
+                          Have potential customers scan this QR code. They'll have to log in to their Google account to sign up.
+                        </p>
                       </div>
                     </div>
                   </AdminCard>

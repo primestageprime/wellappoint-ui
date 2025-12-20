@@ -1,11 +1,16 @@
-import { Show, For } from 'solid-js';
+import { Show, For, onMount } from 'solid-js';
 import { useParams } from '@solidjs/router';
 import { PageFrame, Content, AdminCard, ConfigTable, ServiceAdminCard, ClientsTable } from '../components/visual';
 import { useAdmin } from '../stores/adminStore';
 
 export function AdminPage() {
   const params = useParams<{ username: string }>();
-  const { adminData } = useAdmin();
+  const { adminData, refetch } = useAdmin();
+
+  // Refetch admin data when the page loads
+  onMount(() => {
+    refetch();
+  });
 
   return (
     <PageFrame>

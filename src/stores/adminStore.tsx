@@ -24,12 +24,16 @@ export interface AdminService {
 }
 
 export interface AdminClient {
+  email: string;
   preferredName: string;
   pronouns?: string;
   createdAt: string;
+  updatedAt?: string;
   houseCalls: boolean;
   cap: number;
   notes?: string;
+  address?: string;
+  phone?: string;
 }
 
 export interface AdminData {
@@ -42,6 +46,7 @@ export interface AdminData {
 interface AdminContextValue {
   adminData: Resource<AdminData | null>;
   username: () => string;
+  refetch: () => void;
 }
 
 const AdminContext = createContext<AdminContextValue>();
@@ -91,11 +96,36 @@ async function fetchAdminData(username: string): Promise<AdminData | null> {
       console.warn('Failed to fetch services:', e);
     }
     
+    // Fetch clients
+    let clients: AdminClient[] = [];
+    try {
+      const clientsResponse = await apiFetch(`/api/clients?username=${username}`);
+      if (clientsResponse.ok) {
+        const clientsData = await clientsResponse.json();
+        if (clientsData.success && clientsData.data) {
+          clients = clientsData.data.map((c: any) => ({
+            email: c.email || '',
+            preferredName: c.preferredName || c.name || '',
+            pronouns: c.pronouns,
+            createdAt: c.createdAt || '',
+            updatedAt: c.updatedAt,
+            houseCalls: c.houseCalls || false,
+            cap: c.appointmentRequestCap || 1,
+            notes: c.notes,
+            address: c.address,
+            phone: c.phone,
+          }));
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to fetch clients:', e);
+    }
+    
     return {
       username,
       config,
       services,
-      clients: [], // TODO: Create backend endpoint for clients
+      clients,
     };
   } catch (error) {
     console.error('Failed to fetch admin data:', error);
@@ -151,11 +181,12 @@ export function AdminProvider(props: { children: JSX.Element }) {
   const params = useParams();
   const username = () => params.username as string;
 
-  const [adminData] = createResource(username, fetchAdminData);
+  const [adminData, { refetch }] = createResource(username, fetchAdminData);
 
   const value: AdminContextValue = {
     adminData,
     username,
+    refetch,
   };
 
   return (

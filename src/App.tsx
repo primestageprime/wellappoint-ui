@@ -67,6 +67,10 @@ function App() {
       <div class="min-h-screen flex flex-col">
         <div class="flex-1">
           <Router>
+            {/* Public pages - always accessible without authentication */}
+            <Route path="/privacy" component={PrivacyPolicyPage} />
+            <Route path="/terms" component={TermsPage} />
+            
             <Show when={auth.isAuthenticated()}>
               {/* Default route - redirect to user's provider page */}
               <Route path="/" component={() => <Navigate href={getDefaultRoute()} />} />
@@ -102,10 +106,6 @@ function App() {
               <Route path="/demo/processing" component={ProcessingStatePage} />
               <Route path="/demo/receipt" component={ReceiptStatePage} />
             </Show>
-            
-            {/* Public legal pages - accessible without authentication */}
-            <Route path="/privacy" component={PrivacyPolicyPage} />
-            <Route path="/terms" component={TermsPage} />
             
             {/* Login route - accessible when not authenticated */}
             <Route path="*" component={LoginWrapper} />

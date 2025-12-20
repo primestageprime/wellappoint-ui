@@ -10,13 +10,6 @@ export function LoginPage(props: LoginPageProps) {
   createEffect(() => {
     if (props.intendedUrl) {
       sessionStorage.setItem("intendedUrl", props.intendedUrl);
-      console.log("🔗 Stored intended URL:", props.intendedUrl);
-      console.log(
-        "🔍 Should show FOO?",
-        props.intendedUrl !== "/" &&
-          props.intendedUrl !== "/booking" &&
-          props.intendedUrl !== "/design-system"
-      );
     }
   });
 
@@ -35,15 +28,6 @@ export function LoginPage(props: LoginPageProps) {
               Keep coming back to the Well
             </p>
           </div>
-
-          {/* Show intended URL for debugging */}
-          {props.intendedUrl && (
-            <div class="bg-blue-50 border border-blue-200 rounded-md p-3">
-              <p class="text-xs text-blue-700">
-                <strong>🔗 You'll be redirected to:</strong> {props.intendedUrl}
-              </p>
-            </div>
-          )}
 
           <div class="mt-8 space-y-6">
             <div class="text-center">
@@ -80,8 +64,10 @@ export function LoginPage(props: LoginPageProps) {
 
             <div class="text-center">
               <p class="text-xs text-muted-foreground">
-                By continuing, you agree to our Terms of Service and Privacy
-                Policy
+                By continuing, you agree to our{' '}
+                <a href="/terms" class="text-[#8B6914] hover:underline">Terms of Service</a>
+                {' '}and{' '}
+                <a href="/privacy" class="text-[#8B6914] hover:underline">Privacy Policy</a>
               </p>
             </div>
           </div>

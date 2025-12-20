@@ -55,3 +55,4 @@ export { AdminCard } from './AdminCard';
 export { ConfigTable } from './ConfigTable';
 export { ServiceAdminCard } from './ServiceAdminCard';
 export { ClientsTable } from './ClientsTable';
+export { QRCode } from './QRCode';

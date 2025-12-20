@@ -1,7 +1,7 @@
 import { Show, For, onMount, createSignal } from 'solid-js';
 import { useParams } from '@solidjs/router';
 import { Copy, Check } from 'lucide-solid';
-import { PageFrame, Content, AdminCard, ConfigTable, ServiceAdminCard, ClientsTable } from '../components/visual';
+import { PageFrame, Content, AdminCard, ConfigTable, ServiceAdminCard, ClientsTable, QRCode } from '../components/visual';
 import { useAdmin } from '../stores/adminStore';
 
 export function AdminPage() {
@@ -55,29 +55,40 @@ export function AdminPage() {
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Provider Information */}
                   <AdminCard title="Provider Information">
-                    <div class="space-y-3">
-                      <div class="text-sm text-[#5a4510]">
-                        <span class="font-medium">Username:</span>{' '}
-                        <span class="text-[#8B6914]">{data().username}</span>
+                    <div class="space-y-4">
+                      {/* Info */}
+                      <div class="space-y-3">
+                        <div class="text-sm text-[#5a4510]">
+                          <span class="font-medium">Username:</span>{' '}
+                          <span class="text-[#8B6914]">{data().username}</span>
+                        </div>
+                        
+                        <div class="text-sm text-[#5a4510]">
+                          <span class="font-medium">Schedule Link:</span>
+                          <div class="flex items-center gap-2 mt-1">
+                            <a 
+                              href={getScheduleLink()} 
+                              target="_blank" 
+                              class="text-[#8B6914] hover:underline break-all"
+                            >
+                              {getScheduleLink()}
+                            </a>
+                            <button
+                              onClick={copyScheduleLink}
+                              class="flex-shrink-0 p-1 text-[#8B6914] hover:text-[#6d5410] transition-colors"
+                              title={copied() ? 'Copied!' : 'Copy to clipboard'}
+                            >
+                              {copied() ? <Check size={16} /> : <Copy size={16} />}
+                            </button>
+                          </div>
+                        </div>
                       </div>
                       
-                      <div class="text-sm text-[#5a4510]">
-                        <span class="font-medium">Schedule Link:</span>
-                        <div class="flex items-center gap-2 mt-1">
-                          <a 
-                            href={getScheduleLink()} 
-                            target="_blank" 
-                            class="text-[#8B6914] hover:underline break-all"
-                          >
-                            {getScheduleLink()}
-                          </a>
-                          <button
-                            onClick={copyScheduleLink}
-                            class="flex-shrink-0 p-1 text-[#8B6914] hover:text-[#6d5410] transition-colors"
-                            title={copied() ? 'Copied!' : 'Copy to clipboard'}
-                          >
-                            {copied() ? <Check size={16} /> : <Copy size={16} />}
-                          </button>
+                      {/* QR Code */}
+                      <div class="pt-2 text-center">
+                        <div class="text-sm text-[#5a4510] font-medium mb-2">QR Code:</div>
+                        <div class="flex justify-center">
+                          <QRCode content={getScheduleLink()} size={120} />
                         </div>
                       </div>
                     </div>

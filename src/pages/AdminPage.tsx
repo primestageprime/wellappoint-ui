@@ -94,6 +94,23 @@ export function AdminPage() {
                           Have potential customers scan this QR code. They'll have to log in to their Google account to sign up.
                         </p>
                       </div>
+                      
+                      {/* Admin Spreadsheet Link */}
+                      <Show when={data().config.adminSheetId}>
+                        <div class="pt-4 text-center border-t border-[#8B6914]/10 mt-4">
+                          <a 
+                            href={`https://docs.google.com/spreadsheets/d/${data().config.adminSheetId}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="inline-flex items-center gap-2 text-sm text-[#8B6914] hover:underline"
+                          >
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 7h2v2H7V7zm0 4h2v2H7v-2zm0 4h2v2H7v-2zm4-8h6v2h-6V7zm0 4h6v2h-6v-2zm0 4h6v2h-6v-2z"/>
+                            </svg>
+                            Open Admin Spreadsheet
+                          </a>
+                        </div>
+                      </Show>
                     </div>
                   </AdminCard>
 

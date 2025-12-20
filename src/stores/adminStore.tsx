@@ -10,6 +10,7 @@ export interface AdminConfig {
   phone: string;
   headshot?: string;
   minimumAppointmentDelay?: number;
+  adminSheetId?: string;
 }
 
 export interface AdminService {
@@ -74,6 +75,7 @@ async function fetchAdminData(username: string): Promise<AdminData | null> {
             phone: providerData.phone || '',
             headshot: providerData.headshot,
             minimumAppointmentDelay: providerData.minimumAppointmentDelayMinutes,
+            adminSheetId: providerData.adminSheetId,
           };
         }
       } else {

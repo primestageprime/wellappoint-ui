@@ -239,6 +239,7 @@ body {
 
 /* Overflow utilities */
 .overflow-hidden { overflow: hidden; }
+.break-all { word-break: break-all; }
 
 /* Object fit utilities */
 .object-cover { object-fit: cover; }
@@ -271,6 +272,8 @@ body {
 .hover\:text-primary\/80:hover { color: rgba(139, 69, 19, 0.8); }
 .hover\:bg-primary\/20:hover { background-color: rgba(139, 69, 19, 0.2); }
 .hover\:translate-x-1:hover { transform: translateX(0.25rem); }
+.hover\:underline:hover { text-decoration: underline; }
+.hover\:bg-\[\#6d5410\]:hover { background-color: #6d5410; }
 
 /* Cursor utilities */
 .cursor-pointer { cursor: pointer; }

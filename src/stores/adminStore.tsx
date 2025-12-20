@@ -115,15 +115,12 @@ function transformServicesToAdmin(services: any[]): AdminService[] {
     }
     
     // Parse prep and cleanup from backend format
-    // Steps may be comma or newline separated, and may have "-- " prefix
+    // Steps may be comma or newline separated, and may have "-- ", "- ", or "• " prefix
     const parseSteps = (stepsStr: string): string[] => {
-      console.log('Raw steps string:', JSON.stringify(stepsStr));
-      const result = stepsStr
+      return stepsStr
         .split(/[,\n]/)
-        .map((s: string) => s.trim().replace(/^--\s*/, '').replace(/^•\s*/, ''))
+        .map((s: string) => s.trim().replace(/^--\s*/, '').replace(/^-\s*/, '').replace(/^•\s*/, ''))
         .filter(Boolean);
-      console.log('Parsed steps:', result);
-      return result;
     };
     
     const prep = svc.prepMinutes ? {

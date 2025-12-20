@@ -63,8 +63,9 @@ export function AuthProvider(props: AuthProviderProps) {
       setClient(auth0);
       setAuth0Client(auth0);
 
-      // Handle the redirect callback
-      if (window.location.search.includes("code=")) {
+      // Handle the redirect callback (but skip if it's the Google OAuth callback)
+      const isGoogleOAuthCallback = window.location.pathname === '/admin/oauth-callback';
+      if (window.location.search.includes("code=") && !isGoogleOAuthCallback) {
         try {
           await auth0.handleRedirectCallback();
           
@@ -90,10 +91,24 @@ export function AuthProvider(props: AuthProviderProps) {
           setLoading(false);
           return;
         }
-      } else if (window.location.search.includes("error=")) {
+      } else if (window.location.search.includes("error=") && !isGoogleOAuthCallback) {
         setError("Failed to handle login");
         setLoading(false);
         return;
+      } else if (isGoogleOAuthCallback) {
+        // Let the OAuth callback page handle it - just check existing auth state
+        try {
+          const userExists = await auth0.isAuthenticated();
+          if (userExists) {
+            setIsAuthenticated(true);
+            const userProfile = await auth0.getUser();
+            if (userProfile) {
+              setUser(userProfile as UserProfile);
+            }
+          }
+        } catch (e) {
+          console.error("Error checking auth state:", e);
+        }
       } else {
         // Only check auth state if we're not handling a callback
         try {

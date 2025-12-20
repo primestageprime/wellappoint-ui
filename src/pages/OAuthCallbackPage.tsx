@@ -10,8 +10,18 @@ export function OAuthCallbackPage() {
   const [error, setError] = createSignal('');
 
   onMount(async () => {
-    const code = searchParams.code;
-    const errorParam = searchParams.error;
+    // Debug: log the full URL and search params
+    console.log('OAuth Callback - Full URL:', window.location.href);
+    console.log('OAuth Callback - Search:', window.location.search);
+    console.log('OAuth Callback - searchParams:', searchParams);
+    
+    // Try getting code from both useSearchParams and URLSearchParams
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = searchParams.code || urlParams.get('code');
+    const errorParam = searchParams.error || urlParams.get('error');
+    
+    console.log('OAuth Callback - code:', code);
+    console.log('OAuth Callback - error:', errorParam);
 
     if (errorParam) {
       setStatus('error');
@@ -21,7 +31,7 @@ export function OAuthCallbackPage() {
 
     if (!code) {
       setStatus('error');
-      setError('No authorization code received');
+      setError(`No authorization code received. URL: ${window.location.href}`);
       return;
     }
 

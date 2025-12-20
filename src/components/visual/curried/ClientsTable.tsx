@@ -29,38 +29,23 @@ function ClientCard(props: { client: Client }) {
 
   return (
     <div class="bg-gray-100 rounded-lg p-4 mb-3">
-      <div class="flex justify-between items-start mb-2">
-        <div>
-          <div class="text-base font-medium text-[#8B6914]">{props.client.preferredName}</div>
-          <Show when={props.client.pronouns}>
-            <div class="text-xs text-[#5a4510]">{props.client.pronouns}</div>
-          </Show>
-        </div>
-        <Show when={props.client.houseCalls}>
-          <span class="text-xs bg-[#8B6914]/20 text-[#5a4510] px-2 py-1 rounded">House Calls</span>
-        </Show>
+      {/* Preferred Name */}
+      <div class="text-base font-medium text-[#8B6914] mb-2">{props.client.preferredName}</div>
+      
+      {/* Email */}
+      <div class="text-sm text-[#3d2e0a] mb-1">{props.client.email || '—'}</div>
+      
+      {/* Created At */}
+      <div class="text-sm text-[#5a4510] mb-1">Created: {formatDate(props.client.createdAt)}</div>
+      
+      {/* Pronouns */}
+      <div class="text-sm text-[#3d2e0a] mb-1">Pronouns: {props.client.pronouns || '—'}</div>
+      
+      {/* House Calls & Cap */}
+      <div class="flex gap-4 text-sm text-[#3d2e0a]">
+        <span>House Calls: {props.client.houseCalls ? 'Yes' : 'No'}</span>
+        <span>Cap: {props.client.cap}</span>
       </div>
-      
-      <Show when={props.client.email}>
-        <div class="text-sm text-[#3d2e0a] mb-1">{props.client.email}</div>
-      </Show>
-      
-      <Show when={props.client.phone}>
-        <div class="text-sm text-[#3d2e0a] mb-1">{props.client.phone}</div>
-      </Show>
-      
-      <div class="text-xs text-[#5a4510] mt-2">
-        <span>Created: {formatDate(props.client.createdAt)}</span>
-        <Show when={props.client.updatedAt}>
-          <span class="ml-3">Updated: {formatDate(props.client.updatedAt!)}</span>
-        </Show>
-      </div>
-      
-      <Show when={props.client.notes}>
-        <div class="text-sm text-[#3d2e0a] mt-2 pt-2 border-t border-[#8B6914]/10">
-          {props.client.notes}
-        </div>
-      </Show>
     </div>
   );
 }

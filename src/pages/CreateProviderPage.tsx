@@ -8,7 +8,6 @@ import {
   StepSection,
   SuccessMessage,
   ErrorMessage,
-  InputWithButton,
   SubmitButton,
   ActionButton
 } from '../components/visual';
@@ -42,7 +41,12 @@ export function CreateProviderPage() {
 
   const [username, setUsername] = createSignal('');
   const [providerName, setProviderName] = createSignal('');
-  
+  const [refreshToken, setRefreshToken] = createSignal('');
+  const [isSubmitting, setIsSubmitting] = createSignal(false);
+  const [isOAuthLoading, setIsOAuthLoading] = createSignal(false);
+  const [error, setError] = createSignal<string | null>(null);
+  const [success, setSuccess] = createSignal<string | null>(null);
+
   // Update username and provider name when auth user is available
   createEffect(() => {
     const user = auth.user();
@@ -55,67 +59,17 @@ export function CreateProviderPage() {
       }
     }
   });
-  const [refreshToken, setRefreshToken] = createSignal('');
-  const [authCode, setAuthCode] = createSignal('');
-  const [isSubmitting, setIsSubmitting] = createSignal(false);
-  const [isOAuthLoading, setIsOAuthLoading] = createSignal(false);
-  const [isExchangingCode, setIsExchangingCode] = createSignal(false);
-  const [error, setError] = createSignal<string | null>(null);
-  const [success, setSuccess] = createSignal<string | null>(null);
-  const [step, setStep] = createSignal<'oauth' | 'provider'>('oauth');
 
   // Check for refresh token from OAuth callback on mount
   onMount(() => {
     const storedToken = sessionStorage.getItem('oauth_refresh_token');
     if (storedToken) {
       setRefreshToken(storedToken);
-      setStep('provider');
       setSuccess('Google authorization successful! You can now complete provider setup.');
       // Clear the token from sessionStorage
       sessionStorage.removeItem('oauth_refresh_token');
     }
   });
-
-  const handleExchangeCode = async () => {
-    if (!authCode()) {
-      setError('Please enter the authorization code');
-      return;
-    }
-
-    setIsExchangingCode(true);
-    setError(null);
-    setSuccess(null);
-
-    try {
-      const response = await apiFetch('/api/oauth/exchange', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          code: authCode(),
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to exchange authorization code');
-      }
-
-      if (data.success && data.refreshToken) {
-        setRefreshToken(data.refreshToken);
-        setSuccess('Refresh token obtained successfully!');
-        setAuthCode(''); // Clear the auth code
-      } else {
-        throw new Error('No refresh token received');
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to exchange authorization code');
-    } finally {
-      setIsExchangingCode(false);
-    }
-  };
 
   const handleOAuthSetup = async () => {
     setIsOAuthLoading(true);
@@ -132,66 +86,16 @@ export function CreateProviderPage() {
       });
 
       const data = await response.json();
-      console.log('OAuth setup response:', data);
 
       if (!response.ok) {
         throw new Error(data.error || 'OAuth setup failed');
       }
 
       if (data.success && data.authUrl) {
-        const authUrl = data.authUrl;
-        console.log('Opening OAuth URL:', authUrl);
-        setSuccess('Opening Google OAuth consent screen...');
-        
-        // Open the OAuth URL in a new window
-        const popup = window.open(authUrl, 'oauth', 'width=600,height=600,scrollbars=yes,resizable=yes');
-        
-        if (!popup) {
-          throw new Error('Popup blocked. Please allow popups and try again.');
-        }
-
-        // Poll for the popup to close (user completed OAuth)
-        const checkClosed = setInterval(() => {
-          if (popup.closed) {
-            clearInterval(checkClosed);
-            setSuccess('OAuth completed! Please copy the authorization code from the Google page and paste it below, then we can exchange it for a refresh token.');
-            setIsOAuthLoading(false);
-          }
-        }, 1000);
-
-      } else if (data.success && data.error && data.error.includes('Please visit this URL')) {
-        // Fallback: Extract the URL from the error message
-        const urlMatch = data.error.match(/https:\/\/[^\s]+/);
-        console.log('URL match result:', urlMatch);
-        
-        if (urlMatch) {
-          const authUrl = urlMatch[0];
-          console.log('Opening OAuth URL (fallback):', authUrl);
-          setSuccess('Opening Google OAuth consent screen...');
-          
-          // Open the OAuth URL in a new window
-          const popup = window.open(authUrl, 'oauth', 'width=600,height=600,scrollbars=yes,resizable=yes');
-          
-          if (!popup) {
-            throw new Error('Popup blocked. Please allow popups and try again.');
-          }
-
-          // Poll for the popup to close (user completed OAuth)
-          const checkClosed = setInterval(() => {
-            if (popup.closed) {
-              clearInterval(checkClosed);
-              setSuccess('OAuth completed! Please copy the authorization code from the Google page and paste it below.');
-              setIsOAuthLoading(false);
-            }
-          }, 1000);
-
-        } else {
-          console.error('Could not extract URL from:', data.error);
-          throw new Error('Could not extract OAuth URL from response');
-        }
+        // Redirect to Google OAuth - the callback will handle the rest
+        window.location.href = data.authUrl;
       } else {
-        console.error('Unexpected response format:', data);
-        throw new Error('Unexpected response from OAuth setup');
+        throw new Error('No OAuth URL received');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'OAuth setup failed');
@@ -246,19 +150,6 @@ export function CreateProviderPage() {
     }
   };
 
-  const handleLogout = async () => {
-    await auth.logout();
-  };
-
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(refreshToken());
-      setSuccess('Refresh token copied to clipboard!');
-    } catch (err) {
-      setError('Failed to copy to clipboard');
-    }
-  };
-
   return (
     <PageFrame>
       <Content>
@@ -270,34 +161,18 @@ export function CreateProviderPage() {
           <StepSection
             step={1}
             title="Google OAuth Setup"
-            description="First, we need to authenticate with Google to get permission to create calendars and sheets."
+            description="Authenticate with Google to grant permission to create your WellAppoint calendar."
           >
-            <ActionButton
-              onClick={handleOAuthSetup}
-              isLoading={isOAuthLoading()}
-              loadingText="Setting up OAuth..."
-            >
-              Start Google OAuth
-            </ActionButton>
-
-            <div class="mt-4">
-              <InputWithButton
-                label="Authorization Code"
-                placeholder="Paste the authorization code here"
-                value={authCode}
-                onInput={setAuthCode}
-                buttonText="Authorize"
-                buttonLoadingText="Authorizing..."
-                onButtonClick={handleExchangeCode}
-                isLoading={isExchangingCode()}
-                helpText="After completing OAuth, copy the authorization code from the Google page and paste it above."
-              />
-            </div>
-
-            {refreshToken() && (
-              <div class="mt-4">
-                <SuccessMessage inline>✅ Refresh token obtained successfully!</SuccessMessage>
-              </div>
+            {!refreshToken() ? (
+              <ActionButton
+                onClick={handleOAuthSetup}
+                isLoading={isOAuthLoading()}
+                loadingText="Redirecting to Google..."
+              >
+                Start Google OAuth
+              </ActionButton>
+            ) : (
+              <SuccessMessage inline>✅ Google authorization complete!</SuccessMessage>
             )}
           </StepSection>
 
@@ -345,7 +220,7 @@ export function CreateProviderPage() {
 
         {error() && <ErrorMessage>{error()}</ErrorMessage>}
 
-        {success() && !refreshToken() && <SuccessMessage>{success()}</SuccessMessage>}
+        {success() && <SuccessMessage>{success()}</SuccessMessage>}
 
       </Content>
     </PageFrame>

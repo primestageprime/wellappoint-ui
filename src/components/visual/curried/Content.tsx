@@ -20,11 +20,11 @@ export function Content(props: ContentProps) {
         <Show when={auth.isAuthenticated()}>
           <button
             onClick={() => auth.logout()}
-            class="absolute top-0 right-0 flex items-center gap-1 text-sm text-[#8B6914] hover:text-[#6d5410] transition-colors"
+            class="absolute top-0 right-0 flex items-center gap-2 text-sm text-[#8B6914] hover:text-[#6d5410] transition-colors px-2 py-1"
             aria-label="Logout"
           >
             <LogOut size={16} />
-            <span class="hidden sm:inline">Logout</span>
+            <span>Logout</span>
           </button>
         </Show>
         

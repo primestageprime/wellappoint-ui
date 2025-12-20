@@ -1,12 +1,35 @@
 /**
  * API Configuration
  *
- * In development, uses relative URLs which are proxied by Vite.
- * In production, uses the full backend API URL from environment variable.
+ * - In production (VITE_API_BASE_URL set): uses full backend URL from env
+ * - On localhost: uses relative URLs proxied by Vite
+ * - On other hosts (e.g., mobile via IP): uses same hostname with backend port
  */
 
 // Vite replaces import.meta.env.VITE_* at build time
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string | undefined;
+const BACKEND_PORT = 8000;
+
+/**
+ * Determines the API base URL based on the current environment
+ */
+function getApiBaseUrl(): string | null {
+  // If explicitly set via env, use that
+  if (API_BASE_URL && API_BASE_URL.length > 0) {
+    return API_BASE_URL;
+  }
+
+  // Check if we're on localhost - Vite proxy handles this
+  const hostname = window.location.hostname;
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return null; // Use relative URLs for Vite proxy
+  }
+
+  // On other hosts (e.g., phone accessing via IP), construct backend URL
+  // Use the same hostname but with the backend port
+  const protocol = window.location.protocol;
+  return `${protocol}//${hostname}:${BACKEND_PORT}`;
+}
 
 /**
  * Constructs a full API URL for the given endpoint.
@@ -20,10 +43,9 @@ export function getApiUrl(endpoint: string): string {
     ? endpoint
     : `/${endpoint}`;
 
-  // In production (when VITE_API_BASE_URL is set), use full URL
-  // In development (no VITE_API_BASE_URL), use relative URL for Vite proxy
-  if (API_BASE_URL && API_BASE_URL.length > 0) {
-    return `${API_BASE_URL}${normalizedEndpoint}`;
+  const baseUrl = getApiBaseUrl();
+  if (baseUrl) {
+    return `${baseUrl}${normalizedEndpoint}`;
   }
 
   return normalizedEndpoint;

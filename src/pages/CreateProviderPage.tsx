@@ -13,6 +13,7 @@ import {
   ActionButton
 } from '../components/visual';
 import { useAuth } from '../auth/AuthProvider';
+import { apiFetch } from '../config/api';
 
 export function CreateProviderPage() {
   const auth = useAuth();
@@ -74,7 +75,7 @@ export function CreateProviderPage() {
     setSuccess(null);
 
     try {
-      const response = await fetch('/api/oauth/exchange', {
+      const response = await apiFetch('/api/oauth/exchange', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -111,7 +112,7 @@ export function CreateProviderPage() {
 
     try {
       // Call the backend OAuth setup endpoint to get the auth URL
-      const response = await fetch('/api/oauth/setup', {
+      const response = await apiFetch('/api/oauth/setup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -199,7 +200,7 @@ export function CreateProviderPage() {
     setSuccess(null);
 
     try {
-      const response = await fetch('/api/provider/setup', {
+      const response = await apiFetch('/api/provider/setup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

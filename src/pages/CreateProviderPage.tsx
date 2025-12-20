@@ -1,4 +1,4 @@
-import { createSignal, createEffect } from 'solid-js';
+import { createSignal, createEffect, onMount } from 'solid-js';
 import { useNavigate } from '@solidjs/router';
 import { 
   PageFrame,
@@ -63,6 +63,18 @@ export function CreateProviderPage() {
   const [error, setError] = createSignal<string | null>(null);
   const [success, setSuccess] = createSignal<string | null>(null);
   const [step, setStep] = createSignal<'oauth' | 'provider'>('oauth');
+
+  // Check for refresh token from OAuth callback on mount
+  onMount(() => {
+    const storedToken = sessionStorage.getItem('oauth_refresh_token');
+    if (storedToken) {
+      setRefreshToken(storedToken);
+      setStep('provider');
+      setSuccess('Google authorization successful! You can now complete provider setup.');
+      // Clear the token from sessionStorage
+      sessionStorage.removeItem('oauth_refresh_token');
+    }
+  });
 
   const handleExchangeCode = async () => {
     if (!authCode()) {

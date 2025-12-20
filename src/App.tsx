@@ -18,6 +18,7 @@ import { ProviderReauthPage } from './pages/ProviderReauthPage';
 import { ProviderSignupQRPage } from './pages/ProviderSignupQRPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsPage } from './pages/TermsPage';
+import { OAuthCallbackPage } from './pages/OAuthCallbackPage';
 import { DemoIndexPage } from './pages/demo/DemoIndexPage';
 import { ComponentsStatePage } from './pages/demo/ComponentsStatePage';
 import { LoginStatePage } from './pages/demo/LoginStatePage';
@@ -88,6 +89,7 @@ function App() {
               <Route path="/admin/create-provider" component={CreateProviderPage} />
               <Route path="/admin/:username" component={AdminPageWrapper} />
               <Route path="/admin/oauth-setup" component={OAuthSetupPage} />
+              <Route path="/admin/oauth-callback" component={OAuthCallbackPage} />
               
               {/* Legacy routes for backward compatibility */}
               <Route path="/booking" component={BookingPage} />

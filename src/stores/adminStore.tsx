@@ -65,7 +65,6 @@ async function fetchAdminData(username: string): Promise<AdminData | null> {
       const providerResponse = await apiFetch(`/api/provider?username=${username}`);
       if (providerResponse.ok) {
         const providerData = await providerResponse.json();
-        console.log('Provider config response:', JSON.stringify(providerData, null, 2));
         if (providerData.success) {
           // Data is at root level, not nested under 'data'
           config = {
@@ -162,8 +161,6 @@ function transformServicesToAdmin(services: any[]): AdminService[] {
       time: svc.cleanupMinutes,
       steps: svc.cleanupSteps ? parseSteps(svc.cleanupSteps) : []
     } : undefined;
-    
-    console.log('Service:', svc.name, 'Prep:', prep, 'Cleanup:', cleanup);
     
     serviceMap.get(name)!.durations.push({
       duration: svc.duration || 0,

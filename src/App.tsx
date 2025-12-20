@@ -14,6 +14,7 @@ import { CreateProviderPage } from './pages/CreateProviderPage';
 import { AdminPage } from './pages/AdminPage';
 import { OAuthSetupPage } from './pages/OAuthSetupPage';
 import { ProviderReauthPage } from './pages/ProviderReauthPage';
+import { ProviderSignupQRPage } from './pages/ProviderSignupQRPage';
 import { DemoIndexPage } from './pages/demo/DemoIndexPage';
 import { ComponentsStatePage } from './pages/demo/ComponentsStatePage';
 import { LoginStatePage } from './pages/demo/LoginStatePage';
@@ -70,6 +71,9 @@ function App() {
           
           {/* Provider re-authentication */}
           <Route path="/:username/authorize" component={ProviderReauthPage} />
+          
+          {/* Provider signup QR code page */}
+          <Route path="/provider" component={ProviderSignupQRPage} />
           
           {/* Admin routes */}
           <Route path="/admin/create-provider" component={CreateProviderPage} />

@@ -56,3 +56,8 @@ export { ConfigTable } from './ConfigTable';
 export { ServiceAdminCard } from './ServiceAdminCard';
 export { ClientsTable } from './ClientsTable';
 export { QRCode } from './QRCode';
+export { LegalPage } from './LegalPage';
+export { LegalSection } from './LegalSection';
+export { LegalParagraph } from './LegalParagraph';
+export { LegalList } from './LegalList';
+export { LegalContact } from './LegalContact';

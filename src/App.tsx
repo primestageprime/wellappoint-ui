@@ -5,6 +5,7 @@ import { BookingProvider } from './stores/bookingStore';
 import { ServicesProvider } from './stores/servicesStore';
 import { CalendarProvider } from './stores/calendarStore';
 import { AdminProvider } from './stores/adminStore';
+import { Footer } from './components/visual/base/Footer';
 import { LoginPage } from './pages/LoginPage';
 import { BookingPage } from './pages/BookingPage';
 import { ProviderBookingPage } from './pages/ProviderBookingPage';
@@ -15,6 +16,8 @@ import { AdminPage } from './pages/AdminPage';
 import { OAuthSetupPage } from './pages/OAuthSetupPage';
 import { ProviderReauthPage } from './pages/ProviderReauthPage';
 import { ProviderSignupQRPage } from './pages/ProviderSignupQRPage';
+import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
+import { TermsPage } from './pages/TermsPage';
 import { DemoIndexPage } from './pages/demo/DemoIndexPage';
 import { ComponentsStatePage } from './pages/demo/ComponentsStatePage';
 import { LoginStatePage } from './pages/demo/LoginStatePage';
@@ -61,46 +64,55 @@ function App() {
 
   return (
     <BookingProvider>
-      <Router>
-        <Show when={auth.isAuthenticated()}>
-          {/* Default route - redirect to user's provider page */}
-          <Route path="/" component={() => <Navigate href={getDefaultRoute()} />} />
-          
-          {/* Provider-specific booking pages - wrap with providers */}
-          <Route path="/:username" component={ProviderBookingPageWrapper} />
-          
-          {/* Provider re-authentication */}
-          <Route path="/:username/authorize" component={ProviderReauthPage} />
-          
-          {/* Provider signup QR code page */}
-          <Route path="/provider" component={ProviderSignupQRPage} />
-          
-          {/* Admin routes */}
-          <Route path="/admin/create-provider" component={CreateProviderPage} />
-          <Route path="/admin/:username" component={AdminPageWrapper} />
-          <Route path="/admin/oauth-setup" component={OAuthSetupPage} />
-          
-          {/* Legacy routes for backward compatibility */}
-          <Route path="/booking" component={BookingPage} />
-          <Route path="/design-system" component={DesignSystemPage} />
-          <Route path="/layout-demo" component={LayoutDemoPage} />
-          
-          {/* Demo state pages */}
-          <Route path="/demo" component={DemoIndexPage} />
-          <Route path="/demo/components" component={ComponentsStatePage} />
-          <Route path="/demo/login" component={LoginStatePage} />
-          <Route path="/demo/choose-service" component={ChooseServiceStatePage} />
-          <Route path="/demo/choose-duration" component={ChooseDurationStatePage} />
-          <Route path="/demo/finding-slots" component={FindingSlotsStatePage} />
-          <Route path="/demo/choose-slot" component={ChooseSlotStatePage} />
-          <Route path="/demo/confirm" component={ConfirmStatePage} />
-          <Route path="/demo/processing" component={ProcessingStatePage} />
-          <Route path="/demo/receipt" component={ReceiptStatePage} />
-        </Show>
-        
-        {/* Login route - accessible when not authenticated */}
-        <Route path="*" component={LoginWrapper} />
-      </Router>
+      <div class="min-h-screen flex flex-col">
+        <div class="flex-1">
+          <Router>
+            <Show when={auth.isAuthenticated()}>
+              {/* Default route - redirect to user's provider page */}
+              <Route path="/" component={() => <Navigate href={getDefaultRoute()} />} />
+              
+              {/* Provider-specific booking pages - wrap with providers */}
+              <Route path="/:username" component={ProviderBookingPageWrapper} />
+              
+              {/* Provider re-authentication */}
+              <Route path="/:username/authorize" component={ProviderReauthPage} />
+              
+              {/* Provider signup QR code page */}
+              <Route path="/provider" component={ProviderSignupQRPage} />
+              
+              {/* Admin routes */}
+              <Route path="/admin/create-provider" component={CreateProviderPage} />
+              <Route path="/admin/:username" component={AdminPageWrapper} />
+              <Route path="/admin/oauth-setup" component={OAuthSetupPage} />
+              
+              {/* Legacy routes for backward compatibility */}
+              <Route path="/booking" component={BookingPage} />
+              <Route path="/design-system" component={DesignSystemPage} />
+              <Route path="/layout-demo" component={LayoutDemoPage} />
+              
+              {/* Demo state pages */}
+              <Route path="/demo" component={DemoIndexPage} />
+              <Route path="/demo/components" component={ComponentsStatePage} />
+              <Route path="/demo/login" component={LoginStatePage} />
+              <Route path="/demo/choose-service" component={ChooseServiceStatePage} />
+              <Route path="/demo/choose-duration" component={ChooseDurationStatePage} />
+              <Route path="/demo/finding-slots" component={FindingSlotsStatePage} />
+              <Route path="/demo/choose-slot" component={ChooseSlotStatePage} />
+              <Route path="/demo/confirm" component={ConfirmStatePage} />
+              <Route path="/demo/processing" component={ProcessingStatePage} />
+              <Route path="/demo/receipt" component={ReceiptStatePage} />
+            </Show>
+            
+            {/* Public legal pages - accessible without authentication */}
+            <Route path="/privacy" component={PrivacyPolicyPage} />
+            <Route path="/terms" component={TermsPage} />
+            
+            {/* Login route - accessible when not authenticated */}
+            <Route path="*" component={LoginWrapper} />
+          </Router>
+        </div>
+        <Footer />
+      </div>
     </BookingProvider>
   );
 }

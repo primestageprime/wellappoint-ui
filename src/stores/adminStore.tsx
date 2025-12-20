@@ -114,12 +114,36 @@ function transformServicesToAdmin(services: any[]): AdminService[] {
       serviceMap.set(name, { name, durations: [] });
     }
     
+    // Parse prep and cleanup from backend format
+    // Steps may be comma or newline separated, and may have "-- " prefix
+    const parseSteps = (stepsStr: string): string[] => {
+      console.log('Raw steps string:', JSON.stringify(stepsStr));
+      const result = stepsStr
+        .split(/[,\n]/)
+        .map((s: string) => s.trim().replace(/^--\s*/, '').replace(/^•\s*/, ''))
+        .filter(Boolean);
+      console.log('Parsed steps:', result);
+      return result;
+    };
+    
+    const prep = svc.prepMinutes ? {
+      time: svc.prepMinutes,
+      steps: svc.prepSteps ? parseSteps(svc.prepSteps) : []
+    } : undefined;
+    
+    const cleanup = svc.cleanupMinutes ? {
+      time: svc.cleanupMinutes,
+      steps: svc.cleanupSteps ? parseSteps(svc.cleanupSteps) : []
+    } : undefined;
+    
+    console.log('Service:', svc.name, 'Prep:', prep, 'Cleanup:', cleanup);
+    
     serviceMap.get(name)!.durations.push({
       duration: svc.duration || 0,
       price: svc.price || 0,
       description: svc.durationDescription || '',
-      prep: svc.prep,
-      cleanup: svc.cleanup,
+      prep,
+      cleanup,
     });
   }
   

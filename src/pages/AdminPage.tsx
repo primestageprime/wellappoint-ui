@@ -30,9 +30,9 @@ export function AdminPage() {
   };
 
   return (
-    <PageFrame>
+    <PageFrame wide>
       <Content>
-        <div class="max-w-screen-2xl mx-auto space-y-6 px-4">
+        <div class="space-y-6 px-4">
           {/* Header */}
           <h1 class="text-2xl font-semibold text-[#3d2e0a]">
             Admin {params.username}

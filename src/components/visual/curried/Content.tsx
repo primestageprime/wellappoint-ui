@@ -55,33 +55,8 @@ export function Content(props: ContentProps) {
 
   return (
     <div class={`bg-white p-3 ${props.class || ''}`}>
-      {/* Header with logo and logout */}
+      {/* Header with logo */}
       <div class="relative">
-        {/* Right side buttons */}
-        <Show when={auth.isAuthenticated()}>
-          <div class="absolute top-0 right-0 flex items-center gap-3">
-            {/* Admin link */}
-            <Show when={matchingProvider()}>
-              <a
-                href={`/admin/${matchingProvider()}`}
-                class="flex items-center gap-1 text-sm text-[#8B6914] hover:text-[#6d5410] transition-colors px-2 py-1"
-              >
-                <Settings size={16} />
-                <span>Admin</span>
-              </a>
-            </Show>
-            {/* Logout button */}
-            <button
-              onClick={() => auth.logout()}
-              class="flex items-center gap-2 text-sm text-[#8B6914] hover:text-[#6d5410] transition-colors px-2 py-1"
-              aria-label="Logout"
-            >
-              <LogOut size={16} />
-              <span>Logout</span>
-            </button>
-          </div>
-        </Show>
-        
         {/* Centered logo and title */}
         <CenteredContent>
           <a href="/" class="flex flex-col items-center no-underline">
@@ -92,7 +67,7 @@ export function Content(props: ContentProps) {
           </a>
         </CenteredContent>
       </div>
-      
+
       <div class="space-y-4 mt-4">
         {props.children}
       </div>

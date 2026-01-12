@@ -1,7 +1,7 @@
 import { Show, createMemo, createResource } from 'solid-js';
 import { useAuth } from '../auth/AuthProvider';
-import { useParams } from '@solidjs/router';
-import { 
+import { useParams, A } from '@solidjs/router';
+import {
   PageFrame,
   HeaderCard,
   Content,
@@ -43,7 +43,7 @@ export function ProviderBookingPage() {
   // Use display name from appointments (Preferred Name > Name > email username), fallback to email username
   const loggedInUsername = createMemo(() => {
     const apts = appointments.appointments();
-    
+
     // Check if we have valid appointments data (not an array, but the UserAppointmentsResponse object)
     if (apts && typeof apts === 'object' && !Array.isArray(apts) && 'displayName' in apts) {
       const response = apts as UserAppointmentsResponse;
@@ -53,6 +53,17 @@ export function ProviderBookingPage() {
     }
     // Fallback to email username while loading or if displayName not available
     return auth.user()?.nickname || auth.user()?.email?.split('@')[0] || '';
+  });
+
+  // Check if the logged-in user is the admin for this provider
+  const isProviderAdmin = createMemo(() => {
+    const user = auth.user();
+    if (!user) return false;
+
+    const provider = providerUsername();
+    const userUsername = user.nickname || user.email?.split('@')[0];
+
+    return userUsername === provider;
   });
   
   // Current step from state machine
@@ -165,9 +176,21 @@ export function ProviderBookingPage() {
   return (
     <PageFrame>
       <HeaderCard>
-        <Split 
+        <Split
           left={<Avatar username={loggedInUsername} />}
-          right={<LogoutButton onLogout={() => auth.logout()}>Logout</LogoutButton>}
+          right={
+            <div class="flex items-center gap-2">
+              <Show when={isProviderAdmin()}>
+                <A
+                  href={`/admin/${providerUsername()}`}
+                  class="text-primary hover:text-primary/80 px-2"
+                >
+                  Admin
+                </A>
+              </Show>
+              <LogoutButton onLogout={() => auth.logout()}>Logout</LogoutButton>
+            </div>
+          }
         />
       </HeaderCard>
       

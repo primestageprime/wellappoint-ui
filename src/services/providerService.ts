@@ -1,13 +1,13 @@
 import { Provider } from '../types/provider';
 import { apiFetch } from '../config/api';
 
-export async function getProviderDetails(): Promise<Provider | null> {
+export async function getProviderDetails(username: string): Promise<Provider | null> {
   try {
-    const response = await apiFetch('/api/provider');
+    const response = await apiFetch(`/api/provider?username=${encodeURIComponent(username)}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
+
     const data = await response.json();
     return data as Provider;
   } catch (error) {

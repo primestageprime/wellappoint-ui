@@ -52,10 +52,10 @@ export function BookingSuccessStep(props: BookingSuccessStepProps) {
       
       <div class="bg-green-50 border border-green-200 rounded-lg p-6">
         <h4 class="font-semibold text-green-900 mb-2">What happens next?</h4>
-        <ul class="text-sm text-green-800 space-y-1">
-          <li>• Check your email for confirmation details</li>
-          <li>• Your provider will review and confirm your appointment</li>
-          <li>• You'll receive a calendar invitation once confirmed</li>
+        <ul class="text-sm text-green-800 space-y-1 list-disc ml-5">
+          <li>Check your email for confirmation details</li>
+          <li>Your provider will review and confirm your appointment</li>
+          <li>You'll receive a calendar invitation once confirmed</li>
         </ul>
       </div>
       

@@ -1,0 +1,100 @@
+<svg width="800" height="500" viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="500" fill="#F9FBFD"/>
+
+  <!-- Toolbar area -->
+  <rect width="800" height="50" fill="#FFFFFF"/>
+  <rect width="800" height="1" y="50" fill="#E8EAED"/>
+
+  <!-- Document title -->
+  <rect x="15" y="10" width="20" height="20" rx="2" fill="#0F9D58"/>
+  <text x="45" y="26" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#202124">WellAppoint Admin</text>
+
+  <!-- Toolbar icons (simplified) -->
+  <circle cx="700" cy="25" r="8" fill="#5F6368"/>
+  <circle cx="730" cy="25" r="8" fill="#5F6368"/>
+  <circle cx="760" cy="25" r="8" fill="#5F6368"/>
+
+  <!-- Sheet tabs -->
+  <rect y="460" width="800" height="40" fill="#F1F3F4"/>
+  <rect x="20" y="467" width="80" height="26" rx="4" fill="#FFFFFF"/>
+  <text x="35" y="484" font-family="Arial, sans-serif" font-size="12" fill="#202124">Services</text>
+
+  <text x="120" y="484" font-family="Arial, sans-serif" font-size="12" fill="#5F6368">Clients</text>
+  <text x="185" y="484" font-family="Arial, sans-serif" font-size="12" fill="#5F6368">Locations</text>
+  <text x="265" y="484" font-family="Arial, sans-serif" font-size="12" fill="#5F6368">Config</text>
+
+  <!-- Column headers -->
+  <rect y="60" width="800" height="30" fill="#F8F9FA"/>
+
+  <!-- Column A header -->
+  <text x="15" y="80" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#5F6368">Name</text>
+
+  <!-- Column B header -->
+  <text x="130" y="80" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#5F6368">Duration</text>
+
+  <!-- Column C header -->
+  <text x="210" y="80" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#5F6368">Price</text>
+
+  <!-- Column D header -->
+  <text x="280" y="80" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#5F6368">Description</text>
+
+  <!-- Column E header -->
+  <text x="430" y="80" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#5F6368">Duration Description</text>
+
+  <!-- Column F header -->
+  <text x="620" y="80" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#5F6368">Prep Steps</text>
+
+  <!-- Grid lines -->
+  <line x1="0" y1="90" x2="800" y2="90" stroke="#E8EAED" stroke-width="1"/>
+  <line x1="0" y1="120" x2="800" y2="120" stroke="#E8EAED" stroke-width="1"/>
+  <line x1="0" y1="150" x2="800" y2="150" stroke="#E8EAED" stroke-width="1"/>
+  <line x1="0" y1="180" x2="800" y2="180" stroke="#E8EAED" stroke-width="1"/>
+  <line x1="0" y1="210" x2="800" y2="210" stroke="#E8EAED" stroke-width="1"/>
+
+  <line x1="120" y1="60" x2="120" y2="460" stroke="#E8EAED" stroke-width="1"/>
+  <line x1="200" y1="60" x2="200" y2="460" stroke="#E8EAED" stroke-width="1"/>
+  <line x1="270" y1="60" x2="270" y2="460" stroke="#E8EAED" stroke-width="1"/>
+  <line x1="420" y1="60" x2="420" y2="460" stroke="#E8EAED" stroke-width="1"/>
+  <line x1="610" y1="60" x2="610" y2="460" stroke="#E8EAED" stroke-width="1"/>
+
+  <!-- Row data -->
+  <!-- Row 1 -->
+  <text x="15" y="108" font-family="Arial, sans-serif" font-size="12" fill="#202124">App Planning</text>
+  <text x="155" y="108" font-family="Arial, sans-serif" font-size="12" fill="#202124">30</text>
+  <text x="215" y="108" font-family="Arial, sans-serif" font-size="12" fill="#202124">$50</text>
+  <text x="280" y="108" font-family="Arial, sans-serif" font-size="11" fill="#5F6368">Demo and Review</text>
+  <text x="430" y="108" font-family="Arial, sans-serif" font-size="11" fill="#5F6368">Demo and Review of a feature</text>
+  <text x="620" y="100" font-family="Arial, sans-serif" font-size="10" fill="#5F6368">Deploy to Production</text>
+  <text x="620" y="113" font-family="Arial, sans-serif" font-size="10" fill="#5F6368">Plan Walkthrough</text>
+
+  <!-- Row 2 -->
+  <text x="15" y="138" font-family="Arial, sans-serif" font-size="12" fill="#202124">App Planning</text>
+  <text x="155" y="138" font-family="Arial, sans-serif" font-size="12" fill="#202124">60</text>
+  <text x="215" y="138" font-family="Arial, sans-serif" font-size="12" fill="#202124">$85</text>
+  <text x="280" y="138" font-family="Arial, sans-serif" font-size="11" fill="#5F6368">Demo and Review</text>
+  <text x="430" y="138" font-family="Arial, sans-serif" font-size="11" fill="#5F6368">Demo and Review + Feedback</text>
+  <text x="620" y="130" font-family="Arial, sans-serif" font-size="10" fill="#5F6368">Deploy to Production</text>
+  <text x="620" y="143" font-family="Arial, sans-serif" font-size="10" fill="#5F6368">Plan Walkthrough</text>
+
+  <!-- Row 3 -->
+  <text x="15" y="168" font-family="Arial, sans-serif" font-size="12" fill="#202124">App Planning</text>
+  <text x="155" y="168" font-family="Arial, sans-serif" font-size="12" fill="#202124">90</text>
+  <text x="215" y="168" font-family="Arial, sans-serif" font-size="12" fill="#202124">$120</text>
+  <text x="280" y="168" font-family="Arial, sans-serif" font-size="11" fill="#5F6368">Demo and Review</text>
+  <text x="430" y="168" font-family="Arial, sans-serif" font-size="11" fill="#5F6368">Demo + Feedback + Planning</text>
+  <text x="620" y="160" font-family="Arial, sans-serif" font-size="10" fill="#5F6368">Deploy to Production</text>
+  <text x="620" y="173" font-family="Arial, sans-serif" font-size="10" fill="#5F6368">Plan Walkthrough</text>
+
+  <!-- Row 4 -->
+  <text x="15" y="198" font-family="Arial, sans-serif" font-size="12" fill="#202124">App Design</text>
+  <text x="155" y="198" font-family="Arial, sans-serif" font-size="12" fill="#202124">60</text>
+  <text x="215" y="198" font-family="Arial, sans-serif" font-size="12" fill="#202124">$85</text>
+  <text x="280" y="198" font-family="Arial, sans-serif" font-size="11" fill="#5F6368">Create a Design</text>
+  <text x="430" y="198" font-family="Arial, sans-serif" font-size="11" fill="#5F6368">Brainstorm a single feature</text>
+  <text x="620" y="190" font-family="Arial, sans-serif" font-size="10" fill="#5F6368">Deploy to Production</text>
+  <text x="620" y="203" font-family="Arial, sans-serif" font-size="10" fill="#5F6368">Plan Walkthrough</text>
+
+  <!-- Highlight on Services tab -->
+  <rect x="18" y="465" width="84" height="30" rx="4" stroke="#8B6914" stroke-width="2" fill="none"/>
+</svg>

@@ -1,0 +1,107 @@
+<svg width="800" height="500" viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="500" fill="#FFFFFF"/>
+
+  <!-- Left sidebar -->
+  <rect width="200" height="500" fill="#F8F9FA"/>
+
+  <!-- Calendar header -->
+  <rect x="200" width="600" height="60" fill="#FFFFFF"/>
+  <text x="220" y="38" font-family="Arial, sans-serif" font-size="20" font-weight="600" fill="#202124">January 2026</text>
+
+  <!-- Week view header -->
+  <g id="week-header">
+    <!-- MON -->
+    <rect x="200" y="60" width="100" height="40" fill="#F8F9FA"/>
+    <text x="240" y="85" font-family="Arial, sans-serif" font-size="12" fill="#70757A">MON</text>
+
+    <!-- TUE -->
+    <rect x="300" y="60" width="100" height="40" fill="#F8F9FA"/>
+    <text x="340" y="85" font-family="Arial, sans-serif" font-size="12" fill="#70757A">TUE</text>
+
+    <!-- WED -->
+    <rect x="400" y="60" width="100" height="40" fill="#F8F9FA"/>
+    <text x="440" y="85" font-family="Arial, sans-serif" font-size="12" fill="#70757A">WED</text>
+
+    <!-- THU -->
+    <rect x="500" y="60" width="100" height="40" fill="#F8F9FA"/>
+    <text x="540" y="85" font-family="Arial, sans-serif" font-size="12" fill="#70757A">THU</text>
+
+    <!-- FRI -->
+    <rect x="600" y="60" width="100" height="40" fill="#F8F9FA"/>
+    <text x="642" y="85" font-family="Arial, sans-serif" font-size="12" fill="#70757A">FRI</text>
+
+    <!-- SAT -->
+    <rect x="700" y="60" width="100" height="40" fill="#F8F9FA"/>
+    <text x="740" y="85" font-family="Arial, sans-serif" font-size="12" fill="#70757A">SAT</text>
+  </g>
+
+  <!-- Time labels -->
+  <text x="215" y="125" font-family="Arial, sans-serif" font-size="10" fill="#70757A">8 AM</text>
+  <text x="215" y="185" font-family="Arial, sans-serif" font-size="10" fill="#70757A">10 AM</text>
+  <text x="215" y="245" font-family="Arial, sans-serif" font-size="10" fill="#70757A">12 PM</text>
+  <text x="215" y="305" font-family="Arial, sans-serif" font-size="10" fill="#70757A">2 PM</text>
+  <text x="215" y="365" font-family="Arial, sans-serif" font-size="10" fill="#70757A">4 PM</text>
+  <text x="215" y="425" font-family="Arial, sans-serif" font-size="10" fill="#70757A">6 PM</text>
+
+  <!-- Grid lines -->
+  <line x1="200" y1="100" x2="800" y2="100" stroke="#DADCE0" stroke-width="1"/>
+  <line x1="200" y1="160" x2="800" y2="160" stroke="#DADCE0" stroke-width="1"/>
+  <line x1="200" y1="220" x2="800" y2="220" stroke="#DADCE0" stroke-width="1"/>
+  <line x1="200" y1="280" x2="800" y2="280" stroke="#DADCE0" stroke-width="1"/>
+  <line x1="200" y1="340" x2="800" y2="340" stroke="#DADCE0" stroke-width="1"/>
+  <line x1="200" y1="400" x2="800" y2="400" stroke="#DADCE0" stroke-width="1"/>
+
+  <line x1="300" y1="100" x2="300" y2="500" stroke="#DADCE0" stroke-width="1"/>
+  <line x1="400" y1="100" x2="400" y2="500" stroke="#DADCE0" stroke-width="1"/>
+  <line x1="500" y1="100" x2="500" y2="500" stroke="#DADCE0" stroke-width="1"/>
+  <line x1="600" y1="100" x2="600" y2="500" stroke="#DADCE0" stroke-width="1"/>
+  <line x1="700" y1="100" x2="700" y2="500" stroke="#DADCE0" stroke-width="1"/>
+
+  <!-- Available blocks -->
+  <!-- Tuesday 9-11am -->
+  <rect x="305" y="135" width="90" height="80" rx="4" fill="#B39DDB"/>
+  <text x="315" y="152" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#4A148C">Available</text>
+  <text x="315" y="167" font-family="Arial, sans-serif" font-size="10" fill="#4A148C">9 – 11am</text>
+
+  <!-- Wednesday 1-3pm -->
+  <rect x="405" y="255" width="90" height="80" rx="4" fill="#B39DDB"/>
+  <text x="415" y="272" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#4A148C">Available</text>
+  <text x="415" y="287" font-family="Arial, sans-serif" font-size="10" fill="#4A148C">1 – 3pm</text>
+
+  <!-- Thursday 10am-12pm -->
+  <rect x="505" y="165" width="90" height="80" rx="4" fill="#B39DDB"/>
+  <text x="515" y="182" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#4A148C">Available</text>
+  <text x="515" y="197" font-family="Arial, sans-serif" font-size="10" fill="#4A148C">10am – 12pm</text>
+
+  <!-- Friday 2-5pm -->
+  <rect x="605" y="285" width="90" height="110" rx="4" fill="#B39DDB"/>
+  <text x="615" y="302" font-family="Arial, sans-serif" font-size="11" font-weight="600" fill="#4A148C">Available</text>
+  <text x="615" y="317" font-family="Arial, sans-serif" font-size="10" fill="#4A148C">2 – 5pm</text>
+
+  <!-- My calendars section -->
+  <text x="20" y="30" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#3C4043">My calendars</text>
+
+  <!-- Calendar list -->
+  <g id="calendar-list">
+    <!-- Personal calendar -->
+    <circle cx="30" cy="60" r="6" fill="#1976D2"/>
+    <text x="45" y="65" font-family="Arial, sans-serif" font-size="13" fill="#3C4043">Your Name</text>
+
+    <!-- Birthdays -->
+    <circle cx="30" cy="90" r="6" fill="#0B8043"/>
+    <text x="45" y="95" font-family="Arial, sans-serif" font-size="13" fill="#3C4043">Birthdays</text>
+
+    <!-- WellAppoint calendar (highlighted) -->
+    <rect x="15" y="105" width="170" height="28" rx="4" fill="#FEF7E0"/>
+    <circle cx="30" cy="119" r="6" fill="#B39DDB"/>
+    <text x="45" y="124" font-family="Arial, sans-serif" font-size="13" font-weight="600" fill="#3C4043">WellAppoint</text>
+
+    <!-- Tasks -->
+    <circle cx="30" cy="155" r="6" fill="#F4B400"/>
+    <text x="45" y="160" font-family="Arial, sans-serif" font-size="13" fill="#3C4043">Tasks</text>
+  </g>
+
+  <!-- Arrow pointing to WellAppoint -->
+  <path d="M 185 119 L 195 119 L 190 114 M 195 119 L 190 124" stroke="#F9AB00" stroke-width="2" fill="none"/>
+</svg>

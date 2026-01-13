@@ -34,14 +34,21 @@ export function CreateProviderPage() {
     return googleUsername;
   };
   
-  // Get provider name from Google auth
+  // Get provider name and email from Google auth
   const getProviderName = () => {
     const user = auth.user();
     return user?.name || '';
   };
 
+  const getProviderEmail = () => {
+    const user = auth.user();
+    return user?.email || '';
+  };
+
   const [username, setUsername] = createSignal('');
   const [providerName, setProviderName] = createSignal('');
+  const [email, setEmail] = createSignal('');
+  const [phone, setPhone] = createSignal('');
   const [refreshToken, setRefreshToken] = createSignal('');
   const [isSubmitting, setIsSubmitting] = createSignal(false);
   const [isOAuthLoading, setIsOAuthLoading] = createSignal(false);
@@ -51,12 +58,13 @@ export function CreateProviderPage() {
   // Track if we've already set the initial defaults
   const [hasSetDefaults, setHasSetDefaults] = createSignal(false);
 
-  // Set default username and provider name once when auth user is available
+  // Set default username, provider name, and email once when auth user is available
   createEffect(() => {
     const user = auth.user();
     if (user && !hasSetDefaults()) {
       setUsername(generateDefaultUsername());
       setProviderName(getProviderName());
+      setEmail(getProviderEmail());
       setHasSetDefaults(true);
     }
   });
@@ -94,7 +102,6 @@ export function CreateProviderPage() {
 
         if (data.success && data.refreshToken) {
           setRefreshToken(data.refreshToken);
-          setSuccess('Google authorization successful! You can now complete provider setup.');
 
           // Clean up URL parameter if present
           if (searchParams.tokenKey) {
@@ -143,9 +150,9 @@ export function CreateProviderPage() {
 
   const handleProviderSetup = async (e: Event) => {
     e.preventDefault();
-    
-    if (!username() || !providerName() || !refreshToken()) {
-      setError('All fields are required');
+
+    if (!username() || !providerName() || !email() || !refreshToken()) {
+      setError('Username, name, and email are required');
       return;
     }
 
@@ -162,6 +169,8 @@ export function CreateProviderPage() {
         body: JSON.stringify({
           username: username(),
           providerName: providerName(),
+          email: email(),
+          phone: phone(),
           refreshToken: refreshToken(),
         }),
       });
@@ -193,67 +202,109 @@ export function CreateProviderPage() {
       <Content>
 
         <SectionCard
-          title="Provider Setup"
-          description="Log in to Google to grant us access to read and write to Google Calendar. We'll create a new calendar called WellAppoint for you. By dragging blocks of time named 'Available' into that calendar, you can make your time available to clients."
+          title="Become a Provider"
+          description="Set up your WellAppoint scheduling system in two simple steps."
         >
-          <StepSection
-            step={1}
-            title="Google OAuth Setup"
-            description="Authenticate with Google to grant permission to create your WellAppoint calendar."
-          >
-            {!refreshToken() ? (
+          {/* Step 1 - Collapsed when step 2 is shown */}
+          {!refreshToken() ? (
+            <StepSection
+              step={1}
+              title="Authorize WellAppoint to Handle Scheduling for You"
+              description="We'll create a special calendar called 'WellAppoint' in your Google Calendar so it doesn't conflict with your other calendaring. We'll also share an administrative spreadsheet with you to configure your services, pricing, and availability settings."
+            >
+              {/* Preview images */}
+              <div class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Calendar preview */}
+                <div class="rounded-lg overflow-hidden border border-border">
+                  <img
+                    src="/calendar-preview.svg"
+                    alt="WellAppoint calendar showing available time blocks"
+                    class="w-full h-auto"
+                  />
+                  <div class="bg-muted/30 px-3 py-2 text-xs text-muted-foreground text-center">
+                    Your WellAppoint Calendar
+                  </div>
+                </div>
+
+                {/* Spreadsheet preview */}
+                <div class="rounded-lg overflow-hidden border border-border">
+                  <img
+                    src="/spreadsheet-preview.svg"
+                    alt="Admin spreadsheet for configuring services"
+                    class="w-full h-auto"
+                  />
+                  <div class="bg-muted/30 px-3 py-2 text-xs text-muted-foreground text-center">
+                    Your Admin Spreadsheet
+                  </div>
+                </div>
+              </div>
+
               <ActionButton
                 onClick={handleOAuthSetup}
                 isLoading={isOAuthLoading()}
                 loadingText="Redirecting to Google..."
               >
-                Start Google OAuth
+                Authorize with Google
               </ActionButton>
-            ) : (
-              <SuccessMessage inline>✅ Google authorization complete!</SuccessMessage>
-            )}
-          </StepSection>
+            </StepSection>
+          ) : (
+            <div class="flex items-center gap-3 py-4 text-sm text-muted-foreground">
+              <span class="text-green-600 font-medium">✓</span>
+              <span>1. Authorization complete</span>
+            </div>
+          )}
 
-          <StepSection step={2} title="Provider Configuration" hasBorder>
-            <form onSubmit={handleProviderSetup} class="space-y-4">
-              <FormField
-                label="Username"
-                name="username"
-                placeholder="yourname-2025-12-19"
-                value={username}
-                onInput={setUsername}
-                helpText="URL-safe username for the provider (used in your booking URL)"
-              />
-
-              <FormField
-                label="Provider Name"
-                name="providerName"
-                placeholder="Peter Stradinger"
-                value={providerName}
-                onInput={setProviderName}
-              />
-
-              {refreshToken() && (
+          {/* Only show step 2 after authorization is complete */}
+          {refreshToken() && (
+            <StepSection step={2} title="Configure Your Provider Account" hasBorder>
+              <form onSubmit={handleProviderSetup} class="space-y-4">
                 <FormField
-                  label="Refresh Token"
-                  name="refreshToken"
-                  placeholder="1//04..."
-                  value={refreshToken}
-                  onInput={setRefreshToken}
-                  disabled
-                  helpText="Token obtained from Google OAuth"
+                  label="Username"
+                  name="username"
+                  placeholder="yourname-2025-12-19"
+                  value={username}
+                  onInput={setUsername}
+                  helpText="URL-safe username for your booking page (example: wellappoint.com/yourname)"
                 />
-              )}
 
-              <SubmitButton
-                disabled={!refreshToken()}
-                isLoading={isSubmitting()}
-                loadingText="Creating provider..."
-              >
-                Create Provider
-              </SubmitButton>
-            </form>
-          </StepSection>
+                <FormField
+                  label="Your Name"
+                  name="providerName"
+                  placeholder="Peter Stradinger"
+                  value={providerName}
+                  onInput={setProviderName}
+                  helpText="Your full name as it will appear to clients"
+                />
+
+                <FormField
+                  label="Email"
+                  name="email"
+                  type="email"
+                  placeholder="peter@example.com"
+                  value={email}
+                  onInput={setEmail}
+                  helpText="Your email address for client communications"
+                />
+
+                <FormField
+                  label="Phone Number (Optional)"
+                  name="phone"
+                  type="tel"
+                  placeholder="+1 (555) 123-4567"
+                  value={phone}
+                  onInput={setPhone}
+                  helpText="Your phone number to display to clients"
+                />
+
+                <SubmitButton
+                  isLoading={isSubmitting()}
+                  loadingText="Creating your account..."
+                >
+                  Complete Setup
+                </SubmitButton>
+              </form>
+            </StepSection>
+          )}
         </SectionCard>
 
         {error() && <ErrorMessage>{error()}</ErrorMessage>}

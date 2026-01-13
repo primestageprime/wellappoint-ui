@@ -36,7 +36,7 @@ export function OAuthCallbackPage() {
     }
 
     try {
-      // Exchange the code for a refresh token
+      // Exchange the code for a token key (stored server-side for Safari compatibility)
       const response = await apiFetch('/api/oauth/exchange', {
         method: 'POST',
         headers: {
@@ -47,14 +47,20 @@ export function OAuthCallbackPage() {
 
       const data = await response.json();
 
-      if (data.success && data.refreshToken) {
-        // Store the refresh token in sessionStorage for the create-provider page
-        sessionStorage.setItem('oauth_refresh_token', data.refreshToken);
+      if (data.success && data.tokenKey) {
+        // Store the token key - this works better with Safari/iOS than storing the actual token
+        try {
+          sessionStorage.setItem('oauth_token_key', data.tokenKey);
+        } catch (storageError) {
+          // If sessionStorage fails (Safari privacy mode), use URL parameter as fallback
+          console.warn('sessionStorage unavailable, using URL parameter fallback');
+        }
+
         setStatus('success');
-        
-        // Redirect back to create-provider page after a brief moment
+
+        // Redirect back to create-provider page with token key in URL as fallback
         setTimeout(() => {
-          navigate('/admin/create-provider');
+          navigate(`/admin/create-provider?tokenKey=${data.tokenKey}`);
         }, 1500);
       } else {
         setStatus('error');

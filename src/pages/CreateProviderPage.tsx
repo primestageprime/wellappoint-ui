@@ -1,6 +1,6 @@
 import { createSignal, createEffect, onMount } from 'solid-js';
-import { useNavigate } from '@solidjs/router';
-import { 
+import { useNavigate, useSearchParams } from '@solidjs/router';
+import {
   PageFrame,
   Content,
   FormField,
@@ -17,7 +17,8 @@ import { apiFetch } from '../config/api';
 export function CreateProviderPage() {
   const auth = useAuth();
   const navigate = useNavigate();
-  
+  const [searchParams] = useSearchParams();
+
   // Check if we're on localhost
   const isLocalhost = () => window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
   
@@ -60,14 +61,51 @@ export function CreateProviderPage() {
     }
   });
 
-  // Check for refresh token from OAuth callback on mount
-  onMount(() => {
-    const storedToken = sessionStorage.getItem('oauth_refresh_token');
-    if (storedToken) {
-      setRefreshToken(storedToken);
-      setSuccess('Google authorization successful! You can now complete provider setup.');
-      // Clear the token from sessionStorage
-      sessionStorage.removeItem('oauth_refresh_token');
+  // Check for token key from OAuth callback on mount (Safari-compatible)
+  onMount(async () => {
+    // Try to get token key from URL parameter first (works in all browsers including Safari)
+    let tokenKey = searchParams.tokenKey;
+
+    // Fallback to sessionStorage if URL parameter not present
+    if (!tokenKey) {
+      try {
+        tokenKey = sessionStorage.getItem('oauth_token_key');
+        if (tokenKey) {
+          // Clear the key from sessionStorage after reading
+          sessionStorage.removeItem('oauth_token_key');
+        }
+      } catch (e) {
+        console.warn('sessionStorage not available:', e);
+      }
+    }
+
+    if (tokenKey) {
+      try {
+        // Fetch the actual refresh token from server using the key
+        const response = await apiFetch('/api/oauth/token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ tokenKey }),
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.refreshToken) {
+          setRefreshToken(data.refreshToken);
+          setSuccess('Google authorization successful! You can now complete provider setup.');
+
+          // Clean up URL parameter if present
+          if (searchParams.tokenKey) {
+            navigate('/admin/create-provider', { replace: true });
+          }
+        } else {
+          setError(data.error || 'Failed to retrieve OAuth token');
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to retrieve OAuth token');
+      }
     }
   });
 

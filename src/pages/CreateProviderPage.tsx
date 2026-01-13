@@ -47,16 +47,16 @@ export function CreateProviderPage() {
   const [error, setError] = createSignal<string | null>(null);
   const [success, setSuccess] = createSignal<string | null>(null);
 
-  // Update username and provider name when auth user is available
+  // Track if we've already set the initial defaults
+  const [hasSetDefaults, setHasSetDefaults] = createSignal(false);
+
+  // Set default username and provider name once when auth user is available
   createEffect(() => {
     const user = auth.user();
-    if (user) {
-      if (!username()) {
-        setUsername(generateDefaultUsername());
-      }
-      if (!providerName()) {
-        setProviderName(getProviderName());
-      }
+    if (user && !hasSetDefaults()) {
+      setUsername(generateDefaultUsername());
+      setProviderName(getProviderName());
+      setHasSetDefaults(true);
     }
   });
 

@@ -1,13 +1,24 @@
+import { Spinner } from '../base/Spinner';
+import { taskMetrics } from '../../../utils/taskMetrics';
+
 interface LoadingStateProps {
   message: string;
   class?: string;
+  /** Optional task ID for progress tracking */
+  taskId?: string;
 }
 
 export function LoadingState(props: LoadingStateProps) {
+  // Get estimated duration if taskId is provided
+  const estimatedDuration = props.taskId ? taskMetrics.getAverageTime(props.taskId) : null;
+
   return (
     <div class={`text-center py-12 ${props.class || ''}`}>
-      <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      <p class="text-primary mt-4">{props.message}</p>
+      <Spinner
+        estimatedDuration={estimatedDuration || undefined}
+        text={props.message}
+        size="large"
+      />
     </div>
   );
 }

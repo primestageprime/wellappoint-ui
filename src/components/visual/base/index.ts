@@ -20,3 +20,4 @@ export { VerticallySpacedContent } from './VerticallySpacedContent';
 export { Input } from './Input';
 export { Label } from './Label';
 export { Footer } from './Footer';
+export { Spinner } from './Spinner';

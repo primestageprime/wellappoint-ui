@@ -31,7 +31,7 @@ export function LoadingSlotsStep(props: LoadingSlotsStepProps) {
         description={props.durationDescription}
       />
       
-      <LoadingState message="Finding available times..." />
+      <LoadingState message="Finding available times..." taskId="loading-time-slots" />
     </>
   );
 }

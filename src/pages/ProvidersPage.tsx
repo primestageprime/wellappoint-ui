@@ -1,7 +1,8 @@
-import { createResource, createSignal, For, Show } from 'solid-js';
+import { createResource, createSignal, For, Show, createEffect } from 'solid-js';
 import { useNavigate } from '@solidjs/router';
 import { useAuth } from '../auth/AuthProvider';
 import { apiFetch } from '../config/api';
+import { taskMetrics } from '../utils/taskMetrics';
 import {
   PageFrame,
   HeaderCard,
@@ -25,27 +26,48 @@ interface ProvidersListResponse {
 }
 
 async function fetchProviders(): Promise<Provider[]> {
+  const startTime = Date.now();
   try {
     const response = await apiFetch('/api/providers/list');
     if (response.ok) {
       const data: ProvidersListResponse = await response.json();
+
+      // Record task completion time
+      const elapsedMs = Date.now() - startTime;
+      taskMetrics.recordTask('loading-providers', elapsedMs);
+
       return data.providers || [];
     }
   } catch (e) {
     console.error('Failed to fetch providers:', e);
+
+    // Still record the time even on error
+    const elapsedMs = Date.now() - startTime;
+    taskMetrics.recordTask('loading-providers', elapsedMs);
   }
   return [];
 }
 
 async function deleteProvider(username: string): Promise<{ success: boolean; message?: string; error?: string }> {
+  const startTime = Date.now();
   try {
     const response = await apiFetch(`/api/providers/${encodeURIComponent(username)}`, {
       method: 'DELETE',
     });
     const data = await response.json();
+
+    // Record task completion time
+    const elapsedMs = Date.now() - startTime;
+    taskMetrics.recordTask('deleting-provider', elapsedMs);
+
     return data;
   } catch (e) {
     console.error('Failed to delete provider:', e);
+
+    // Still record the time even on error
+    const elapsedMs = Date.now() - startTime;
+    taskMetrics.recordTask('deleting-provider', elapsedMs);
+
     return { success: false, error: 'Network error' };
   }
 }
@@ -62,6 +84,21 @@ export function ProvidersPage() {
   const loggedInUsername = () => {
     return auth.user()?.nickname || auth.user()?.email?.split('@')[0] || '';
   };
+
+  // Check if user is authorized to access this page
+  const isAuthorized = () => {
+    const adminUser = import.meta.env.VITE_ADMIN_USER;
+    const currentUser = loggedInUsername();
+    return currentUser === adminUser;
+  };
+
+  // Redirect if not authorized
+  createEffect(() => {
+    if (auth.isAuthenticated() && !isAuthorized()) {
+      console.warn('Unauthorized access attempt to /admin/providers by:', loggedInUsername());
+      navigate('/');
+    }
+  });
 
   const openDeleteDialog = (provider: Provider) => {
     console.log('🔴 Opening delete dialog for:', provider.name);
@@ -104,6 +141,26 @@ export function ProvidersPage() {
       day: 'numeric',
     });
   };
+
+  // Show unauthorized message if not authorized
+  if (!isAuthorized()) {
+    return (
+      <PageFrame>
+        <HeaderCard>
+          <Split
+            left={<Avatar username={loggedInUsername} />}
+            right={<LogoutButton onLogout={() => auth.logout()}>Logout</LogoutButton>}
+          />
+        </HeaderCard>
+        <Content>
+          <div class="text-center py-8">
+            <h2 class="text-xl font-bold text-red-600 mb-2">Unauthorized Access</h2>
+            <p class="text-muted-foreground">You do not have permission to access this page.</p>
+          </div>
+        </Content>
+      </PageFrame>
+    );
+  }
 
   return (
     <>

@@ -1,6 +1,8 @@
 import { Show, createMemo, createResource } from 'solid-js';
 import { useAuth } from '../auth/AuthProvider';
 import { useParams, A } from '@solidjs/router';
+import { useTaskTimer } from '../hooks/useTaskTimer';
+import { taskMetrics } from '../utils/taskMetrics';
 import {
   PageFrame,
   HeaderCard,
@@ -111,17 +113,31 @@ export function ProviderBookingPage() {
       const duration = booking.state.selectedDuration;
       const email = userEmail();
       const provider = providerUsername();
-      
-      return service && duration && email ? 
+
+      return service && duration && email ?
         { service, duration, email, provider } : null;
     },
     async (params) => {
-      return await getAvailableSlots(
-        params.service,
-        params.duration,
-        params.email,
-        params.provider
-      );
+      const startTime = Date.now();
+      try {
+        const result = await getAvailableSlots(
+          params.service,
+          params.duration,
+          params.email,
+          params.provider
+        );
+
+        // Record task completion time
+        const elapsedMs = Date.now() - startTime;
+        taskMetrics.recordTask('loading-time-slots', elapsedMs);
+
+        return result;
+      } catch (error) {
+        // Still record the time even on error
+        const elapsedMs = Date.now() - startTime;
+        taskMetrics.recordTask('loading-time-slots', elapsedMs);
+        throw error;
+      }
     }
   );
   
@@ -137,14 +153,15 @@ export function ProviderBookingPage() {
     const duration = booking.state.selectedDuration;
     const slot = booking.state.selectedSlot;
     const email = userEmail();
-    
+
     if (!service || !duration || !slot || !email) {
       console.error('Missing booking information');
       return;
     }
-    
+
     booking.actions.setSubmitting(true);
-    
+    const startTime = Date.now();
+
     try {
       const bookingRequest = createBookingRequest(
         service,
@@ -153,9 +170,13 @@ export function ProviderBookingPage() {
         email,
         providerUsername()
       );
-      
+
       const result = await createAppointment(bookingRequest);
-      
+
+      // Record task completion time
+      const elapsedMs = Date.now() - startTime;
+      taskMetrics.recordTask('booking-appointment', elapsedMs);
+
       if (result.success) {
         booking.actions.setSubmitting(false);
         booking.actions.setConfirmed(true);
@@ -169,6 +190,11 @@ export function ProviderBookingPage() {
     } catch (error) {
       console.error('Booking error:', error);
       alert('Failed to create appointment');
+
+      // Still record the time even on error
+      const elapsedMs = Date.now() - startTime;
+      taskMetrics.recordTask('booking-appointment', elapsedMs);
+
       booking.actions.setSubmitting(false);
     }
   };

@@ -46,9 +46,9 @@ export function BookingConfirmationStep(props: BookingConfirmationStepProps) {
         <PriceDetailItem value={`$${props.price}`} />
       </AppointmentDetailsGrid>
       
-      <Show 
+      <Show
         when={!props.isSubmitting}
-        fallback={<LoadingState message="Submitting your appointment request..." />}
+        fallback={<LoadingState message="Submitting your appointment request..." taskId="booking-appointment" />}
       >
         <ActionButtons>
           <SecondaryButton onClick={props.onBack}>Back</SecondaryButton>

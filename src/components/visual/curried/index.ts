@@ -5,8 +5,6 @@ export { ProfilePic } from './ProfilePic';
 export { MailLink } from './MailLink';
 export { LogoutButton } from './LogoutButton';
 export { TestContent } from './TestContent';
-export { DesignSystemSection } from './DesignSystemSection';
-export { DesignSystemPage } from './DesignSystemPage';
 export { Content } from './Content';
 export { Avatar } from './Avatar';
 export { Card } from './Card';

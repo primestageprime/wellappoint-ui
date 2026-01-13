@@ -1,5 +1,5 @@
 import { Show } from 'solid-js';
-import { 
+import {
   BookingConfirmationContainer,
   AppointmentDetailsGrid,
   ServiceDetailItem,
@@ -12,6 +12,7 @@ import {
   SecondaryButton,
   PrimaryButton,
   LoadingState,
+  ProgressButton,
 } from '../visual';
 import { type AvailableSlot } from '../../types/global';
 import { formatSlotTime } from '../../utils/slotFormatting';
@@ -23,6 +24,7 @@ export interface BookingConfirmationStepProps {
   slot: AvailableSlot;
   price: number;
   isSubmitting: boolean;
+  isSuccess?: boolean;
   onConfirm: () => void;
   onBack: () => void;
 }
@@ -46,15 +48,19 @@ export function BookingConfirmationStep(props: BookingConfirmationStepProps) {
         <PriceDetailItem value={`$${props.price}`} />
       </AppointmentDetailsGrid>
       
-      <Show
-        when={!props.isSubmitting}
-        fallback={<LoadingState message="Submitting your appointment request..." taskId="booking-appointment" />}
-      >
-        <ActionButtons>
-          <SecondaryButton onClick={props.onBack}>Back</SecondaryButton>
-          <PrimaryButton onClick={props.onConfirm}>Confirm Your Session</PrimaryButton>
-        </ActionButtons>
-      </Show>
+      <ActionButtons>
+        <SecondaryButton onClick={props.onBack} disabled={props.isSubmitting || props.isSuccess}>Back</SecondaryButton>
+        <ProgressButton
+          text="Confirm Your Session"
+          loadingText="Submitting your appointment..."
+          successText="Appointment Booked!"
+          isLoading={props.isSubmitting}
+          isSuccess={props.isSuccess || false}
+          taskId="booking-appointment"
+          type="button"
+          onClick={props.onConfirm}
+        />
+      </ActionButtons>
     </BookingConfirmationContainer>
   );
 }

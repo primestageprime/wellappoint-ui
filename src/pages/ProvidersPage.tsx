@@ -11,6 +11,8 @@ import {
   Avatar,
   LogoutButton,
   DangerButton,
+  SuccessMessage,
+  ErrorMessage,
 } from '../components/visual';
 
 interface Provider {
@@ -80,6 +82,8 @@ export function ProvidersPage() {
   const [providerToDelete, setProviderToDelete] = createSignal<Provider | null>(null);
   const [confirmationText, setConfirmationText] = createSignal('');
   const [isDeleting, setIsDeleting] = createSignal(false);
+  const [successMessage, setSuccessMessage] = createSignal<string | null>(null);
+  const [errorMessage, setErrorMessage] = createSignal<string | null>(null);
 
   const loggedInUsername = () => {
     return auth.user()?.nickname || auth.user()?.email?.split('@')[0] || '';
@@ -104,6 +108,8 @@ export function ProvidersPage() {
     console.log('🔴 Opening delete dialog for:', provider.name);
     setProviderToDelete(provider);
     setConfirmationText('');
+    setSuccessMessage(null);
+    setErrorMessage(null);
     setDeleteDialogOpen(true);
     console.log('🔴 Delete dialog state after setting:', deleteDialogOpen());
   };
@@ -126,11 +132,11 @@ export function ProvidersPage() {
     setIsDeleting(false);
 
     if (result.success) {
-      alert(`Successfully deleted provider: ${provider.name}\n\n${result.message || ''}`);
+      setSuccessMessage(`Successfully deleted provider: ${provider.name}${result.message ? `\n${result.message}` : ''}`);
       closeDeleteDialog();
       refetch();
     } else {
-      alert(`Failed to delete provider: ${result.error || 'Unknown error'}`);
+      setErrorMessage(`Failed to delete provider: ${result.error || 'Unknown error'}`);
     }
   };
 
@@ -177,6 +183,14 @@ export function ProvidersPage() {
           <div class="flex items-center justify-between">
             <h1 class="text-2xl font-bold text-card-foreground">Providers</h1>
           </div>
+
+          <Show when={successMessage()}>
+            <SuccessMessage>{successMessage()}</SuccessMessage>
+          </Show>
+
+          <Show when={errorMessage()}>
+            <ErrorMessage>{errorMessage()}</ErrorMessage>
+          </Show>
 
           <Show when={providers.loading}>
             <div class="text-center text-muted-foreground py-8">Loading providers...</div>

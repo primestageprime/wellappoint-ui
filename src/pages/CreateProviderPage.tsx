@@ -8,11 +8,12 @@ import {
   StepSection,
   SuccessMessage,
   ErrorMessage,
-  SubmitButton,
-  ActionButton
+  ActionButton,
+  ProgressButton
 } from '../components/visual';
 import { useAuth } from '../auth/AuthProvider';
 import { apiFetch } from '../config/api';
+import { taskMetrics } from '../utils/taskMetrics';
 
 export function CreateProviderPage() {
   const auth = useAuth();
@@ -51,6 +52,7 @@ export function CreateProviderPage() {
   const [phone, setPhone] = createSignal('');
   const [refreshToken, setRefreshToken] = createSignal('');
   const [isSubmitting, setIsSubmitting] = createSignal(false);
+  const [isProviderSetupSuccess, setIsProviderSetupSuccess] = createSignal(false);
   const [isOAuthLoading, setIsOAuthLoading] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
   const [success, setSuccess] = createSignal<string | null>(null);
@@ -157,8 +159,11 @@ export function CreateProviderPage() {
     }
 
     setIsSubmitting(true);
+    setIsProviderSetupSuccess(false);
     setError(null);
     setSuccess(null);
+
+    const startTime = Date.now();
 
     try {
       const response = await apiFetch('/api/provider/setup', {
@@ -177,13 +182,18 @@ export function CreateProviderPage() {
 
       const data = await response.json();
 
+      // Record task completion time
+      const elapsedMs = Date.now() - startTime;
+      taskMetrics.recordTask('create-provider', elapsedMs);
+
       if (!response.ok) {
         throw new Error(data.error || 'Failed to setup provider');
       }
 
       if (data.success) {
+        setIsProviderSetupSuccess(true);
         setSuccess(`Provider ${username()} setup successfully! Redirecting to admin page...`);
-        // Navigate to the provider's admin page after a short delay
+        // Navigate to the provider's admin page after showing success
         setTimeout(() => {
           navigate(`/admin/${username()}`);
         }, 2000);
@@ -191,6 +201,10 @@ export function CreateProviderPage() {
         throw new Error(data.error || 'Provider setup failed');
       }
     } catch (err) {
+      // Record time even on error
+      const elapsedMs = Date.now() - startTime;
+      taskMetrics.recordTask('create-provider', elapsedMs);
+
       setError(err instanceof Error ? err.message : 'An unexpected error occurred');
     } finally {
       setIsSubmitting(false);
@@ -296,12 +310,15 @@ export function CreateProviderPage() {
                   helpText="Your phone number to display to clients"
                 />
 
-                <SubmitButton
-                  isLoading={isSubmitting()}
+                <ProgressButton
+                  text="Complete Setup"
                   loadingText="Creating your account..."
-                >
-                  Complete Setup
-                </SubmitButton>
+                  successText="Account Created!"
+                  isLoading={isSubmitting()}
+                  isSuccess={isProviderSetupSuccess()}
+                  taskId="create-provider"
+                  type="submit"
+                />
               </form>
             </StepSection>
           )}

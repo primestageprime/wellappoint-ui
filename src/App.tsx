@@ -9,8 +9,6 @@ import { Footer } from './components/visual/base/Footer';
 import { LoginPage } from './pages/LoginPage';
 import { BookingPage } from './pages/BookingPage';
 import { ProviderBookingPage } from './pages/ProviderBookingPage';
-import { DesignSystemPage } from './pages/DesignSystemPage';
-import { LayoutDemoPage } from './pages/LayoutDemoPage';
 import { CreateProviderPage } from './pages/CreateProviderPage';
 import { ProvidersPage } from './pages/ProvidersPage';
 import { AdminPage } from './pages/AdminPage';
@@ -22,6 +20,7 @@ import { TermsPage } from './pages/TermsPage';
 import { OAuthCallbackPage } from './pages/OAuthCallbackPage';
 import { DemoIndexPage } from './pages/demo/DemoIndexPage';
 import { ComponentsStatePage } from './pages/demo/ComponentsStatePage';
+import { ProgressButtonDemoPage } from './pages/demo/ProgressButtonDemoPage';
 import { LoginStatePage } from './pages/demo/LoginStatePage';
 import { ChooseServiceStatePage } from './pages/demo/ChooseServiceStatePage';
 import { ChooseDurationStatePage } from './pages/demo/ChooseDurationStatePage';
@@ -95,12 +94,11 @@ function App() {
               
               {/* Legacy routes for backward compatibility */}
               <Route path="/booking" component={BookingPage} />
-              <Route path="/design-system" component={DesignSystemPage} />
-              <Route path="/layout-demo" component={LayoutDemoPage} />
               
               {/* Demo state pages */}
               <Route path="/demo" component={DemoIndexPage} />
               <Route path="/demo/components" component={ComponentsStatePage} />
+              <Route path="/demo/components/progress-button" component={ProgressButtonDemoPage} />
               <Route path="/demo/login" component={LoginStatePage} />
               <Route path="/demo/choose-service" component={ChooseServiceStatePage} />
               <Route path="/demo/choose-duration" component={ChooseDurationStatePage} />

@@ -1,4 +1,4 @@
-import { Show, createMemo, createResource } from 'solid-js';
+import { Show, createMemo, createResource, createSignal } from 'solid-js';
 import { useAuth } from '../auth/AuthProvider';
 import { useParams, A } from '@solidjs/router';
 import { useTaskTimer } from '../hooks/useTaskTimer';
@@ -35,9 +35,12 @@ export function ProviderBookingPage() {
   const params = useParams();
   const booking = useBooking();
   const servicesStore = useServices();
-  
+
   const providerUsername = () => params.username as string;
   const userEmail = () => auth.user()?.email;
+
+  // Track booking success for progress button animation
+  const [isBookingSuccess, setIsBookingSuccess] = createSignal(false);
   
   // Appointments (existing hook)
   const appointments = useAppointments(() => userEmail(), providerUsername);
@@ -179,13 +182,20 @@ export function ProviderBookingPage() {
 
       if (result.success) {
         booking.actions.setSubmitting(false);
-        booking.actions.setConfirmed(true);
-        // Refetch appointments to show the new one
-        appointments.refetchAppointments();
+        setIsBookingSuccess(true);
+        // Brief delay to show success animation before transitioning to success step
+        setTimeout(() => {
+          booking.actions.setConfirmed(true);
+          // Refetch appointments to show the new one
+          appointments.refetchAppointments();
+          // Reset success state for next booking
+          setIsBookingSuccess(false);
+        }, 800);
       } else {
         console.error('Appointment creation failed:', result.error);
         alert(result.error || 'Failed to create appointment');
         booking.actions.setSubmitting(false);
+        setIsBookingSuccess(false);
       }
     } catch (error) {
       console.error('Booking error:', error);
@@ -196,6 +206,7 @@ export function ProviderBookingPage() {
       taskMetrics.recordTask('booking-appointment', elapsedMs);
 
       booking.actions.setSubmitting(false);
+      setIsBookingSuccess(false);
     }
   };
 
@@ -293,6 +304,7 @@ export function ProviderBookingPage() {
             slot={booking.state.selectedSlot!}
             price={selectedServiceData()?.price || 0}
             isSubmitting={step().showCreatingAppointment}
+            isSuccess={isBookingSuccess()}
             onConfirm={handleConfirm}
             onBack={booking.actions.goBackToSlots}
           />

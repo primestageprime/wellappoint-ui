@@ -14,13 +14,15 @@ export function OAuthCallbackPage() {
     console.log('OAuth Callback - Full URL:', window.location.href);
     console.log('OAuth Callback - Search:', window.location.search);
     console.log('OAuth Callback - searchParams:', searchParams);
-    
-    // Try getting code from both useSearchParams and URLSearchParams
+
+    // Try getting code and state from both useSearchParams and URLSearchParams
     const urlParams = new URLSearchParams(window.location.search);
     const code = searchParams.code || urlParams.get('code');
+    const state = searchParams.state || urlParams.get('state');
     const errorParam = searchParams.error || urlParams.get('error');
-    
+
     console.log('OAuth Callback - code:', code);
+    console.log('OAuth Callback - state:', state);
     console.log('OAuth Callback - error:', errorParam);
 
     if (errorParam) {
@@ -37,12 +39,13 @@ export function OAuthCallbackPage() {
 
     try {
       // Exchange the code for a token key (stored server-side for Safari compatibility)
+      // Include state to help backend determine the correct redirect URI
       const response = await apiFetch('/api/oauth/exchange', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ code }),
+        body: JSON.stringify({ code, state }),
       });
 
       const data = await response.json();

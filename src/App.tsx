@@ -85,12 +85,12 @@ function App() {
               {/* Provider signup QR code page */}
               <Route path="/provider" component={ProviderSignupQRPage} />
               
-              {/* Admin routes */}
+              {/* Admin routes - specific routes must come before dynamic :username route */}
               <Route path="/admin/create-provider" component={CreateProviderPage} />
               <Route path="/admin/providers" component={ProvidersPage} />
-              <Route path="/admin/:username" component={AdminPageWrapper} />
               <Route path="/admin/oauth-setup" component={OAuthSetupPage} />
               <Route path="/admin/oauth-callback" component={OAuthCallbackPage} />
+              <Route path="/admin/:username" component={AdminPageWrapper} />
               
               {/* Legacy routes for backward compatibility */}
               <Route path="/booking" component={BookingPage} />

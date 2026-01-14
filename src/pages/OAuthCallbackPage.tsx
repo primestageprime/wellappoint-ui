@@ -38,6 +38,8 @@ export function OAuthCallbackPage() {
     }
 
     try {
+      console.log('📤 Sending exchange request to backend:', { code: code?.substring(0, 20) + '...', state });
+
       // Exchange the code for a token key (stored server-side for Safari compatibility)
       // Include state to help backend determine the correct redirect URI
       const response = await apiFetch('/api/oauth/exchange', {
@@ -48,7 +50,10 @@ export function OAuthCallbackPage() {
         body: JSON.stringify({ code, state }),
       });
 
+      console.log('📥 Exchange response status:', response.status, response.statusText);
+
       const data = await response.json();
+      console.log('📥 Exchange response data:', data);
 
       if (data.success && data.tokenKey) {
         // Store the token key - this works better with Safari/iOS than storing the actual token

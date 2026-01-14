@@ -3,6 +3,7 @@ import { useAuth } from '../auth/AuthProvider';
 import { useParams, A } from '@solidjs/router';
 import { useTaskTimer } from '../hooks/useTaskTimer';
 import { taskMetrics } from '../utils/taskMetrics';
+import { animateProgress } from '../utils/progressAnimation';
 import {
   PageFrame,
   HeaderCard,
@@ -41,6 +42,7 @@ export function ProviderBookingPage() {
 
   // Track booking success for progress button animation
   const [isBookingSuccess, setIsBookingSuccess] = createSignal(false);
+  const [bookingProgress, setBookingProgress] = createSignal(0);
   
   // Appointments (existing hook)
   const appointments = useAppointments(() => userEmail(), providerUsername);
@@ -163,6 +165,15 @@ export function ProviderBookingPage() {
     }
 
     booking.actions.setSubmitting(true);
+    setBookingProgress(0);
+
+    // Start progress animation
+    const stopProgress = animateProgress(
+      10000, // 10 second estimate
+      (progress) => setBookingProgress(progress),
+      () => {} // onComplete handled by API response
+    );
+
     const startTime = Date.now();
 
     try {
@@ -181,6 +192,8 @@ export function ProviderBookingPage() {
       taskMetrics.recordTask('booking-appointment', elapsedMs);
 
       if (result.success) {
+        stopProgress(); // Stop the animation
+        setBookingProgress(100); // Jump to 100%
         booking.actions.setSubmitting(false);
         setIsBookingSuccess(true);
         // Brief delay to show success animation before transitioning to success step
@@ -190,8 +203,10 @@ export function ProviderBookingPage() {
           appointments.refetchAppointments();
           // Reset success state for next booking
           setIsBookingSuccess(false);
+          setBookingProgress(0);
         }, 800);
       } else {
+        stopProgress(); // Stop the animation on error
         console.error('Appointment creation failed:', result.error);
         alert(result.error || 'Failed to create appointment');
         booking.actions.setSubmitting(false);
@@ -205,6 +220,7 @@ export function ProviderBookingPage() {
       const elapsedMs = Date.now() - startTime;
       taskMetrics.recordTask('booking-appointment', elapsedMs);
 
+      stopProgress(); // Stop the animation on error
       booking.actions.setSubmitting(false);
       setIsBookingSuccess(false);
     }
@@ -305,6 +321,7 @@ export function ProviderBookingPage() {
             price={selectedServiceData()?.price || 0}
             isSubmitting={step().showCreatingAppointment}
             isSuccess={isBookingSuccess()}
+            progress={bookingProgress()}
             onConfirm={handleConfirm}
             onBack={booking.actions.goBackToSlots}
           />

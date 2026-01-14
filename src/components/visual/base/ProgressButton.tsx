@@ -51,6 +51,7 @@ export function ProgressButton(props: ProgressButtonProps) {
       setProgress(0);
 
       const duration = getEstimatedDuration();
+
       const interval = setInterval(() => {
         const elapsed = Date.now() - startTime()!;
         const rawProgress = (elapsed / duration) * 100;
@@ -166,21 +167,22 @@ export function ProgressButton(props: ProgressButtonProps) {
       </div>
 
       {/* Progress layer - z-index: 5, fills from left */}
-      <div
-        class="progress"
-        style={{
-          position: 'absolute',
-          left: '0',
-          top: '0',
-          right: '0',
-          bottom: '0',
-          width: props.isLoading ? `${currentProgress()}%` : '0%',
-          'z-index': '5',
-          background: '#e8dcc0', // Light brown progress bar
-          opacity: props.isLoading ? '1' : '0',
-          transition: 'width 0.1s linear, opacity 0.2s ease',
-        }}
-      />
+      <Show when={props.isLoading}>
+        <div
+          class="progress"
+          style={{
+            position: 'absolute',
+            left: '0',
+            top: '0',
+            right: '0',
+            bottom: '0',
+            width: `${props.fixedProgress !== undefined ? props.fixedProgress : progress()}%`,
+            'z-index': '5',
+            background: '#e8dcc0', // Light brown progress bar
+            transition: 'width 0.1s linear',
+          }}
+        />
+      </Show>
 
       <style>{`
         @keyframes spin {

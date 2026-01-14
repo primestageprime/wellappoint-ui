@@ -25,6 +25,7 @@ export interface BookingConfirmationStepProps {
   price: number;
   isSubmitting: boolean;
   isSuccess?: boolean;
+  progress?: number;
   onConfirm: () => void;
   onBack: () => void;
 }
@@ -59,6 +60,7 @@ export function BookingConfirmationStep(props: BookingConfirmationStepProps) {
           taskId="booking-appointment"
           type="button"
           onClick={props.onConfirm}
+          fixedProgress={props.progress}
         />
       </ActionButtons>
     </BookingConfirmationContainer>

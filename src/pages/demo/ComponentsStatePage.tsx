@@ -6,6 +6,7 @@ import { DurationsList } from '../../components/DurationsList';
 import { AppointmentsCard } from '../../components/AppointmentsCard';
 import { type BookingService } from '../../types/service';
 import { DemoLayout } from './DemoLayout';
+import { animateProgress } from '../../utils/progressAnimation';
 
 export function ComponentsStatePage() {
   const [username] = createSignal('katara');
@@ -13,21 +14,28 @@ export function ComponentsStatePage() {
   // State for ProgressButton demo
   const [isLoading, setIsLoading] = createSignal(false);
   const [isSuccess, setIsSuccess] = createSignal(false);
+  const [demoProgress, setDemoProgress] = createSignal(0);
 
   const handleProgressButtonClick = () => {
     setIsLoading(true);
     setIsSuccess(false);
+    setDemoProgress(0);
 
-    // Simulate async operation
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsSuccess(true);
+    // Animate progress to 100% over 10 seconds
+    animateProgress(
+      10000,
+      (progress) => setDemoProgress(progress),
+      () => {
+        setIsLoading(false);
+        setIsSuccess(true);
 
-      // Reset after showing success
-      setTimeout(() => {
-        setIsSuccess(false);
-      }, 2000);
-    }, 3000);
+        // Reset after showing success for 3 seconds
+        setTimeout(() => {
+          setIsSuccess(false);
+          setDemoProgress(0);
+        }, 3000);
+      }
+    );
   };
 
   const [services] = createSignal<BookingService[]>([
@@ -132,7 +140,7 @@ export function ComponentsStatePage() {
               <div>
                 <p class="text-sm text-muted-foreground mb-2">Interactive Demo</p>
                 <p class="text-xs text-muted-foreground mb-4">
-                  Click the button to see the progress animation. Shows progress for 3 seconds, then success state for 2 seconds.
+                  Click the button to see progress animate linearly over 10 seconds, then fade from light brown to green.
                 </p>
                 <ProgressButton
                   text="Submit Form"
@@ -143,6 +151,7 @@ export function ComponentsStatePage() {
                   taskId="demo-task"
                   type="button"
                   onClick={handleProgressButtonClick}
+                  fixedProgress={demoProgress()}
                 />
               </div>
 
@@ -184,8 +193,8 @@ export function ComponentsStatePage() {
                 <ul class="text-xs text-muted-foreground list-disc list-inside space-y-1">
                   <li>Horizontal progress bar fills from left to right</li>
                   <li>Uses historical task times for accurate progress estimation</li>
-                  <li>Progress capped at 95% to indicate uncertainty</li>
-                  <li>Smooth transition to success state with animation</li>
+                  <li>Progress animates smoothly to 100%</li>
+                  <li>Button fades from light brown to green on completion</li>
                   <li>Disabled during loading and success states</li>
                 </ul>
               </div>

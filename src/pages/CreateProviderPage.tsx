@@ -14,6 +14,7 @@ import {
 import { useAuth } from '../auth/AuthProvider';
 import { apiFetch } from '../config/api';
 import { taskMetrics } from '../utils/taskMetrics';
+import { animateProgress } from '../utils/progressAnimation';
 
 export function CreateProviderPage() {
   const auth = useAuth();
@@ -53,6 +54,7 @@ export function CreateProviderPage() {
   const [refreshToken, setRefreshToken] = createSignal('');
   const [isSubmitting, setIsSubmitting] = createSignal(false);
   const [isProviderSetupSuccess, setIsProviderSetupSuccess] = createSignal(false);
+  const [setupProgress, setSetupProgress] = createSignal(0);
   const [isOAuthLoading, setIsOAuthLoading] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
   const [success, setSuccess] = createSignal<string | null>(null);
@@ -160,8 +162,16 @@ export function CreateProviderPage() {
 
     setIsSubmitting(true);
     setIsProviderSetupSuccess(false);
+    setSetupProgress(0);
     setError(null);
     setSuccess(null);
+
+    // Start progress animation
+    const stopProgress = animateProgress(
+      10000, // 10 second estimate
+      (progress) => setSetupProgress(progress),
+      () => {} // onComplete handled by API response
+    );
 
     const startTime = Date.now();
 
@@ -191,6 +201,8 @@ export function CreateProviderPage() {
       }
 
       if (data.success) {
+        stopProgress(); // Stop the animation
+        setSetupProgress(100); // Jump to 100%
         setIsProviderSetupSuccess(true);
         setSuccess(`Provider ${username()} setup successfully! Redirecting to admin page...`);
         // Navigate to the provider's admin page after showing success
@@ -205,6 +217,7 @@ export function CreateProviderPage() {
       const elapsedMs = Date.now() - startTime;
       taskMetrics.recordTask('create-provider', elapsedMs);
 
+      stopProgress(); // Stop the animation on error
       setError(err instanceof Error ? err.message : 'An unexpected error occurred');
     } finally {
       setIsSubmitting(false);
@@ -318,6 +331,7 @@ export function CreateProviderPage() {
                   isSuccess={isProviderSetupSuccess()}
                   taskId="create-provider"
                   type="submit"
+                  fixedProgress={setupProgress()}
                 />
               </form>
             </StepSection>

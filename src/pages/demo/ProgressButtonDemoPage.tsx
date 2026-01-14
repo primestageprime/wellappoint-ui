@@ -1,6 +1,7 @@
 import { createSignal } from 'solid-js';
 import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, ProgressButton } from '../../components/visual';
 import { DemoLayout } from './DemoLayout';
+import { animateProgress } from '../../utils/progressAnimation';
 
 export function ProgressButtonDemoPage() {
   const [username] = createSignal('demo');
@@ -8,21 +9,28 @@ export function ProgressButtonDemoPage() {
   // State for first button - linear 10 second animation
   const [isLoading, setIsLoading] = createSignal(false);
   const [isSuccess, setIsSuccess] = createSignal(false);
+  const [progress1, setProgress1] = createSignal(0);
 
   const handleProgressButtonClick = () => {
     setIsLoading(true);
     setIsSuccess(false);
+    setProgress1(0);
 
-    // Simulate 10 second async operation
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsSuccess(true);
+    // Animate progress to 100% over 10 seconds
+    animateProgress(
+      10000,
+      (progress) => setProgress1(progress),
+      () => {
+        setIsLoading(false);
+        setIsSuccess(true);
 
-      // Reset after showing success for 3 seconds
-      setTimeout(() => {
-        setIsSuccess(false);
-      }, 3000);
-    }, 10000);
+        // Reset after showing success for 3 seconds
+        setTimeout(() => {
+          setIsSuccess(false);
+          setProgress1(0);
+        }, 3000);
+      }
+    );
   };
 
   // State for second button - fixed at 50% progress
@@ -43,16 +51,10 @@ export function ProgressButtonDemoPage() {
     setDemoProgress(0);
 
     // Animate progress to 100% over 10 seconds
-    const startTime = Date.now();
-    const duration = 10000;
-
-    const interval = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min((elapsed / duration) * 100, 100);
-      setDemoProgress(Math.round(progress));
-
-      if (progress >= 100) {
-        clearInterval(interval);
+    animateProgress(
+      10000,
+      (progress) => setDemoProgress(progress),
+      () => {
         setDemoStatus('success');
 
         // Reset after 3 seconds
@@ -61,7 +63,7 @@ export function ProgressButtonDemoPage() {
           setDemoProgress(0);
         }, 3000);
       }
-    }, 50);
+    );
   };
 
   return (
@@ -92,6 +94,7 @@ export function ProgressButtonDemoPage() {
               taskId="demo-task"
               type="button"
               onClick={handleProgressButtonClick}
+              fixedProgress={progress1()}
             />
 
             <ProgressButton

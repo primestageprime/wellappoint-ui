@@ -239,8 +239,16 @@ export function CreateProviderPage() {
               title="Authorize WellAppoint to Handle Scheduling for You"
               description="We'll create a special calendar called 'WellAppoint' in your Google Calendar so it doesn't conflict with your other calendaring. We'll also share an administrative spreadsheet with you to configure your services, pricing, and availability settings."
             >
+              <ActionButton
+                onClick={handleOAuthSetup}
+                isLoading={isOAuthLoading()}
+                loadingText="Redirecting to Google..."
+              >
+                Authorize with Google
+              </ActionButton>
+
               {/* Preview images */}
-              <div class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Calendar preview */}
                 <div class="rounded-lg overflow-hidden border border-border">
                   <img
@@ -265,14 +273,6 @@ export function CreateProviderPage() {
                   </div>
                 </div>
               </div>
-
-              <ActionButton
-                onClick={handleOAuthSetup}
-                isLoading={isOAuthLoading()}
-                loadingText="Redirecting to Google..."
-              >
-                Authorize with Google
-              </ActionButton>
             </StepSection>
           ) : (
             <div class="flex items-center gap-3 py-4 text-sm text-muted-foreground">

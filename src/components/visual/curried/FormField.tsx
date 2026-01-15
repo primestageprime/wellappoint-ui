@@ -3,6 +3,7 @@ import { Accessor, Setter } from 'solid-js';
 interface FormFieldProps {
   label: string;
   name: string;
+  type?: string;
   placeholder: string;
   value: Accessor<string>;
   onInput: Setter<string>;
@@ -19,7 +20,7 @@ export function FormField(props: FormFieldProps) {
       </label>
       <input
         id={props.name}
-        type="text"
+        type={props.type || "text"}
         value={props.value()}
         onInput={(e) => props.onInput(e.currentTarget.value)}
         placeholder={props.placeholder}

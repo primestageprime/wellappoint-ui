@@ -321,6 +321,7 @@ export function CreateProviderPage() {
                   value={phone}
                   onInput={setPhone}
                   helpText="Your phone number to display to clients"
+                  required={false}
                 />
 
                 <ProgressButton

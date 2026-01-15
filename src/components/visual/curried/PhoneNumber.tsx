@@ -56,7 +56,7 @@ export function PhoneNumber(props: PhoneNumberProps) {
         href={getTelLink(props.phone!)}
         class={`text-sm text-primary hover:text-primary/80 transition-colors ${props.class || ''}`}
       >
-        {props.children || formattedPhone()}
+        {formattedPhone()}
       </a>
     </Show>
   );

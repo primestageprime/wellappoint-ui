@@ -34,11 +34,11 @@ function isValidPhone(phone?: string): boolean {
 export function ProviderContent(props: ProviderContentProps) {
   return (
     <CenteredContent class={props.class || ''}>
-      <ProfilePic 
-        src={props.profilePic} 
+      <ProfilePic
+        src={props.profilePic}
         alt={`${props.name}'s profile picture`}
       />
-      
+
       <VerticallySpacedContent>
         <ProviderName>
           {props.name}

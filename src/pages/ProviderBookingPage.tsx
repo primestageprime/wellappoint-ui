@@ -11,6 +11,8 @@ import {
   Split,
   Avatar,
   LogoutButton,
+  Card,
+  ProviderContent,
 } from '../components/visual';
 import {
   AppointmentsList,
@@ -21,12 +23,12 @@ import {
   BookingConfirmationStep,
   BookingSuccessStep,
 } from '../components/booking';
-import { ProviderCard } from '../components/ProviderCard';
 import { useBooking } from '../stores/bookingStore';
 import { useServices } from '../stores/servicesStore';
 import { useAppointments } from '../hooks/useAppointments';
 import { getAvailableSlots } from '../services/availabilityService';
 import { createAppointment, createBookingRequest } from '../services/bookingService';
+import { getProviderDetails } from '../services/providerService';
 import { type BookingService } from '../types/service';
 import { type UserAppointmentsResponse } from '../types/global';
 import { groupSlotsByDate } from '../utils/slotFormatting';
@@ -46,7 +48,10 @@ export function ProviderBookingPage() {
   
   // Appointments (existing hook)
   const appointments = useAppointments(() => userEmail(), providerUsername);
-  
+
+  // Provider details
+  const [provider] = createResource(providerUsername, getProviderDetails);
+
   // Use display name from appointments (Preferred Name > Name > email username), fallback to email username
   const loggedInUsername = createMemo(() => {
     const apts = appointments.appointments();
@@ -249,8 +254,17 @@ export function ProviderBookingPage() {
       
       <Content>
         {/* Provider Profile Card */}
-        <ProviderCard username={providerUsername()} />
-        
+        {provider() && (
+          <Card class="border border-primary/10 mb-4">
+            <ProviderContent
+              name={provider()!.name}
+              email={provider()!.email}
+              phone={provider()!.phone}
+              title={provider()!.title}
+            />
+          </Card>
+        )}
+
         {/* Show appointments if they exist - but not on receipt page (receipt has its own) */}
         <Show when={!step().showAppointmentConfirmed && appointments.appointments() && typeof appointments.appointments() === 'object' && 'appointments' in appointments.appointments()!}>
           <AppointmentsList appointments={appointments.appointments() as UserAppointmentsResponse} />

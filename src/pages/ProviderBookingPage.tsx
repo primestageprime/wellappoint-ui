@@ -1,6 +1,6 @@
-import { Show, createMemo, createResource, createSignal } from 'solid-js';
+import { Show, createMemo, createResource, createSignal, createEffect } from 'solid-js';
 import { useAuth } from '../auth/AuthProvider';
-import { useParams, A } from '@solidjs/router';
+import { useParams, A, useNavigate } from '@solidjs/router';
 import { useTaskTimer } from '../hooks/useTaskTimer';
 import { taskMetrics } from '../utils/taskMetrics';
 import { animateProgress } from '../utils/progressAnimation';
@@ -28,7 +28,7 @@ import { useServices } from '../stores/servicesStore';
 import { useAppointments } from '../hooks/useAppointments';
 import { getAvailableSlots } from '../services/availabilityService';
 import { createAppointment, createBookingRequest } from '../services/bookingService';
-import { getProviderDetails } from '../services/providerService';
+import { getProviderDetails, ProviderNotFoundError } from '../services/providerService';
 import { type BookingService } from '../types/service';
 import { type UserAppointmentsResponse } from '../types/global';
 import { groupSlotsByDate } from '../utils/slotFormatting';
@@ -36,6 +36,7 @@ import { groupSlotsByDate } from '../utils/slotFormatting';
 export function ProviderBookingPage() {
   const auth = useAuth();
   const params = useParams();
+  const navigate = useNavigate();
   const booking = useBooking();
   const servicesStore = useServices();
 
@@ -45,12 +46,22 @@ export function ProviderBookingPage() {
   // Track booking success for progress button animation
   const [isBookingSuccess, setIsBookingSuccess] = createSignal(false);
   const [bookingProgress, setBookingProgress] = createSignal(0);
-  
+
   // Appointments (existing hook)
   const appointments = useAppointments(() => userEmail(), providerUsername);
 
   // Provider details
   const [provider] = createResource(providerUsername, getProviderDetails);
+
+  // Redirect to signup if provider not found after refresh
+  createEffect(() => {
+    if (provider.error) {
+      if (provider.error instanceof ProviderNotFoundError) {
+        console.log(`Provider '${providerUsername()}' not found after refresh, redirecting to signup`);
+        navigate('/admin/create-provider');
+      }
+    }
+  });
 
   // Use display name from appointments (Preferred Name > Name > email username), fallback to email username
   const loggedInUsername = createMemo(() => {

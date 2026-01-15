@@ -1,6 +1,6 @@
 import { createSignal } from 'solid-js';
 import { A } from '@solidjs/router';
-import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, Spinner, ProgressButton } from '../../components/visual';
+import { PageFrame, HeaderCard, Content, Avatar, Split, LogoutButton, Spinner, ProgressButton, MailLink, PhoneNumber, ProviderContent } from '../../components/visual';
 import { ServicesList } from '../../components/ServicesList';
 import { DurationsList } from '../../components/DurationsList';
 import { AppointmentsCard } from '../../components/AppointmentsCard';
@@ -196,6 +196,147 @@ export function ComponentsStatePage() {
                   <li>Progress animates smoothly to 100%</li>
                   <li>Button fades from light brown to green on completion</li>
                   <li>Disabled during loading and success states</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-semibold text-primary mb-3">PhoneNumber Component</h3>
+            <div class="space-y-4 bg-card p-6 rounded-lg">
+              <div>
+                <p class="text-sm text-muted-foreground mb-2">Valid Phone Numbers</p>
+                <div class="space-y-3">
+                  <div>
+                    <p class="text-xs text-muted-foreground mb-1">10-digit format:</p>
+                    <PhoneNumber phone="4155551234" />
+                  </div>
+                  <div>
+                    <p class="text-xs text-muted-foreground mb-1">Already formatted:</p>
+                    <PhoneNumber phone="(415) 555-1234" />
+                  </div>
+                  <div>
+                    <p class="text-xs text-muted-foreground mb-1">With country code:</p>
+                    <PhoneNumber phone="+1-415-555-1234" />
+                  </div>
+                  <div>
+                    <p class="text-xs text-muted-foreground mb-1">Mixed format:</p>
+                    <PhoneNumber phone="415.555.1234" />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p class="text-sm text-muted-foreground mb-2">Invalid/Missing Phone Numbers (not displayed)</p>
+                <div class="space-y-3">
+                  <div>
+                    <p class="text-xs text-muted-foreground mb-1">Too short:</p>
+                    <PhoneNumber phone="123456" />
+                    <p class="text-xs text-muted-foreground italic">(No output - invalid)</p>
+                  </div>
+                  <div>
+                    <p class="text-xs text-muted-foreground mb-1">Undefined:</p>
+                    <PhoneNumber />
+                    <p class="text-xs text-muted-foreground italic">(No output - undefined)</p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p class="text-sm text-muted-foreground mb-2">Features</p>
+                <ul class="text-xs text-muted-foreground list-disc list-inside space-y-1">
+                  <li>Extracts only numeric characters from input</li>
+                  <li>Formats as (xxx) xxx-xxxx</li>
+                  <li>Creates clickable tel: link for mobile devices</li>
+                  <li>Validates 10-digit or 11-digit (with country code 1) numbers</li>
+                  <li>Does not display if phone is invalid or missing</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-semibold text-primary mb-3">MailLink Component</h3>
+            <div class="space-y-4 bg-card p-6 rounded-lg">
+              <div>
+                <p class="text-sm text-muted-foreground mb-2">Valid Email Addresses</p>
+                <div class="space-y-3">
+                  <div>
+                    <p class="text-xs text-muted-foreground mb-1">Standard email:</p>
+                    <MailLink email="provider@example.com" />
+                  </div>
+                  <div>
+                    <p class="text-xs text-muted-foreground mb-1">With subdomain:</p>
+                    <MailLink email="contact@mail.example.com" />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p class="text-sm text-muted-foreground mb-2">Invalid/Missing Emails (not displayed)</p>
+                <div class="space-y-3">
+                  <div>
+                    <p class="text-xs text-muted-foreground mb-1">Missing @ symbol:</p>
+                    <MailLink email="notanemail.com" />
+                    <p class="text-xs text-muted-foreground italic">(No output - invalid)</p>
+                  </div>
+                  <div>
+                    <p class="text-xs text-muted-foreground mb-1">Missing domain:</p>
+                    <MailLink email="user@" />
+                    <p class="text-xs text-muted-foreground italic">(No output - invalid)</p>
+                  </div>
+                  <div>
+                    <p class="text-xs text-muted-foreground mb-1">Undefined:</p>
+                    <MailLink />
+                    <p class="text-xs text-muted-foreground italic">(No output - undefined)</p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p class="text-sm text-muted-foreground mb-2">Features</p>
+                <ul class="text-xs text-muted-foreground list-disc list-inside space-y-1">
+                  <li>Validates email format with regex</li>
+                  <li>Creates clickable mailto: link</li>
+                  <li>Does not display if email is invalid or missing</li>
+                  <li>Displays email address as link text by default</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-semibold text-primary mb-3">ProviderContent Component</h3>
+            <div class="space-y-4 bg-card p-6 rounded-lg">
+              <div>
+                <p class="text-sm text-muted-foreground mb-2">Complete Profile (all fields)</p>
+                <ProviderContent
+                  name="Dr. Jane Smith"
+                  email="jane.smith@example.com"
+                  phone="(415) 555-1234"
+                  title="Licensed Massage Therapist"
+                />
+              </div>
+              <div>
+                <p class="text-sm text-muted-foreground mb-2">Profile without phone</p>
+                <ProviderContent
+                  name="Dr. John Doe"
+                  email="john.doe@example.com"
+                  title="Craniosacral Therapist"
+                />
+              </div>
+              <div>
+                <p class="text-sm text-muted-foreground mb-2">Profile without email</p>
+                <ProviderContent
+                  name="Dr. Sarah Johnson"
+                  phone="(415) 555-5678"
+                  title="Physical Therapist"
+                />
+              </div>
+              <div>
+                <p class="text-sm text-muted-foreground mb-2">Features</p>
+                <ul class="text-xs text-muted-foreground list-disc list-inside space-y-1">
+                  <li>Displays provider name, title, email, and phone</li>
+                  <li>Email and phone are optional - only shows if valid</li>
+                  <li>Email uses MailLink component (mailto: link)</li>
+                  <li>Phone uses PhoneNumber component (tel: link with formatting)</li>
+                  <li>Includes appropriate icons for each field</li>
                 </ul>
               </div>
             </div>

@@ -1,5 +1,6 @@
 export { User } from './User';
 export { Mail } from './Mail';
+export { Phone } from './Phone';
 export { Briefcase } from './Briefcase';
 export { Calendar } from './Calendar';
 export { ChevronRight } from './ChevronRight';

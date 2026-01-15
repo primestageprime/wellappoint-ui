@@ -3,6 +3,7 @@ export { ProviderName } from './ProviderName';
 export { ProviderTitle } from './ProviderTitle';
 export { ProfilePic } from './ProfilePic';
 export { MailLink } from './MailLink';
+export { PhoneNumber } from './PhoneNumber';
 export { LogoutButton } from './LogoutButton';
 export { TestContent } from './TestContent';
 export { Content } from './Content';

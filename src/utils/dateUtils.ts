@@ -2,6 +2,8 @@
  * Utility functions for date formatting and manipulation
  */
 
+import { getUserTimezone } from './timezone';
+
 /**
  * Format a date string to a readable date format
  * @param dateStr - Date string in ISO format (e.g., "2025-08-28")
@@ -20,12 +22,12 @@ export function formatDate(dateStr: string): string {
 /**
  * Format a datetime string to a full date format with year
  * @param dateTimeStr - DateTime string in ISO format
- * @param timeZone - Timezone to use (default: 'America/Los_Angeles')
+ * @param timeZone - Timezone to use (default: user's local timezone)
  * @returns Formatted full date string (e.g., "Thursday, August 28, 2025")
  */
-export function formatFullDate(dateTimeStr: string, timeZone: string = 'America/Los_Angeles'): string {
+export function formatFullDate(dateTimeStr: string, timeZone?: string): string {
   return new Date(dateTimeStr).toLocaleDateString('en-US', {
-    timeZone,
+    timeZone: timeZone || getUserTimezone(),
     weekday: 'long',
     month: 'long',
     day: 'numeric',
@@ -45,12 +47,12 @@ export function formatDateToISO(date: Date): string {
 /**
  * Format a datetime string to a readable time format
  * @param dateTimeStr - DateTime string in ISO format
- * @param timeZone - Timezone to use (default: 'America/Los_Angeles')
+ * @param timeZone - Timezone to use (default: user's local timezone)
  * @returns Formatted time string (e.g., "1:45 PM")
  */
-export function formatTime(dateTimeStr: string, timeZone: string = 'America/Los_Angeles'): string {
+export function formatTime(dateTimeStr: string, timeZone?: string): string {
   return new Date(dateTimeStr).toLocaleString('en-US', {
-    timeZone,
+    timeZone: timeZone || getUserTimezone(),
     hour: 'numeric',
     minute: '2-digit',
     hour12: true
@@ -60,12 +62,12 @@ export function formatTime(dateTimeStr: string, timeZone: string = 'America/Los_
 /**
  * Format a datetime string to a full datetime format
  * @param dateTimeStr - DateTime string in ISO format
- * @param timeZone - Timezone to use (default: 'America/Los_Angeles')
+ * @param timeZone - Timezone to use (default: user's local timezone)
  * @returns Formatted datetime string (e.g., "8/28/2025, 1:45 PM")
  */
-export function formatDateTime(dateTimeStr: string, timeZone: string = 'America/Los_Angeles'): string {
+export function formatDateTime(dateTimeStr: string, timeZone?: string): string {
   return new Date(dateTimeStr).toLocaleString('en-US', {
-    timeZone,
+    timeZone: timeZone || getUserTimezone(),
     year: 'numeric',
     month: 'numeric',
     day: 'numeric',
@@ -78,12 +80,12 @@ export function formatDateTime(dateTimeStr: string, timeZone: string = 'America/
 /**
  * Format a datetime string to a short date format
  * @param dateTimeStr - DateTime string in ISO format
- * @param timeZone - Timezone to use (default: 'America/Los_Angeles')
+ * @param timeZone - Timezone to use (default: user's local timezone)
  * @returns Formatted short date string (e.g., "8/28/2025")
  */
-export function formatShortDate(dateTimeStr: string, timeZone: string = 'America/Los_Angeles'): string {
+export function formatShortDate(dateTimeStr: string, timeZone?: string): string {
   return new Date(dateTimeStr).toLocaleDateString('en-US', {
-    timeZone,
+    timeZone: timeZone || getUserTimezone(),
     year: 'numeric',
     month: 'numeric',
     day: 'numeric'
@@ -94,10 +96,10 @@ export function formatShortDate(dateTimeStr: string, timeZone: string = 'America
  * Format a datetime string to a time range
  * @param startTime - Start time in ISO format
  * @param endTime - End time in ISO format
- * @param timeZone - Timezone to use (default: 'America/Los_Angeles')
+ * @param timeZone - Timezone to use (default: user's local timezone)
  * @returns Formatted time range string (e.g., "1:45 PM - 2:15 PM")
  */
-export function formatTimeRange(startTime: string, endTime: string, timeZone: string = 'America/Los_Angeles'): string {
+export function formatTimeRange(startTime: string, endTime: string, timeZone?: string): string {
   const start = formatTime(startTime, timeZone);
   const end = formatTime(endTime, timeZone);
   return `${start} - ${end}`;

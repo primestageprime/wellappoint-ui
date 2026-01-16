@@ -2,7 +2,7 @@ import { Show, For, createMemo, createResource, type JSX } from 'solid-js';
 import { useAuth } from '../auth/AuthProvider';
 import { useParams } from '@solidjs/router';
 import { CheckCircle } from 'lucide-solid';
-import { 
+import {
   PageFrame,
   HeaderCard,
   Content,
@@ -37,6 +37,7 @@ import {
   PrimaryCraniosacral,
   PrimaryFootReflexology,
 } from '../components/visual';
+import { TimezoneDisplay } from '../components/TimezoneDisplay';
 import { useBooking } from '../stores/bookingStore';
 import { useServices } from '../stores/servicesStore';
 import { useAppointments } from '../hooks/useAppointments';
@@ -323,6 +324,7 @@ export function ProviderBookingPage() {
               No available time slots found. Please try a different service or duration.
             </div>
           }>
+            <TimezoneDisplay class="mb-4 px-4" />
             <TimeSlotListContainer>
               <For each={groupedSlots()}>
                 {(daySlots) => (

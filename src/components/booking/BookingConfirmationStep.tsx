@@ -53,7 +53,7 @@ export function BookingConfirmationStep(props: BookingConfirmationStepProps) {
         <SecondaryButton onClick={props.onBack} disabled={props.isSubmitting || props.isSuccess}>Back</SecondaryButton>
         <ProgressButton
           text="Confirm Your Session"
-          loadingText="Submitting your appointment..."
+          loadingText="Booking..."
           successText="Appointment Booked!"
           isLoading={props.isSubmitting}
           isSuccess={props.isSuccess || false}

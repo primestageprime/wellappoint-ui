@@ -1,109 +1,333 @@
-import { LegalPage, LegalSection, LegalParagraph, LegalContact } from '../components/visual';
+import { LegalPage, LegalSection, LegalParagraph, LegalList, LegalContact } from '../components/visual';
 
 export function TermsPage() {
   return (
-    <LegalPage title="Terms & Conditions" lastUpdated="December 2025">
-      <LegalSection title="Interpretation and Definitions">
+    <LegalPage title="Terms of Service">
+      <LegalParagraph muted>
+        Last Updated: January 15, 2026
+      </LegalParagraph>
+
+      <LegalSection title="Agreement to Terms">
         <LegalParagraph>
-          The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.
+          These Terms of Service ("Terms") govern your access to and use of WellAppoint, an appointment scheduling platform that helps healthcare providers manage their availability and appointments. By using WellAppoint, you agree to be bound by these Terms.
+        </LegalParagraph>
+        <LegalParagraph>
+          If you do not agree to these Terms, you may not access or use the Service.
         </LegalParagraph>
       </LegalSection>
 
       <LegalSection title="Definitions">
         <LegalParagraph>
-          <strong>Affiliate</strong> means an entity that controls, is controlled by or is under common control with a party, where "control" means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.
+          <strong>Service</strong> refers to WellAppoint, the appointment scheduling platform accessible through this application.
         </LegalParagraph>
         <LegalParagraph>
-          <strong>Country</strong> refers to: California, United States.
+          <strong>Provider</strong> refers to healthcare providers or professionals who create accounts to manage their availability and appointments.
         </LegalParagraph>
         <LegalParagraph>
-          <strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to PRIMESTAGE, 4315 LaQuinta Drive, Carpinteria CA 93013.
+          <strong>Client</strong> refers to individuals who book appointments with Providers through the Service.
         </LegalParagraph>
         <LegalParagraph>
-          <strong>Device</strong> means any device that can access the Service such as a computer, a cellphone or a digital tablet.
+          <strong>Company</strong>, <strong>We</strong>, <strong>Us</strong>, or <strong>Our</strong> refers to PRIMESTAGE, 4315 LaQuinta Drive, Carpinteria CA 93013, the operator of WellAppoint.
         </LegalParagraph>
         <LegalParagraph>
-          <strong>Service</strong> refers to the Website.
-        </LegalParagraph>
-        <LegalParagraph>
-          <strong>Website</strong> refers to WellAppoint, accessible from this application.
-        </LegalParagraph>
-        <LegalParagraph>
-          <strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.
+          <strong>You</strong> or <strong>Your</strong> refers to the individual accessing or using the Service.
         </LegalParagraph>
       </LegalSection>
 
-      <LegalSection title="Acknowledgment">
+      <LegalSection title="Description of Service">
         <LegalParagraph>
-          These are the Terms and Conditions governing the use of this Service and the agreement that operates between You and the Company. These Terms and Conditions set out the rights and obligations of all users regarding the use of the Service.
+          WellAppoint provides appointment scheduling services that:
+        </LegalParagraph>
+        <LegalList items={[
+          "Enable Providers to manage their availability through Google Calendar integration",
+          "Allow Clients to view Provider availability and book appointments",
+          "Create and manage appointment records",
+          "Send appointment confirmations and reminders",
+          "Provide administrative tools for Providers to configure services and settings"
+        ]} />
+      </LegalSection>
+
+      <LegalSection title="Account Registration and Authorization">
+        <LegalParagraph>
+          <strong>Provider Accounts:</strong>
         </LegalParagraph>
         <LegalParagraph>
-          Your access to and use of the Service is conditioned on Your acceptance of and compliance with these Terms and Conditions. These Terms and Conditions apply to all visitors, users and others who access or use the Service.
+          To use WellAppoint as a Provider, you must:
+        </LegalParagraph>
+        <LegalList items={[
+          "Be at least 18 years of age",
+          "Have a valid Google Account",
+          "Authorize WellAppoint to access your Google Calendar and email through Google OAuth",
+          "Provide accurate and complete registration information",
+          "Maintain the security of your account credentials"
+        ]} />
+        <LegalParagraph>
+          By authorizing WellAppoint through Google OAuth, you grant us permission to:
+        </LegalParagraph>
+        <LegalList items={[
+          "Create a dedicated 'WellAppoint' calendar in your Google Calendar",
+          "Read, create, update, and delete events in your WellAppoint calendar",
+          "Access your email address for account identification",
+          "Share administrative resources with your Google account"
+        ]} />
+        <LegalParagraph>
+          You may revoke these permissions at any time through your account settings or through your Google Account settings at myaccount.google.com/permissions.
         </LegalParagraph>
         <LegalParagraph>
-          By accessing or using the Service You agree to be bound by these Terms and Conditions. If You disagree with any part of these Terms and Conditions then You may not access the Service.
+          <strong>Client Accounts:</strong>
         </LegalParagraph>
         <LegalParagraph>
-          You represent that you are over the age of 18. The Company does not permit those under 18 to use the Service.
+          To book appointments as a Client, you must have a valid Google Account and authorize WellAppoint to access your email address for appointment confirmations.
         </LegalParagraph>
       </LegalSection>
 
-      <LegalSection title="Links to Other Websites">
+      <LegalSection title="Provider Responsibilities">
         <LegalParagraph>
-          Our Service may contain links to third-party web sites or services that are not owned or controlled by the Company.
+          As a Provider using WellAppoint, you agree to:
         </LegalParagraph>
+        <LegalList items={[
+          "Maintain accurate availability information in your WellAppoint calendar",
+          "Honor appointments booked by Clients in good faith",
+          "Provide accurate contact information (name, email, phone number)",
+          "Respond to Client inquiries and appointment requests in a timely manner",
+          "Comply with all applicable laws and regulations governing your professional practice",
+          "Not use the Service for any unlawful or unauthorized purpose",
+          "Not interfere with or disrupt the Service or servers"
+        ]} />
         <LegalParagraph>
-          The Company has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third party web sites or services. You further acknowledge and agree that the Company shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with the use of or reliance on any such content, goods or services available on or through any such web sites or services.
-        </LegalParagraph>
-      </LegalSection>
-
-      <LegalSection title="Termination">
-        <LegalParagraph>
-          We may terminate or suspend Your access immediately, without prior notice or liability, for any reason whatsoever, including without limitation if You breach these Terms and Conditions.
-        </LegalParagraph>
-        <LegalParagraph>
-          Upon termination, Your right to use the Service will cease immediately.
-        </LegalParagraph>
-      </LegalSection>
-
-      <LegalSection title="Limitation of Liability">
-        <LegalParagraph>
-          Notwithstanding any damages that You might incur, the entire liability of the Company and any of its suppliers under any provision of this Terms and Your exclusive remedy for all of the foregoing shall be limited to the amount actually paid by You through the Service or 100 USD if You haven't purchased anything through the Service.
-        </LegalParagraph>
-        <LegalParagraph>
-          To the maximum extent permitted by applicable law, in no event shall the Company or its suppliers be liable for any special, incidental, indirect, or consequential damages whatsoever (including, but not limited to, damages for loss of profits, loss of data or other information, for business interruption, for personal injury, loss of privacy arising out of or in any way related to the use of or inability to use the Service, third-party software and/or third-party hardware used with the Service, or otherwise in connection with any provision of this Terms), even if the Company or any supplier has been advised of the possibility of such damages and even if the remedy fails of its essential purpose.
+          You are solely responsible for your interactions with Clients and the professional services you provide. WellAppoint is not a party to any agreements between Providers and Clients.
         </LegalParagraph>
       </LegalSection>
 
-      <LegalSection title={'"AS IS" and "AS AVAILABLE" Disclaimer'}>
+      <LegalSection title="Client Responsibilities">
         <LegalParagraph>
-          The Service is provided to You "AS IS" and "AS AVAILABLE" and with all faults and defects without warranty of any kind. To the maximum extent permitted under applicable law, the Company, on its own behalf and on behalf of its Affiliates and its and their respective licensors and service providers, expressly disclaims all warranties, whether express, implied, statutory or otherwise, with respect to the Service.
+          As a Client using WellAppoint, you agree to:
+        </LegalParagraph>
+        <LegalList items={[
+          "Provide accurate information when booking appointments",
+          "Attend scheduled appointments or provide reasonable notice of cancellation",
+          "Comply with the Provider's cancellation and rescheduling policies",
+          "Not use the Service to book appointments in bad faith or for fraudulent purposes",
+          "Respect Provider availability and booking policies"
+        ]} />
+      </LegalSection>
+
+      <LegalSection title="Calendar and Data Access">
+        <LegalParagraph>
+          By using WellAppoint, you acknowledge and agree that:
+        </LegalParagraph>
+        <LegalList items={[
+          "We create a dedicated 'WellAppoint' calendar in your Google Calendar account",
+          "We only access the WellAppoint calendar we create, not your other calendars",
+          "Availability you mark in the WellAppoint calendar is used to display booking options to Clients",
+          "We store appointment data in Google Sheets accessible only to you as the Provider",
+          "All data is stored on Google's infrastructure and subject to Google's security practices",
+          "You retain ownership of your data and can export or delete it at any time"
+        ]} />
+      </LegalSection>
+
+      <LegalSection title="Fees and Payment">
+        <LegalParagraph>
+          WellAppoint is currently provided free of charge. We reserve the right to introduce fees for the Service in the future. If we do, we will provide you with advance notice and an opportunity to accept or decline the new terms before any charges are applied.
+        </LegalParagraph>
+        <LegalParagraph>
+          Payment arrangements between Providers and Clients for professional services are separate from WellAppoint and are the sole responsibility of the parties involved.
         </LegalParagraph>
       </LegalSection>
 
-      <LegalSection title="Governing Law">
+      <LegalSection title="Cancellation and Rescheduling">
         <LegalParagraph>
-          The laws of the Country, excluding its conflicts of law rules, shall govern this Terms and Your use of the Service. Your use of the Application may also be subject to other local, state, national, or international laws.
+          Cancellation and rescheduling policies are determined by each Provider. Clients should review and comply with the Provider's policies when booking appointments. WellAppoint is not responsible for enforcing Provider cancellation policies or mediating disputes.
         </LegalParagraph>
       </LegalSection>
 
-      <LegalSection title="Disputes Resolution">
+      <LegalSection title="Service Availability">
         <LegalParagraph>
-          If You have any concern or dispute about the Service, You agree to first try to resolve the dispute informally by contacting the Company.
+          We strive to provide reliable and uninterrupted access to WellAppoint. However, we do not guarantee that:
+        </LegalParagraph>
+        <LegalList items={[
+          "The Service will be available at all times without interruption",
+          "The Service will be error-free or secure",
+          "Any defects or errors will be corrected",
+          "The Service will meet your specific requirements"
+        ]} />
+        <LegalParagraph>
+          We may modify, suspend, or discontinue the Service at any time with or without notice.
         </LegalParagraph>
       </LegalSection>
 
-      <LegalSection title="Changes to These Terms and Conditions">
+      <LegalSection title="Acceptable Use">
         <LegalParagraph>
-          We reserve the right, at Our sole discretion, to modify or replace these Terms at any time. If a revision is material We will make reasonable efforts to provide at least 30 days' notice prior to any new terms taking effect.
+          You agree not to use WellAppoint to:
+        </LegalParagraph>
+        <LegalList items={[
+          "Violate any applicable laws or regulations",
+          "Infringe on intellectual property rights of others",
+          "Transmit harmful, offensive, or inappropriate content",
+          "Impersonate another person or entity",
+          "Attempt to gain unauthorized access to the Service or other users' accounts",
+          "Use automated systems (bots, scrapers) to access the Service",
+          "Interfere with the proper functioning of the Service",
+          "Engage in fraudulent activities or spam"
+        ]} />
+      </LegalSection>
+
+      <LegalSection title="Account Termination">
+        <LegalParagraph>
+          <strong>Your Rights:</strong>
         </LegalParagraph>
         <LegalParagraph>
-          By continuing to access or use Our Service after those revisions become effective, You agree to be bound by the revised terms. If You do not agree to the new terms, in whole or in part, please stop using the website and the Service.
+          You may terminate your account at any time by:
+        </LegalParagraph>
+        <LegalList items={[
+          "Accessing your account settings and selecting the delete account option",
+          "Revoking WellAppoint's access through your Google Account settings",
+          "Contacting us at the information provided below"
+        ]} />
+        <LegalParagraph>
+          Upon termination, we will delete your WellAppoint calendar, administrative spreadsheet, and remove your account from our system within 24 hours.
+        </LegalParagraph>
+        <LegalParagraph>
+          <strong>Our Rights:</strong>
+        </LegalParagraph>
+        <LegalParagraph>
+          We may suspend or terminate your access to WellAppoint immediately, without prior notice, if:
+        </LegalParagraph>
+        <LegalList items={[
+          "You breach these Terms of Service",
+          "You engage in fraudulent or illegal activities",
+          "You misuse the Service in a way that harms other users or the Service",
+          "Required by law or legal process",
+          "We cease providing the Service to all users"
+        ]} />
+      </LegalSection>
+
+      <LegalSection title="Intellectual Property">
+        <LegalParagraph>
+          WellAppoint and its original content, features, and functionality are owned by PRIMESTAGE and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.
+        </LegalParagraph>
+        <LegalParagraph>
+          You retain all rights to the content and data you provide through the Service, including appointment information and Provider details.
         </LegalParagraph>
       </LegalSection>
 
-      <LegalContact 
-        email="info@primestage.dev"
+      <LegalSection title="Third-Party Services">
+        <LegalParagraph>
+          WellAppoint integrates with Google services including:
+        </LegalParagraph>
+        <LegalList items={[
+          "Google Calendar API",
+          "Google Sheets API",
+          "Google Drive API",
+          "Google OAuth 2.0"
+        ]} />
+        <LegalParagraph>
+          Your use of these services is subject to Google's Terms of Service and Privacy Policy. We are not responsible for the practices or content of third-party services.
+        </LegalParagraph>
+      </LegalSection>
+
+      <LegalSection title="Privacy and Data Protection">
+        <LegalParagraph>
+          Your privacy is important to us. Our Privacy Policy explains how we collect, use, store, and protect your information. By using WellAppoint, you also agree to our Privacy Policy, available at /privacy.
+        </LegalParagraph>
+      </LegalSection>
+
+      <LegalSection title="Disclaimers and Limitation of Liability">
+        <LegalParagraph>
+          <strong>Service "AS IS":</strong>
+        </LegalParagraph>
+        <LegalParagraph>
+          WellAppoint is provided on an "AS IS" and "AS AVAILABLE" basis without warranties of any kind, either express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or non-infringement.
+        </LegalParagraph>
+        <LegalParagraph>
+          <strong>No Medical Advice:</strong>
+        </LegalParagraph>
+        <LegalParagraph>
+          WellAppoint is a scheduling tool only. We do not provide medical advice, diagnosis, or treatment. Providers are solely responsible for the professional services they provide to Clients.
+        </LegalParagraph>
+        <LegalParagraph>
+          <strong>Limitation of Liability:</strong>
+        </LegalParagraph>
+        <LegalParagraph>
+          To the maximum extent permitted by law, PRIMESTAGE and its affiliates, officers, employees, and agents shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to:
+        </LegalParagraph>
+        <LegalList items={[
+          "Loss of profits, data, or goodwill",
+          "Service interruptions or data loss",
+          "Missed appointments or scheduling errors",
+          "Disputes between Providers and Clients",
+          "Unauthorized access to your account or data",
+          "Any other damages arising from your use of the Service"
+        ]} />
+        <LegalParagraph>
+          Our total liability for any claims arising from these Terms or your use of WellAppoint shall not exceed $100 USD.
+        </LegalParagraph>
+      </LegalSection>
+
+      <LegalSection title="Indemnification">
+        <LegalParagraph>
+          You agree to indemnify, defend, and hold harmless PRIMESTAGE, its affiliates, officers, directors, employees, and agents from any claims, liabilities, damages, losses, costs, or expenses (including reasonable attorneys' fees) arising from:
+        </LegalParagraph>
+        <LegalList items={[
+          "Your use of the Service",
+          "Your violation of these Terms",
+          "Your violation of any rights of another party",
+          "Professional services provided by Providers to Clients",
+          "Any content or information you submit through the Service"
+        ]} />
+      </LegalSection>
+
+      <LegalSection title="Changes to Terms">
+        <LegalParagraph>
+          We may update these Terms from time to time. We will notify you of significant changes by:
+        </LegalParagraph>
+        <LegalList items={[
+          "Sending an email to the address associated with your account",
+          "Displaying a prominent notice within the Service",
+          "Updating the 'Last Updated' date at the top of these Terms"
+        ]} />
+        <LegalParagraph>
+          Your continued use of WellAppoint after changes become effective constitutes your acceptance of the revised Terms. If you do not agree to the changes, you must stop using the Service and may delete your account.
+        </LegalParagraph>
+      </LegalSection>
+
+      <LegalSection title="Governing Law and Disputes">
+        <LegalParagraph>
+          These Terms are governed by the laws of the State of California, United States, without regard to conflict of law principles.
+        </LegalParagraph>
+        <LegalParagraph>
+          Any disputes arising from these Terms or your use of WellAppoint shall be resolved through:
+        </LegalParagraph>
+        <LegalList items={[
+          "First, informal negotiation by contacting us",
+          "If unresolved, binding arbitration in accordance with the rules of the American Arbitration Association",
+          "Arbitration shall take place in Carpinteria, California"
+        ]} />
+        <LegalParagraph>
+          You waive any right to participate in class action lawsuits or class-wide arbitration.
+        </LegalParagraph>
+      </LegalSection>
+
+      <LegalSection title="Severability">
+        <LegalParagraph>
+          If any provision of these Terms is found to be unenforceable or invalid, that provision shall be limited or eliminated to the minimum extent necessary, and the remaining provisions shall remain in full force and effect.
+        </LegalParagraph>
+      </LegalSection>
+
+      <LegalSection title="Entire Agreement">
+        <LegalParagraph>
+          These Terms, together with our Privacy Policy, constitute the entire agreement between you and PRIMESTAGE regarding WellAppoint and supersede any prior agreements.
+        </LegalParagraph>
+      </LegalSection>
+
+      <LegalSection title="Contact Us">
+        <LegalParagraph>
+          If you have questions about these Terms of Service, please contact us:
+        </LegalParagraph>
+      </LegalSection>
+
+      <LegalContact
+        email="hello@primestagetechnology.com"
         phone="805-637-8126"
         website="https://primestage.dev/contact"
       />

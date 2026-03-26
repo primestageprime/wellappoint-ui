@@ -1,4 +1,4 @@
-import { createSignal, createEffect, Show } from 'solid-js';
+import { createResource, Show } from 'solid-js';
 import { A } from '@solidjs/router';
 import { WellAppointLogo } from '../components/visual/icons';
 import { useAuth } from '../auth/AuthProvider';
@@ -6,27 +6,18 @@ import { apiFetch } from '../config/api';
 
 export function LandingPage() {
   const auth = useAuth();
-  const [providerUsername, setProviderUsername] = createSignal<string | null>(null);
-  const [loading, setLoading] = createSignal(true);
-  const [checked, setChecked] = createSignal(false);
 
-  createEffect(async () => {
-    const user = auth.user();
-    if (!user?.email || checked()) return;
-
-    setChecked(true);
-    try {
-      const response = await apiFetch(`/api/provider/me?email=${encodeURIComponent(user.email)}`);
-      const data = await response.json();
-      if (data.exists) {
-        setProviderUsername(data.username);
+  const [providerData] = createResource(
+    () => auth.user()?.email,
+    async (email) => {
+      const response = await apiFetch(`/api/provider/me?email=${encodeURIComponent(email)}`);
+      if (!response.ok) {
+        throw new Error(`Provider lookup failed with status ${response.status}`);
       }
-    } catch (err) {
-      console.error('Failed to check provider status:', err);
-    } finally {
-      setLoading(false);
+      const data = await response.json();
+      return data.exists ? (data.username as string) : null;
     }
-  });
+  );
 
   return (
     <div class="min-h-screen flex items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8">
@@ -44,13 +35,21 @@ export function LandingPage() {
             </p>
           </div>
 
-          <Show when={!loading()} fallback={
+          <Show when={providerData.error}>
+            <div class="text-center py-4">
+              <p class="text-sm text-red-600">
+                Unable to load your account. Please refresh the page or try again later.
+              </p>
+            </div>
+          </Show>
+
+          <Show when={!providerData.loading && !providerData.error} fallback={
             <div class="text-center py-8">
               <p class="text-sm text-muted-foreground">Loading...</p>
             </div>
           }>
             <div class="mt-8 space-y-4">
-              <Show when={providerUsername()} fallback={
+              <Show when={providerData()} fallback={
                 <>
                   <div class="text-center">
                     <A
@@ -73,7 +72,7 @@ export function LandingPage() {
                   </p>
                   <div>
                     <A
-                      href={`/admin/${providerUsername()}`}
+                      href={`/admin/${providerData()}`}
                       class="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#8B6914] hover:bg-[#6d5410] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring transition-colors"
                     >
                       Go to Dashboard
@@ -81,7 +80,7 @@ export function LandingPage() {
                   </div>
                   <div>
                     <A
-                      href={`/${providerUsername()}`}
+                      href={`/${providerData()}`}
                       class="w-full flex justify-center py-3 px-4 border border-gray-300 text-sm font-medium rounded-md text-card-foreground bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring transition-colors"
                     >
                       View Booking Page
@@ -92,13 +91,13 @@ export function LandingPage() {
             </div>
 
             <div class="text-center">
-              <a
-                onClick={(e) => { e.preventDefault(); auth.logout(); }}
-                href="#"
+              <button
+                onClick={() => auth.logout()}
+                type="button"
                 class="text-sm text-[#8B6914] hover:underline"
               >
                 Sign out
-              </a>
+              </button>
             </div>
           </Show>
         </div>

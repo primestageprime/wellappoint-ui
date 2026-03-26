@@ -73,23 +73,27 @@ export function CreateProviderPage() {
     }
   });
 
-  // Check for token key from OAuth callback on mount (Safari-compatible)
-  onMount(async () => {
-    // Redirect to landing page if user already has a provider account
+  // Redirect to landing page if user already has a provider account
+  const [guardChecked, setGuardChecked] = createSignal(false);
+  createEffect(async () => {
     const user = auth.user();
-    if (user?.email) {
-      try {
-        const meResponse = await apiFetch(`/api/provider/me?email=${encodeURIComponent(user.email)}`);
+    if (!user?.email || guardChecked()) return;
+    setGuardChecked(true);
+    try {
+      const meResponse = await apiFetch(`/api/provider/me?email=${encodeURIComponent(user.email)}`);
+      if (meResponse.ok) {
         const meData = await meResponse.json();
         if (meData.exists) {
           navigate('/', { replace: true });
-          return;
         }
-      } catch (err) {
-        console.error('Failed to check provider status:', err);
       }
+    } catch (err) {
+      console.error('Failed to check provider status:', err);
     }
+  });
 
+  // Check for token key from OAuth callback on mount (Safari-compatible)
+  onMount(async () => {
     // Try to get token key from URL parameter first (works in all browsers including Safari)
     let tokenKey = searchParams.tokenKey;
 

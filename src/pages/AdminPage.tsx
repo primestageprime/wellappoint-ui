@@ -254,6 +254,23 @@ export function AdminPage() {
                         </div>
                       </Show>
 
+                      {/* WellAppoint Calendar Link */}
+                      <Show when={data().config.availabilityCalendarId}>
+                        <div class="pt-4 text-center border-t border-[#8B6914]/10 mt-4">
+                          <a
+                            href={`https://calendar.google.com/calendar/r?cid=${data().config.availabilityCalendarId}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="inline-flex items-center gap-2 text-sm text-[#8B6914] hover:underline"
+                          >
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/>
+                            </svg>
+                            Open WellAppoint Calendar
+                          </a>
+                        </div>
+                      </Show>
+
                       {/* Delete Provider Section */}
                       <div class="pt-4 border-t border-red-200 mt-4">
                         <div class="text-center">

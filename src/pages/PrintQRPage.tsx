@@ -4,7 +4,7 @@ import { useParams } from "@solidjs/router";
 import { QRCode } from "../components/visual";
 import { fetchProviderConfig } from "../services/providerConfigService";
 
-function Initials(props: { name: string; size: string; textSize: string }) {
+function Initials(props: { name: string; class: string; textClass: string }) {
   const initials = () =>
     props.name
       .split(" ")
@@ -16,32 +16,36 @@ function Initials(props: { name: string; size: string; textSize: string }) {
 
   return (
     <div
-      class={`${props.size} rounded-full bg-gradient-to-br from-[#d4c5a0] to-[#8B6914] flex items-center justify-center text-white font-semibold ${props.textSize}`}
+      class={`rounded-full bg-gradient-to-br from-[#d4c5a0] to-[#8B6914] flex items-center justify-center text-white font-semibold ${props.class} ${props.textClass}`}
     >
       {initials()}
     </div>
   );
 }
 
-function ProviderHeadshot(props: {
+function ProviderPhoto(props: {
   headshot?: string;
   name: string;
-  size: string;
-  textSize: string;
+  sizePx: number;
 }) {
   return (
-    <div class="flex justify-center mb-2">
+    <div class="flex justify-center mb-3">
       <Show
         when={props.headshot}
         fallback={
-          <Initials name={props.name} size={props.size} textSize={props.textSize} />
+          <Initials
+            name={props.name}
+            class={`shrink-0`}
+            textClass={props.sizePx > 60 ? "text-3xl" : "text-lg"}
+          />
         }
       >
         <img
           src={props.headshot}
           alt={props.name}
           referrerPolicy="no-referrer"
-          class={`${props.size} rounded-full object-cover border-2 border-[#8B6914]/20`}
+          class="rounded-full object-cover border-2 border-[#8B6914]/20 shrink-0"
+          style={{ width: `${props.sizePx}px`, height: `${props.sizePx}px` }}
         />
       </Show>
     </div>
@@ -65,7 +69,6 @@ export function PrintQRPage() {
 
   const handlePrint = (format: "card" | "poster") => {
     setPrintFormat(format);
-    // Double-rAF ensures the print-format class is painted before the print dialog
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         window.print();
@@ -82,7 +85,6 @@ export function PrintQRPage() {
         "print-poster": printFormat() === "poster",
       }}
     >
-      {/* Print-only styles */}
       <style>{`
         @media print {
           body { margin: 0; padding: 0; background: white; }
@@ -137,22 +139,21 @@ export function PrintQRPage() {
           }
         >
         {(provider) => (
-          <div class="max-w-sm mx-auto space-y-6">
+          <div class="max-w-md mx-auto space-y-6">
             <h1 class="text-lg font-semibold text-[#3d2e0a] no-print">
               Print QR Code
             </h1>
 
-            {/* Card Format */}
+            {/* Card Format — compact, for desk or corkboard */}
             <div class="card-format print-section">
-              <div class="bg-white border border-[#e8dcc8] rounded-[10px] p-6 text-center">
+              <div class="bg-white border border-[#e8dcc8] rounded-[10px] py-6 px-8 text-center max-w-[280px] mx-auto">
                 <div class="text-[11px] text-[#5a4510] uppercase tracking-wider mb-3 no-print">
                   Card Format
                 </div>
-                <ProviderHeadshot
+                <ProviderPhoto
                   headshot={provider().headshot}
                   name={provider().name}
-                  size="w-14 h-14"
-                  textSize="text-lg"
+                  sizePx={48}
                 />
                 <h3 class="text-sm font-semibold text-[#3d2e0a] m-0 mb-0.5">
                   {provider().name}
@@ -163,7 +164,7 @@ export function PrintQRPage() {
                   </p>
                 </Show>
                 <div class="flex justify-center mb-2">
-                  <QRCode content={getScheduleLink()} size={120} />
+                  <QRCode content={getScheduleLink()} size={100} />
                 </div>
                 <p class="text-[10px] text-[#5a4510] m-0">
                   Scan to book an appointment
@@ -177,33 +178,32 @@ export function PrintQRPage() {
               Print Card
             </button>
 
-            {/* Poster Format */}
+            {/* Poster Format — large, for wall display */}
             <div class="poster-format print-section">
-              <div class="bg-white border border-[#e8dcc8] rounded-[10px] p-8 text-center">
-                <div class="text-[11px] text-[#5a4510] uppercase tracking-wider mb-4 no-print">
+              <div class="bg-white border border-[#e8dcc8] rounded-[10px] py-10 px-8 text-center">
+                <div class="text-[11px] text-[#5a4510] uppercase tracking-wider mb-6 no-print">
                   Poster Format
                 </div>
-                <ProviderHeadshot
+                <ProviderPhoto
                   headshot={provider().headshot}
                   name={provider().name}
-                  size="w-20 h-20"
-                  textSize="text-[28px]"
+                  sizePx={100}
                 />
-                <h3 class="text-xl font-semibold text-[#3d2e0a] m-0 mb-1">
+                <h3 class="text-2xl font-bold text-[#3d2e0a] m-0 mb-1">
                   {provider().name}
                 </h3>
                 <Show when={provider().title}>
-                  <p class="text-sm text-[#5a4510] m-0 mb-5">
+                  <p class="text-base text-[#5a4510] m-0 mb-6">
                     {provider().title}
                   </p>
                 </Show>
-                <div class="flex justify-center mb-3">
-                  <QRCode content={getScheduleLink()} size={180} />
+                <div class="flex justify-center mb-4">
+                  <QRCode content={getScheduleLink()} size={220} />
                 </div>
-                <p class="text-[15px] font-semibold text-[#3d2e0a] m-0 mb-1">
+                <p class="text-lg font-semibold text-[#3d2e0a] m-0 mb-1">
                   Scan to book an appointment
                 </p>
-                <p class="text-xs text-[#5a4510] m-0">
+                <p class="text-sm text-[#5a4510] m-0">
                   {getScheduleLink()}
                 </p>
               </div>

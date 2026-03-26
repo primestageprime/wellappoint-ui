@@ -60,3 +60,4 @@ export { LegalSection } from './LegalSection';
 export { LegalParagraph } from './LegalParagraph';
 export { LegalList } from './LegalList';
 export { LegalContact } from './LegalContact';
+export { ActionPills } from './ActionPills';

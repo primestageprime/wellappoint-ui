@@ -51,6 +51,7 @@ export function CreateProviderPage() {
   const [providerName, setProviderName] = createSignal('');
   const [email, setEmail] = createSignal('');
   const [phone, setPhone] = createSignal('');
+  const [location, setLocation] = createSignal('');
   const [refreshToken, setRefreshToken] = createSignal('');
   const [isSubmitting, setIsSubmitting] = createSignal(false);
   const [isProviderSetupSuccess, setIsProviderSetupSuccess] = createSignal(false);
@@ -205,6 +206,7 @@ export function CreateProviderPage() {
           providerName: providerName(),
           email: email(),
           phone: phone(),
+          location: location(),
           refreshToken: refreshToken(),
         }),
       });
@@ -340,6 +342,16 @@ export function CreateProviderPage() {
                   value={phone}
                   onInput={setPhone}
                   helpText="Your phone number to display to clients"
+                  required={false}
+                />
+
+                <FormField
+                  label="Location (Optional)"
+                  name="location"
+                  placeholder="San Francisco, CA"
+                  value={location}
+                  onInput={setLocation}
+                  helpText="Your business location to display on your booking page"
                   required={false}
                 />
 

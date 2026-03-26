@@ -1,5 +1,5 @@
 import { JSX, Show } from 'solid-js';
-import { Mail, Phone, Briefcase } from '../icons';
+import { Mail, Phone, Briefcase, MapPin } from '../icons';
 import { CenteredContent } from '../base';
 import { ProfilePic, MailLink, PhoneNumber, CenteredIconWithText, ProviderName, ProviderTitle } from './';
 import { VerticallySpacedContent } from '../base';
@@ -8,7 +8,8 @@ interface ProviderContentProps {
   name: string;
   email?: string;
   phone?: string;
-  title: string;
+  title?: string;
+  location?: string;
   profilePic?: string;
   class?: string;
 }
@@ -44,11 +45,19 @@ export function ProviderContent(props: ProviderContentProps) {
           {props.name}
         </ProviderName>
 
-        <CenteredIconWithText icon={<Briefcase />}>
-          <ProviderTitle>
-            {props.title}
-          </ProviderTitle>
-        </CenteredIconWithText>
+        <Show when={props.title}>
+          <CenteredIconWithText icon={<Briefcase />}>
+            <ProviderTitle>
+              {props.title}
+            </ProviderTitle>
+          </CenteredIconWithText>
+        </Show>
+
+        <Show when={props.location}>
+          <CenteredIconWithText icon={<MapPin />}>
+            <span class="text-sm text-muted-foreground">{props.location}</span>
+          </CenteredIconWithText>
+        </Show>
 
         <Show when={isValidEmail(props.email)}>
           <CenteredIconWithText icon={<Mail />}>

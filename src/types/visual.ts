@@ -200,8 +200,9 @@ export interface AvatarProps {
 
 export interface ProviderContentProps {
   name: string;
-  email: string;
-  title: string;
+  email?: string;
+  title?: string;
+  location?: string;
   profilePic?: string;
   class?: string;
 }

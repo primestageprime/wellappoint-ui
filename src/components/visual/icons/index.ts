@@ -9,4 +9,5 @@ export { Currency } from './Currency';
 export { FootReflexology } from './FootReflexology';
 export { Globe } from './Globe';
 export { Heart } from './Heart';
+export { MapPin } from './MapPin';
 export { WellAppointLogo } from './WellAppointLogo';

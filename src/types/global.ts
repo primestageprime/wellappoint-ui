@@ -109,6 +109,7 @@ export interface Provider {
   email: string;
   title: string;
   phone: string;
+  location: string;
   bio: string;
   specialties: string[];
 }

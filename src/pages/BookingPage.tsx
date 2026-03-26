@@ -244,6 +244,7 @@ export function BookingPage() {
               email={provider()!.email}
               phone={provider()!.phone}
               title={provider()!.title}
+              location={provider()!.location}
             />
           </Card>
         )}

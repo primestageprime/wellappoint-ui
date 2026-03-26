@@ -12,7 +12,7 @@ export function HeadshotSettingsPage() {
   const username = () => params.username as string;
 
   const [saved, setSaved] = createSignal(false);
-  const [provider] = createResource(username, getProviderDetails);
+  const [provider, { refetch }] = createResource(username, getProviderDetails);
 
   if (!auth.isAuthenticated()) {
     navigate('/');
@@ -28,6 +28,7 @@ export function HeadshotSettingsPage() {
                 username={username()}
                 currentHeadshot={provider()?.headshot}
                 onHeadshotChanged={() => {
+                  refetch();
                   setSaved(true);
                   setTimeout(() => setSaved(false), 3000);
                 }}

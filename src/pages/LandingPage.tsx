@@ -92,12 +92,13 @@ export function LandingPage() {
             </div>
 
             <div class="text-center pt-4">
-              <button
-                onClick={auth.logout}
-                class="text-sm text-muted-foreground hover:text-card-foreground hover:underline transition-colors cursor-pointer border-none bg-transparent p-0"
+              <a
+                onClick={(e) => { e.preventDefault(); auth.logout(); }}
+                href="#"
+                class="text-sm text-[#8B6914] hover:underline"
               >
                 Sign out
-              </button>
+              </a>
             </div>
           </Show>
         </div>

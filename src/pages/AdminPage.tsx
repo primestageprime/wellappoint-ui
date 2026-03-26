@@ -1,4 +1,4 @@
-import { Show, For, onMount, createSignal, createMemo } from 'solid-js';
+import { Show, For, onMount, createSignal } from 'solid-js';
 import { useParams, useNavigate, A } from '@solidjs/router';
 import { Copy, Check, ExternalLink } from 'lucide-solid';
 import { PageFrame, Content, AdminCard, ConfigTable, ServiceAdminCard, ClientsTable, QRCode, DangerButton, Spinner } from '../components/visual';
@@ -229,16 +229,16 @@ export function AdminPage() {
                       </div>
                       {/* Book for a Client */}
                       <div class="pt-4 border-t border-[#8B6914]/10 mt-4">
-                        <a
+                        <A
                           href={`/admin/${params.username}/book`}
                           class="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#8B6914] hover:bg-[#6d5410] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring transition-colors"
                         >
                           Book for a Client
-                        </a>
+                        </A>
                       </div>
 
                       {/* External Links */}
-                      <div class="py-4 border-t border-[#8B6914]/10 mt-4 text-center">
+                      <div class="py-2 border-t border-[#8B6914]/10 mt-4 text-center">
                         <Show when={data().config.adminSheetId}>
                           <a
                             href={`https://docs.google.com/spreadsheets/d/${data().config.adminSheetId}`}

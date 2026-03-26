@@ -23,7 +23,7 @@ import {
 import { useBooking } from '../stores/bookingStore';
 import { useServices } from '../stores/servicesStore';
 import { getAvailableSlots } from '../services/availabilityService';
-import { createAppointment } from '../services/bookingService';
+import { createAppointment, createBookingRequest } from '../services/bookingService';
 import { type BookingService } from '../types/service';
 import { type AvailableSlot } from '../types/global';
 import { groupSlotsByDate } from '../utils/slotFormatting';
@@ -122,25 +122,16 @@ export function ProviderBookingForClientPage() {
   const groupedSlots = createMemo(() => groupSlotsByDate(availableSlots() || []));
 
   // Build booking request with client info
-  const buildBookingRequest = (slot: AvailableSlot) => {
-    const service = booking.state.selectedService!;
-    const duration = booking.state.selectedDuration!;
-
-    const startDate = new Date(slot.startTime);
-    const year = startDate.getFullYear();
-    const month = String(startDate.getMonth() + 1).padStart(2, '0');
-    const day = String(startDate.getDate()).padStart(2, '0');
-    const hours = String(startDate.getHours()).padStart(2, '0');
-    const minutes = String(startDate.getMinutes()).padStart(2, '0');
-    const formattedStart = `${year}-${month}-${day} ${hours}:${minutes}`;
-
+  const buildRequest = (slot: AvailableSlot) => {
+    const request = createBookingRequest(
+      booking.state.selectedService!,
+      booking.state.selectedDuration!,
+      slot,
+      clientEmail(),
+      providerUsername(),
+    );
     return {
-      service,
-      duration,
-      location: slot.location || 'OFFICE',
-      email: clientEmail(),
-      start: formattedStart,
-      username: providerUsername(),
+      ...request,
       userProfile: {
         name: clientName(),
         ...(clientPhone().trim() ? { phone: clientPhone().trim() } : {}),
@@ -166,7 +157,7 @@ export function ProviderBookingForClientPage() {
     const startTime = Date.now();
 
     try {
-      const bookingRequest = buildBookingRequest(slot);
+      const bookingRequest = buildRequest(slot);
       const result = await createAppointment(bookingRequest);
       const elapsedMs = Date.now() - startTime;
       taskMetrics.recordTask('booking-appointment', elapsedMs);

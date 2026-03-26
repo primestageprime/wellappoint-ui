@@ -22,6 +22,8 @@ import { ProviderSettingsPage } from './pages/ProviderSettingsPage';
 import { HeadshotSettingsPage } from './pages/HeadshotSettingsPage';
 import { LandingPage } from './pages/LandingPage';
 import { ProviderBookingForClientPage } from './pages/ProviderBookingForClientPage';
+import { ClientLandingPage } from './pages/ClientLandingPage';
+import { PrintQRPage } from './pages/PrintQRPage';
 import { DemoIndexPage } from './pages/demo/DemoIndexPage';
 import { ComponentsStatePage } from './pages/demo/ComponentsStatePage';
 import { ProgressButtonDemoPage } from './pages/demo/ProgressButtonDemoPage';
@@ -86,8 +88,11 @@ function App() {
               {/* Default route - redirect to user's provider page */}
               <Route path="/" component={LandingPage} />
               
-              {/* Provider-specific booking pages - wrap with providers */}
-              <Route path="/:username" component={ProviderBookingPageWrapper} />
+              {/* Client-facing landing page */}
+              <Route path="/:username" component={ClientLandingPage} />
+
+              {/* Booking flow (moved from /:username) */}
+              <Route path="/:username/book" component={ProviderBookingPageWrapper} />
               
               {/* Provider re-authentication */}
               <Route path="/:username/authorize" component={ProviderReauthPage} />
@@ -103,6 +108,7 @@ function App() {
               <Route path="/admin/:username/headshot" component={HeadshotSettingsPage} />
               <Route path="/admin/:username/settings" component={ProviderSettingsPage} />
               <Route path="/admin/:username/book" component={ProviderBookingForClientWrapper} />
+              <Route path="/admin/:username/print-qr" component={PrintQRPage} />
               <Route path="/admin/:username" component={AdminPageWrapper} />
               
               {/* Legacy routes for backward compatibility */}

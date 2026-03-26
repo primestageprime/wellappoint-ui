@@ -91,7 +91,7 @@ export function LandingPage() {
               </Show>
             </div>
 
-            <div class="text-center pt-4">
+            <div class="text-center pt-1">
               <a
                 onClick={(e) => { e.preventDefault(); auth.logout(); }}
                 href="#"

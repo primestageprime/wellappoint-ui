@@ -67,22 +67,26 @@ export function LandingPage() {
                   </div>
                 </>
               }>
-                <div class="text-center space-y-4">
-                  <p class="text-sm text-muted-foreground">
+                <div class="space-y-4">
+                  <p class="text-center text-sm text-muted-foreground">
                     Welcome back, {auth.user()?.name || 'Provider'}
                   </p>
-                  <A
-                    href={`/admin/${providerUsername()}`}
-                    class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#8B6914] hover:bg-[#6d5410] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring transition-colors"
-                  >
-                    Go to Dashboard
-                  </A>
-                  <A
-                    href={`/${providerUsername()}`}
-                    class="group relative w-full flex justify-center py-3 px-4 border border-gray-300 text-sm font-medium rounded-md text-card-foreground bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring transition-colors"
-                  >
-                    View Booking Page
-                  </A>
+                  <div>
+                    <A
+                      href={`/admin/${providerUsername()}`}
+                      class="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#8B6914] hover:bg-[#6d5410] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring transition-colors"
+                    >
+                      Go to Dashboard
+                    </A>
+                  </div>
+                  <div>
+                    <A
+                      href={`/${providerUsername()}`}
+                      class="w-full flex justify-center py-3 px-4 border border-gray-300 text-sm font-medium rounded-md text-card-foreground bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring transition-colors"
+                    >
+                      View Booking Page
+                    </A>
+                  </div>
                 </div>
               </Show>
             </div>

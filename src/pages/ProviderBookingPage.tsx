@@ -282,6 +282,7 @@ export function ProviderBookingPage() {
               phone={provider()!.phone}
               title={provider()!.title}
               location={provider()!.location}
+              profilePic={provider()!.headshot}
             />
           </Card>
         )}

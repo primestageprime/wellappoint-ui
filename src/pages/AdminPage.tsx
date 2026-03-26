@@ -271,12 +271,18 @@ export function AdminPage() {
                           </p>
                         </div>
                         {/* Book for a Client */}
-                        <div class="pt-4 border-t border-[#8B6914]/10 mt-4">
+                        <div class="pt-4 border-t border-[#8B6914]/10 mt-4 space-y-3">
                           <A
                             href={`/admin/${params.username}/book`}
                             class="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#8B6914] hover:bg-[#6d5410] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring transition-colors"
                           >
                             Book for a Client
+                          </A>
+                          <A
+                            href={`/admin/${params.username}/headshot`}
+                            class="w-full flex justify-center py-3 px-4 border border-[#8B6914] text-sm font-medium rounded-md text-[#8B6914] hover:bg-[#8B6914]/5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring transition-colors"
+                          >
+                            {data().config.headshot ? "Change Profile Photo" : "Add Profile Photo"}
                           </A>
                         </div>
 
@@ -347,7 +353,7 @@ export function AdminPage() {
                         rows={[
                           {
                             name: "Headshot",
-                            value: data().config.headshot || "—",
+                            value: data().config.headshot ? "✓ Set" : "Not set",
                           },
                           { name: "Name", value: data().config.name },
                           { name: "Title", value: data().config.title },

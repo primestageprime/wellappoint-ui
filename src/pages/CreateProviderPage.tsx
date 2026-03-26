@@ -75,6 +75,21 @@ export function CreateProviderPage() {
 
   // Check for token key from OAuth callback on mount (Safari-compatible)
   onMount(async () => {
+    // Redirect to landing page if user already has a provider account
+    const user = auth.user();
+    if (user?.email) {
+      try {
+        const meResponse = await apiFetch(`/api/provider/me?email=${encodeURIComponent(user.email)}`);
+        const meData = await meResponse.json();
+        if (meData.exists) {
+          navigate('/', { replace: true });
+          return;
+        }
+      } catch (err) {
+        console.error('Failed to check provider status:', err);
+      }
+    }
+
     // Try to get token key from URL parameter first (works in all browsers including Safari)
     let tokenKey = searchParams.tokenKey;
 

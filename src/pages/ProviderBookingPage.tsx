@@ -1,6 +1,6 @@
 import { Show, createMemo, createResource, createSignal, createEffect } from 'solid-js';
 import { useAuth } from '../auth/AuthProvider';
-import { useParams, A, useNavigate } from '@solidjs/router';
+import { useParams, A } from '@solidjs/router';
 import { useTaskTimer } from '../hooks/useTaskTimer';
 import { taskMetrics } from '../utils/taskMetrics';
 import { animateProgress } from '../utils/progressAnimation';
@@ -36,7 +36,6 @@ import { groupSlotsByDate } from '../utils/slotFormatting';
 export function ProviderBookingPage() {
   const auth = useAuth();
   const params = useParams();
-  const navigate = useNavigate();
   const booking = useBooking();
   const servicesStore = useServices();
 
@@ -53,15 +52,10 @@ export function ProviderBookingPage() {
   // Provider details
   const [provider] = createResource(providerUsername, getProviderDetails);
 
-  // Redirect to signup if provider not found after refresh
-  createEffect(() => {
-    if (provider.error) {
-      if (provider.error instanceof ProviderNotFoundError) {
-        console.log(`Provider '${providerUsername()}' not found after refresh, redirecting to signup`);
-        navigate('/admin/create-provider');
-      }
-    }
-  });
+  // Track provider not found
+  const providerNotFound = createMemo(() =>
+    provider.error instanceof ProviderNotFoundError
+  );
 
   // Use display name from appointments (Preferred Name > Name > email username), fallback to email username
   const loggedInUsername = createMemo(() => {
@@ -264,6 +258,21 @@ export function ProviderBookingPage() {
       </HeaderCard>
       
       <Content>
+        {/* Provider not found */}
+        <Show when={providerNotFound()}>
+          <Card class="border border-primary/10 mb-4">
+            <div class="p-6 text-center">
+              <h2 class="text-lg font-semibold text-[#3d2e0a] mb-2">Provider not found</h2>
+              <p class="text-sm text-[#5a4510] mb-4">
+                We couldn't find a provider with the username "{providerUsername()}". They may have moved or the link may be incorrect.
+              </p>
+              <A href="/" class="text-sm text-[#8B6914] hover:underline">
+                Go to home page
+              </A>
+            </div>
+          </Card>
+        </Show>
+
         {/* Provider Profile Card */}
         {provider() && (
           <Card class="border border-primary/10 mb-4">

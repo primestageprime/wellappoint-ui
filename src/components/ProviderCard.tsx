@@ -28,10 +28,20 @@ export function ProviderCard(props: ProviderCardProps) {
 
       {provider() && (
         <div class="flex items-center justify-center space-x-4 py-4">
-          <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-            <span class="text-2xl font-semibold text-primary">
-              {provider()!.name.split(' ').map(n => n[0]).join('')}
-            </span>
+          <div class="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
+            {provider()!.headshot ? (
+              <img
+                src={provider()!.headshot}
+                alt={provider()!.name}
+                class="w-full h-full object-cover"
+              />
+            ) : (
+              <div class="w-full h-full bg-primary/10 flex items-center justify-center">
+                <span class="text-2xl font-semibold text-primary">
+                  {provider()!.name.split(' ').map(n => n[0]).join('')}
+                </span>
+              </div>
+            )}
           </div>
           <div class="text-left">
             <h2 class="text-lg font-semibold text-card-foreground mb-1">

@@ -19,6 +19,7 @@ import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsPage } from './pages/TermsPage';
 import { OAuthCallbackPage } from './pages/OAuthCallbackPage';
 import { ProviderSettingsPage } from './pages/ProviderSettingsPage';
+import { HeadshotSettingsPage } from './pages/HeadshotSettingsPage';
 import { LandingPage } from './pages/LandingPage';
 import { ProviderBookingForClientPage } from './pages/ProviderBookingForClientPage';
 import { DemoIndexPage } from './pages/demo/DemoIndexPage';
@@ -99,6 +100,7 @@ function App() {
               <Route path="/admin/providers" component={ProvidersPage} />
               <Route path="/admin/oauth-setup" component={OAuthSetupPage} />
               <Route path="/admin/oauth-callback" component={OAuthCallbackPage} />
+              <Route path="/admin/:username/headshot" component={HeadshotSettingsPage} />
               <Route path="/admin/:username/settings" component={ProviderSettingsPage} />
               <Route path="/admin/:username/book" component={ProviderBookingForClientWrapper} />
               <Route path="/admin/:username" component={AdminPageWrapper} />

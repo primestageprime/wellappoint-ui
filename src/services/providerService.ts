@@ -140,10 +140,16 @@ export async function setHeadshotFromGoogle(username: string): Promise<string> {
   });
 
   if (!response.ok) {
-    const data = await response.json();
-    throw new Error(data.error || 'Failed to set headshot from Google');
+    const text = await response.text();
+    let errorMsg = 'Failed to set headshot from Google';
+    try { errorMsg = JSON.parse(text).error || errorMsg; } catch {}
+    throw new Error(errorMsg);
   }
 
-  const data = await response.json();
+  const text = await response.text();
+  if (!text) {
+    throw new Error('Server returned empty response');
+  }
+  const data = JSON.parse(text);
   return data.url;
 }

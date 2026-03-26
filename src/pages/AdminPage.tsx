@@ -258,7 +258,7 @@ export function AdminPage() {
                       <Show when={data().config.availabilityCalendarId}>
                         <div class="pt-4 text-center border-t border-[#8B6914]/10 mt-4">
                           <a
-                            href={`https://calendar.google.com/calendar/r?cid=${data().config.availabilityCalendarId}`}
+                            href="https://calendar.google.com/calendar/r"
                             target="_blank"
                             rel="noopener noreferrer"
                             class="inline-flex items-center gap-2 text-sm text-[#8B6914] hover:underline"

@@ -89,15 +89,17 @@ export function LandingPage() {
                   </div>
                 </div>
               </Show>
-              <div class="text-center !mt-1">
-                <a
-                  onClick={(e) => { e.preventDefault(); auth.logout(); }}
-                  href="#"
-                  class="text-sm text-[#8B6914] hover:underline"
-                >
-                  Sign out
-                </a>
-              </div>
+            </div>
+
+            <div class="text-center">
+              <a
+                onClick={(e) => { e.preventDefault(); auth.logout(); }}
+                href="#"
+                class="text-sm text-[#8B6914] hover:underline"
+              >
+                Sign out
+              </a>
+            </div>
           </Show>
         </div>
       </div>

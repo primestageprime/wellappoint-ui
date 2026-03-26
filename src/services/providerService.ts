@@ -92,3 +92,58 @@ export async function deleteProviderAccount(username: string): Promise<void> {
     throw new Error(data.error || 'Failed to delete account');
   }
 }
+
+/**
+ * Get the provider's Google profile picture URL
+ */
+export async function getGoogleProfilePicture(username: string): Promise<string | null> {
+  const response = await apiFetch(`/api/provider/profile-picture?username=${encodeURIComponent(username)}`);
+
+  if (!response.ok) {
+    return null;
+  }
+
+  const data = await response.json();
+  return data.success ? data.pictureUrl ?? null : null;
+}
+
+/**
+ * Upload a custom headshot image
+ */
+export async function uploadHeadshot(username: string, file: File): Promise<string> {
+  const formData = new FormData();
+  formData.append('username', username);
+  formData.append('file', file);
+
+  const response = await apiFetch('/api/provider/headshot/upload', {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.error || 'Failed to upload headshot');
+  }
+
+  const data = await response.json();
+  return data.url;
+}
+
+/**
+ * Set headshot from provider's Google profile picture
+ */
+export async function setHeadshotFromGoogle(username: string): Promise<string> {
+  const response = await apiFetch('/api/provider/headshot/from-google', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username }),
+  });
+
+  if (!response.ok) {
+    const data = await response.json();
+    throw new Error(data.error || 'Failed to set headshot from Google');
+  }
+
+  const data = await response.json();
+  return data.url;
+}

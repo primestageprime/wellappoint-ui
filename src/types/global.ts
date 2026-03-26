@@ -110,6 +110,7 @@ export interface Provider {
   title: string;
   phone: string;
   location: string;
+  headshot: string;
   bio: string;
   specialties: string[];
 }

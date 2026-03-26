@@ -66,7 +66,35 @@ export function AdminPage() {
     } catch (error) {
       const errorMsg =
         error instanceof Error ? error.message : "Failed to delete provider";
-      setDeleteError(errorMsg);
+
+      if (errorMsg.includes("REAUTH_REQUIRED")) {
+        // Store context so we return here after re-auth
+        sessionStorage.setItem("reauth_username", params.username);
+        sessionStorage.setItem("reauth_return_url", window.location.pathname);
+
+        setDeleteError(
+          "Your Google authorization has expired. Redirecting to re-authorize...",
+        );
+        setIsDeleting(false);
+
+        // Start the re-auth flow
+        try {
+          const response = await apiFetch("/api/oauth/setup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+          });
+          const data = await response.json();
+          if (data.success && data.authUrl) {
+            window.location.href = data.authUrl;
+            return;
+          }
+        } catch {}
+        setDeleteError(
+          "Your Google authorization has expired. Please re-authorize from the headshot page, then try deleting again.",
+        );
+      } else {
+        setDeleteError(errorMsg);
+      }
       setIsDeleting(false);
     }
   };

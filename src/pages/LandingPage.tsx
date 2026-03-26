@@ -91,10 +91,10 @@ export function LandingPage() {
               </Show>
             </div>
 
-            <div class="text-center pt-4 border-t border-gray-200">
+            <div class="text-center pt-4">
               <button
                 onClick={auth.logout}
-                class="text-sm text-muted-foreground hover:text-card-foreground transition-colors"
+                class="text-sm text-muted-foreground hover:text-card-foreground hover:underline transition-colors cursor-pointer border-none bg-transparent p-0"
               >
                 Sign out
               </button>

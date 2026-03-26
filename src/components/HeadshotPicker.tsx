@@ -93,6 +93,8 @@ export function HeadshotPicker(props: HeadshotPickerProps) {
   };
 
   const handleReauth = async () => {
+    setIsUploading(true);
+    setError(null);
     try {
       // Store reauth context so the OAuth callback knows to update the provider's token
       sessionStorage.setItem('reauth_username', props.username);
@@ -110,6 +112,8 @@ export function HeadshotPicker(props: HeadshotPickerProps) {
       }
     } catch (e) {
       setError('Failed to start re-authorization');
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -193,7 +197,8 @@ export function HeadshotPicker(props: HeadshotPickerProps) {
       <Show when={needsReauth()}>
         <button
           onClick={handleReauth}
-          class="text-sm text-primary hover:text-primary/80 underline"
+          disabled={isUploading()}
+          class="text-sm text-primary hover:text-primary/80 underline disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Re-authorize with Google
         </button>

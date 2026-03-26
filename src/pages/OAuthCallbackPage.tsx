@@ -9,6 +9,55 @@ export function OAuthCallbackPage() {
   const [status, setStatus] = createSignal<'loading' | 'success' | 'error'>('loading');
   const [error, setError] = createSignal('');
 
+  const handleReauthCallback = async (tokenKey: string, username: string, returnUrl: string | null) => {
+    sessionStorage.removeItem('reauth_username');
+    sessionStorage.removeItem('reauth_return_url');
+
+    const tokenResponse = await apiFetch('/api/oauth/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tokenKey }),
+    });
+    const tokenData = await tokenResponse.json();
+
+    if (!tokenData.success || !tokenData.refreshToken) {
+      setStatus('error');
+      setError(tokenData.error || 'Failed to retrieve token');
+      return;
+    }
+
+    const reauthResponse = await apiFetch('/api/provider/reauth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, refreshToken: tokenData.refreshToken }),
+    });
+    const reauthData = await reauthResponse.json();
+
+    if (!reauthData.success) {
+      setStatus('error');
+      setError(reauthData.error || 'Failed to update provider token');
+      return;
+    }
+
+    setStatus('success');
+    setTimeout(() => {
+      navigate(returnUrl || `/admin/${username}/headshot`);
+    }, 1500);
+  };
+
+  const handleSignupCallback = (tokenKey: string) => {
+    try {
+      sessionStorage.setItem('oauth_token_key', tokenKey);
+    } catch (storageError) {
+      console.warn('sessionStorage unavailable, using URL parameter fallback');
+    }
+
+    setStatus('success');
+    setTimeout(() => {
+      navigate(`/admin/create-provider?tokenKey=${tokenKey}`);
+    }, 1500);
+  };
+
   onMount(async () => {
     // Debug: log the full URL and search params
     console.log('OAuth Callback - Full URL:', window.location.href);
@@ -61,51 +110,9 @@ export function OAuthCallbackPage() {
         const reauthReturnUrl = sessionStorage.getItem('reauth_return_url');
 
         if (reauthUsername) {
-          // Re-auth flow: exchange token key for refresh token, then update provider
-          sessionStorage.removeItem('reauth_username');
-          sessionStorage.removeItem('reauth_return_url');
-
-          const tokenResponse = await apiFetch('/api/oauth/token', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ tokenKey: data.tokenKey }),
-          });
-          const tokenData = await tokenResponse.json();
-
-          if (tokenData.success && tokenData.refreshToken) {
-            const reauthResponse = await apiFetch('/api/provider/reauth', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ username: reauthUsername, refreshToken: tokenData.refreshToken }),
-            });
-            const reauthData = await reauthResponse.json();
-
-            if (reauthData.success) {
-              setStatus('success');
-              setTimeout(() => {
-                navigate(reauthReturnUrl || `/admin/${reauthUsername}/headshot`);
-              }, 1500);
-            } else {
-              setStatus('error');
-              setError(reauthData.error || 'Failed to update provider token');
-            }
-          } else {
-            setStatus('error');
-            setError(tokenData.error || 'Failed to retrieve token');
-          }
+          await handleReauthCallback(data.tokenKey, reauthUsername, reauthReturnUrl);
         } else {
-          // Normal signup flow: store token key and redirect to create-provider
-          try {
-            sessionStorage.setItem('oauth_token_key', data.tokenKey);
-          } catch (storageError) {
-            console.warn('sessionStorage unavailable, using URL parameter fallback');
-          }
-
-          setStatus('success');
-
-          setTimeout(() => {
-            navigate(`/admin/create-provider?tokenKey=${data.tokenKey}`);
-          }, 1500);
+          handleSignupCallback(data.tokenKey);
         }
       } else {
         setStatus('error');

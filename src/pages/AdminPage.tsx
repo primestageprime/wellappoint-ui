@@ -257,8 +257,24 @@ export function AdminPage() {
                           </div>
                         </div>
 
-                        {/* QR Code */}
+                        {/* Profile Photo + QR Code */}
                         <div class="pt-2 text-center">
+                          <Show when={data().config.headshot}>
+                            <img
+                              src={data().config.headshot}
+                              alt={data().config.name}
+                              referrerPolicy="no-referrer"
+                              class="w-20 h-20 rounded-full object-cover border-2 border-primary/20 mx-auto mb-2"
+                            />
+                            <div class="text-sm font-semibold text-[#3d2e0a]">
+                              {data().config.name}
+                            </div>
+                            <Show when={data().config.title}>
+                              <div class="text-xs text-[#5a4510] mb-3">
+                                {data().config.title}
+                              </div>
+                            </Show>
+                          </Show>
                           <div class="text-sm text-[#5a4510] font-medium mb-2">
                             QR Code:
                           </div>

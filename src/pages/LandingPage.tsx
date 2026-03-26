@@ -86,6 +86,15 @@ export function LandingPage() {
                 </div>
               </Show>
             </div>
+
+            <div class="text-center pt-4 border-t border-gray-200">
+              <button
+                onClick={auth.logout}
+                class="text-sm text-muted-foreground hover:text-card-foreground transition-colors"
+              >
+                Sign out
+              </button>
+            </div>
           </Show>
         </div>
       </div>

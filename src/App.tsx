@@ -20,6 +20,7 @@ import { TermsPage } from './pages/TermsPage';
 import { OAuthCallbackPage } from './pages/OAuthCallbackPage';
 import { ProviderSettingsPage } from './pages/ProviderSettingsPage';
 import { LandingPage } from './pages/LandingPage';
+import { ProviderBookingForClientPage } from './pages/ProviderBookingForClientPage';
 import { DemoIndexPage } from './pages/demo/DemoIndexPage';
 import { ComponentsStatePage } from './pages/demo/ComponentsStatePage';
 import { ProgressButtonDemoPage } from './pages/demo/ProgressButtonDemoPage';
@@ -43,6 +44,17 @@ function ProviderBookingPageWrapper() {
     <ServicesProvider>
       <CalendarProvider>
         <ProviderBookingPage />
+      </CalendarProvider>
+    </ServicesProvider>
+  );
+}
+
+// Wrapper for provider booking-for-client page with stores
+function ProviderBookingForClientWrapper() {
+  return (
+    <ServicesProvider>
+      <CalendarProvider>
+        <ProviderBookingForClientPage />
       </CalendarProvider>
     </ServicesProvider>
   );
@@ -88,6 +100,7 @@ function App() {
               <Route path="/admin/oauth-setup" component={OAuthSetupPage} />
               <Route path="/admin/oauth-callback" component={OAuthCallbackPage} />
               <Route path="/admin/:username/settings" component={ProviderSettingsPage} />
+              <Route path="/admin/:username/book" component={ProviderBookingForClientWrapper} />
               <Route path="/admin/:username" component={AdminPageWrapper} />
               
               {/* Legacy routes for backward compatibility */}

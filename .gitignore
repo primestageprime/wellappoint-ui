@@ -58,3 +58,6 @@ jspm_packages/
 
 # Superpowers brainstorm artifacts
 .superpowers/
+
+# Git worktrees
+.worktrees/

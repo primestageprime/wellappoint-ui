@@ -1,6 +1,7 @@
 import { createSignal, Show, onMount } from 'solid-js';
 import { User as UserIcon } from 'lucide-solid';
 import { getGoogleProfilePicture, uploadHeadshot, setHeadshotFromGoogle } from '../services/providerService';
+import { apiFetch } from '../config/api';
 
 interface HeadshotPickerProps {
   username: string;
@@ -91,6 +92,27 @@ export function HeadshotPicker(props: HeadshotPickerProps) {
     }
   };
 
+  const handleReauth = async () => {
+    try {
+      // Store reauth context so the OAuth callback knows to update the provider's token
+      sessionStorage.setItem('reauth_username', props.username);
+      sessionStorage.setItem('reauth_return_url', window.location.pathname);
+
+      const response = await apiFetch('/api/oauth/setup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const data = await response.json();
+      if (data.success && data.authUrl) {
+        window.location.href = data.authUrl;
+      } else {
+        setError('Failed to start re-authorization');
+      }
+    } catch (e) {
+      setError('Failed to start re-authorization');
+    }
+  };
+
   const displayUrl = () => previewUrl() || props.currentHeadshot || null;
 
   return (
@@ -169,12 +191,12 @@ export function HeadshotPicker(props: HeadshotPickerProps) {
       </Show>
 
       <Show when={needsReauth()}>
-        <a
-          href={`/${props.username}/authorize`}
+        <button
+          onClick={handleReauth}
           class="text-sm text-primary hover:text-primary/80 underline"
         >
           Re-authorize with Google
-        </a>
+        </button>
       </Show>
 
       <Show when={props.showSkip && props.onSkip}>

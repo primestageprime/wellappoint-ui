@@ -56,20 +56,57 @@ export function OAuthCallbackPage() {
       console.log('📥 Exchange response data:', data);
 
       if (data.success && data.tokenKey) {
-        // Store the token key - this works better with Safari/iOS than storing the actual token
-        try {
-          sessionStorage.setItem('oauth_token_key', data.tokenKey);
-        } catch (storageError) {
-          // If sessionStorage fails (Safari privacy mode), use URL parameter as fallback
-          console.warn('sessionStorage unavailable, using URL parameter fallback');
+        // Check if this is a re-auth flow (provider updating their OAuth token)
+        const reauthUsername = sessionStorage.getItem('reauth_username');
+        const reauthReturnUrl = sessionStorage.getItem('reauth_return_url');
+
+        if (reauthUsername) {
+          // Re-auth flow: exchange token key for refresh token, then update provider
+          sessionStorage.removeItem('reauth_username');
+          sessionStorage.removeItem('reauth_return_url');
+
+          const tokenResponse = await apiFetch('/api/oauth/token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tokenKey: data.tokenKey }),
+          });
+          const tokenData = await tokenResponse.json();
+
+          if (tokenData.success && tokenData.refreshToken) {
+            const reauthResponse = await apiFetch('/api/provider/reauth', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ username: reauthUsername, refreshToken: tokenData.refreshToken }),
+            });
+            const reauthData = await reauthResponse.json();
+
+            if (reauthData.success) {
+              setStatus('success');
+              setTimeout(() => {
+                navigate(reauthReturnUrl || `/admin/${reauthUsername}/headshot`);
+              }, 1500);
+            } else {
+              setStatus('error');
+              setError(reauthData.error || 'Failed to update provider token');
+            }
+          } else {
+            setStatus('error');
+            setError(tokenData.error || 'Failed to retrieve token');
+          }
+        } else {
+          // Normal signup flow: store token key and redirect to create-provider
+          try {
+            sessionStorage.setItem('oauth_token_key', data.tokenKey);
+          } catch (storageError) {
+            console.warn('sessionStorage unavailable, using URL parameter fallback');
+          }
+
+          setStatus('success');
+
+          setTimeout(() => {
+            navigate(`/admin/create-provider?tokenKey=${data.tokenKey}`);
+          }, 1500);
         }
-
-        setStatus('success');
-
-        // Redirect back to create-provider page with token key in URL as fallback
-        setTimeout(() => {
-          navigate(`/admin/create-provider?tokenKey=${data.tokenKey}`);
-        }, 1500);
       } else {
         setStatus('error');
         setError(data.error || 'Failed to exchange authorization code');

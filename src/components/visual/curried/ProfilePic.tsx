@@ -11,9 +11,10 @@ export function ProfilePic(props: ProfilePicProps) {
   return (
     <div class={`mb-4 ${props.class || ''}`}>
       {props.src ? (
-        <img 
-          src={props.src} 
+        <img
+          src={props.src}
           alt={props.alt}
+          referrerPolicy="no-referrer"
           class="w-20 h-20 rounded-full object-cover border-2 border-primary/20"
         />
       ) : (

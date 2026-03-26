@@ -92,6 +92,7 @@ export function HeadshotPicker(props: HeadshotPickerProps) {
           <img
             src={displayUrl()!}
             alt="Profile photo preview"
+            referrerPolicy="no-referrer"
             class="w-24 h-24 rounded-full object-cover border-2 border-primary/20 mx-auto"
           />
           <Show when={props.currentHeadshot && !previewUrl()}>
@@ -118,6 +119,7 @@ export function HeadshotPicker(props: HeadshotPickerProps) {
             <img
               src={googlePicUrl()!}
               alt="Google profile"
+              referrerPolicy="no-referrer"
               class="w-16 h-16 rounded-full object-cover mx-auto mb-2"
             />
             <div class="font-semibold text-sm">Use Google Photo</div>

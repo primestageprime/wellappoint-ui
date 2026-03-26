@@ -33,6 +33,7 @@ export function ProviderCard(props: ProviderCardProps) {
               <img
                 src={provider()!.headshot}
                 alt={provider()!.name}
+                referrerPolicy="no-referrer"
                 class="w-full h-full object-cover"
               />
             ) : (

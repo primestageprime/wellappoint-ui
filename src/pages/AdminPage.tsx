@@ -1,5 +1,5 @@
-import { Show, For, onMount, createSignal } from 'solid-js';
-import { useParams, useNavigate } from '@solidjs/router';
+import { Show, For, onMount, createSignal, createMemo } from 'solid-js';
+import { useParams, useNavigate, A } from '@solidjs/router';
 import { Copy, Check, ExternalLink } from 'lucide-solid';
 import { PageFrame, Content, AdminCard, ConfigTable, ServiceAdminCard, ClientsTable, QRCode, DangerButton, Spinner } from '../components/visual';
 import { useAdmin } from '../stores/adminStore';
@@ -169,7 +169,19 @@ export function AdminPage() {
             </div>
           </Show>
 
-          <Show when={adminData()}>
+          <Show when={adminData() && !adminData()!.config.email}>
+            <div class="text-center py-8">
+              <h2 class="text-lg font-semibold text-[#3d2e0a] mb-2">Provider not found</h2>
+              <p class="text-sm text-[#5a4510] mb-4">
+                No provider account exists for "{params.username}".
+              </p>
+              <A href="/" class="text-sm text-[#8B6914] hover:underline">
+                Go to home page
+              </A>
+            </div>
+          </Show>
+
+          <Show when={adminData()?.config.email ? adminData() : null}>
             {(data) => (
               <>
                 {/* Top Row: Provider Info & Configuration */}

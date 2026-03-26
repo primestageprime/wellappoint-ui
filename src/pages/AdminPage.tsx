@@ -238,7 +238,7 @@ export function AdminPage() {
                       </div>
 
                       {/* External Links */}
-                      <div class="pt-4 border-t border-[#8B6914]/10 mt-4 flex justify-center gap-6">
+                      <div class="pt-4 border-t border-[#8B6914]/10 mt-4 flex justify-evenly">
                         <Show when={data().config.adminSheetId}>
                           <a
                             href={`https://docs.google.com/spreadsheets/d/${data().config.adminSheetId}`}

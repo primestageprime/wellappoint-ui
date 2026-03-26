@@ -11,24 +11,19 @@ interface ConfigTableProps {
 
 export function ConfigTable(props: ConfigTableProps) {
   return (
-    <table class="w-full">
-      <thead>
-        <tr class="bg-[#f5f0e6]">
-          <th class="text-left py-2 px-4 text-sm font-medium text-[#5a4510]">Name</th>
-          <th class="text-left py-2 px-4 text-sm font-medium text-[#5a4510]">Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <For each={props.rows}>
-          {(row) => (
-            <tr class="border-b border-[#8B6914]/10">
-              <td class="py-2 px-4 text-sm text-[#5a4510]">{row.name}</td>
-              <td class="py-2 px-4 text-sm text-[#8B6914]">{row.value || '—'}</td>
-            </tr>
-          )}
-        </For>
-      </tbody>
-    </table>
+    <div class="space-y-2">
+      <For each={props.rows}>
+        {(row) => (
+          <div class="flex flex-col sm:flex-row sm:items-baseline gap-0.5 sm:gap-3 py-1.5 border-b border-[#8B6914]/10 last:border-0">
+            <span class="text-xs font-medium text-[#5a4510] sm:w-28 sm:flex-shrink-0">
+              {row.name}
+            </span>
+            <span class="text-sm text-[#3d2e0a]">
+              {row.value || '—'}
+            </span>
+          </div>
+        )}
+      </For>
+    </div>
   );
 }
-

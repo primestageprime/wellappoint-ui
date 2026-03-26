@@ -11,17 +11,17 @@ interface ConfigTableProps {
 
 export function ConfigTable(props: ConfigTableProps) {
   return (
-    <div class="space-y-2">
+    <div class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2">
       <For each={props.rows}>
         {(row) => (
-          <div class="flex flex-col sm:flex-row sm:items-baseline gap-0.5 sm:gap-3 py-1.5 border-b border-[#8B6914]/10 last:border-0">
-            <span class="text-xs font-medium text-[#5a4510] sm:w-28 sm:flex-shrink-0">
+          <>
+            <span class="text-sm font-medium text-[#5a4510] py-1">
               {row.name}
             </span>
-            <span class="text-sm text-[#3d2e0a]">
+            <span class="text-sm text-[#3d2e0a] py-1 border-b border-[#8B6914]/10">
               {row.value || '—'}
             </span>
-          </div>
+          </>
         )}
       </For>
     </div>

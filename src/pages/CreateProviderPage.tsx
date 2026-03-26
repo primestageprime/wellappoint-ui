@@ -1,5 +1,6 @@
 import { createSignal, createEffect, onMount } from 'solid-js';
 import { useNavigate, useSearchParams } from '@solidjs/router';
+import { HeadshotPicker } from '../components/HeadshotPicker';
 import {
   PageFrame,
   Content,
@@ -59,6 +60,8 @@ export function CreateProviderPage() {
   const [isOAuthLoading, setIsOAuthLoading] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
   const [success, setSuccess] = createSignal<string | null>(null);
+  const [showHeadshotStep, setShowHeadshotStep] = createSignal(false);
+  const [createdUsername, setCreatedUsername] = createSignal('');
 
   // Track if we've already set the initial defaults
   const [hasSetDefaults, setHasSetDefaults] = createSignal(false);
@@ -222,14 +225,14 @@ export function CreateProviderPage() {
       }
 
       if (data.success) {
-        stopProgress(); // Stop the animation
-        setSetupProgress(100); // Jump to 100%
+        stopProgress();
+        setSetupProgress(100);
         setIsProviderSetupSuccess(true);
-        setSuccess(`Provider ${username()} setup successfully! Redirecting to admin page...`);
-        // Navigate to the provider's admin page after showing success
+        setCreatedUsername(username());
+        setSuccess('Provider account created! Now add a profile photo.');
         setTimeout(() => {
-          navigate(`/admin/${username()}`);
-        }, 2000);
+          setShowHeadshotStep(true);
+        }, 1000);
       } else {
         throw new Error(data.error || 'Provider setup failed');
       }
@@ -369,6 +372,22 @@ export function CreateProviderPage() {
             </StepSection>
           )}
         </SectionCard>
+
+        {showHeadshotStep() && (
+          <SectionCard title="Add a Profile Photo" description="Choose a photo that your clients will see when they visit your booking page.">
+            <HeadshotPicker
+              username={createdUsername()}
+              showSkip
+              onHeadshotChanged={() => {
+                setSuccess('Profile photo saved! Redirecting to admin page...');
+                setTimeout(() => navigate(`/admin/${createdUsername()}`), 1500);
+              }}
+              onSkip={() => {
+                navigate(`/admin/${createdUsername()}`);
+              }}
+            />
+          </SectionCard>
+        )}
 
         {error() && <ErrorMessage>{error()}</ErrorMessage>}
 

@@ -22,23 +22,42 @@ function Initials(props: { name: string }) {
 
 export function ClientLandingPage() {
   const params = useParams<{ username: string }>();
-  const [config] = createResource(() => params.username, fetchProviderConfig);
+  const [config, { refetch }] = createResource(
+    () => params.username,
+    fetchProviderConfig,
+  );
 
   return (
     <div class="min-h-screen flex items-center justify-center bg-[#faf8f3] px-6">
       <Show
-        when={config()}
+        when={!config.error}
         fallback={
-          <Show
-            when={config.loading}
-            fallback={
-              <p class="text-[#5a4510] text-sm">Provider not found.</p>
-            }
-          >
-            <p class="text-[#5a4510] text-sm">Loading...</p>
-          </Show>
+          <div class="text-center">
+            <p class="text-red-700 text-sm mb-3">
+              Something went wrong loading this page.
+            </p>
+            <button
+              onClick={() => refetch()}
+              class="text-sm text-[#8B6914] underline"
+            >
+              Try again
+            </button>
+          </div>
         }
       >
+        <Show
+          when={config()}
+          fallback={
+            <Show
+              when={config.loading}
+              fallback={
+                <p class="text-[#5a4510] text-sm">Provider not found.</p>
+              }
+            >
+              <p class="text-[#5a4510] text-sm">Loading...</p>
+            </Show>
+          }
+        >
         {(provider) => (
           <div class="text-center w-full max-w-sm">
             {/* Headshot or initials */}
@@ -75,6 +94,7 @@ export function ClientLandingPage() {
             </A>
           </div>
         )}
+        </Show>
       </Show>
     </div>
   );

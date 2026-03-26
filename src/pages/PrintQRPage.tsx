@@ -50,7 +50,10 @@ function ProviderHeadshot(props: {
 
 export function PrintQRPage() {
   const params = useParams<{ username: string }>();
-  const [config] = createResource(() => params.username, fetchProviderConfig);
+  const [config, { refetch }] = createResource(
+    () => params.username,
+    fetchProviderConfig,
+  );
   const [printFormat, setPrintFormat] = createSignal<"card" | "poster" | null>(
     null,
   );
@@ -62,10 +65,12 @@ export function PrintQRPage() {
 
   const handlePrint = (format: "card" | "poster") => {
     setPrintFormat(format);
-    // Allow the DOM to update with the print format class before printing
+    // Double-rAF ensures the print-format class is painted before the print dialog
     requestAnimationFrame(() => {
-      window.print();
-      setPrintFormat(null);
+      requestAnimationFrame(() => {
+        window.print();
+        setPrintFormat(null);
+      });
     });
   };
 
@@ -101,20 +106,36 @@ export function PrintQRPage() {
       `}</style>
 
       <Show
-        when={config()}
+        when={!config.error}
         fallback={
           <div class="text-center py-8">
-            <Show
-              when={config.loading}
-              fallback={
-                <p class="text-[#5a4510] text-sm">Provider not found.</p>
-              }
+            <p class="text-red-700 text-sm mb-3">
+              Something went wrong loading this page.
+            </p>
+            <button
+              onClick={() => refetch()}
+              class="text-sm text-[#8B6914] underline"
             >
-              <p class="text-[#5a4510] text-sm">Loading...</p>
-            </Show>
+              Try again
+            </button>
           </div>
         }
       >
+        <Show
+          when={config()}
+          fallback={
+            <div class="text-center py-8">
+              <Show
+                when={config.loading}
+                fallback={
+                  <p class="text-[#5a4510] text-sm">Provider not found.</p>
+                }
+              >
+                <p class="text-[#5a4510] text-sm">Loading...</p>
+              </Show>
+            </div>
+          }
+        >
         {(provider) => (
           <div class="max-w-sm mx-auto space-y-6">
             <h1 class="text-lg font-semibold text-[#3d2e0a] no-print">
@@ -195,6 +216,7 @@ export function PrintQRPage() {
             </button>
           </div>
         )}
+        </Show>
       </Show>
     </div>
   );

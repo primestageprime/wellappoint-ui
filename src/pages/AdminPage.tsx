@@ -93,6 +93,13 @@ export function AdminPage() {
         body: JSON.stringify({ username: params.username }),
       });
 
+      if (!response.ok) {
+        const text = await response.text();
+        let errorMsg = "Failed to revoke access";
+        try { errorMsg = JSON.parse(text).error || errorMsg; } catch {}
+        throw new Error(errorMsg);
+      }
+
       const data = await response.json();
 
       if (data.success) {
@@ -121,12 +128,14 @@ export function AdminPage() {
 
     try {
       const response = await apiFetch(
-        `/api/provider/export-data?username=${params.username}`,
+        `/api/provider/export-data?username=${encodeURIComponent(params.username)}`,
       );
 
       if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "Failed to export data");
+        const text = await response.text();
+        let errorMsg = "Failed to export data";
+        try { errorMsg = JSON.parse(text).error || errorMsg; } catch {}
+        throw new Error(errorMsg);
       }
 
       const data = await response.json();

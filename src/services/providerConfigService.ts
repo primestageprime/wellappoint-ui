@@ -10,8 +10,17 @@ export interface ProviderConfig {
 export async function fetchProviderConfig(
   username: string,
 ): Promise<ProviderConfig | null> {
-  const response = await apiFetch(`/api/provider?username=${username}`);
-  if (!response.ok) return null;
+  const response = await apiFetch(
+    `/api/provider?username=${encodeURIComponent(username)}`,
+  );
+
+  // 404 means provider genuinely doesn't exist
+  if (response.status === 404) return null;
+
+  // Other HTTP errors are server/network problems — throw so consumers can distinguish
+  if (!response.ok) {
+    throw new Error(`Failed to load provider (${response.status})`);
+  }
 
   const data = await response.json();
   if (!data.success) return null;

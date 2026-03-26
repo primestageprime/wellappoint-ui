@@ -24,6 +24,7 @@ import { useBooking } from '../stores/bookingStore';
 import { useServices } from '../stores/servicesStore';
 import { getAvailableSlots } from '../services/availabilityService';
 import { createAppointment, createBookingRequest } from '../services/bookingService';
+import { getProviderDetails, ProviderNotFoundError } from '../services/providerService';
 import { type BookingService } from '../types/service';
 import { type AvailableSlot } from '../types/global';
 import { groupSlotsByDate } from '../utils/slotFormatting';
@@ -42,9 +43,16 @@ export function ProviderBookingForClientPage() {
   const [clientPhone, setClientPhone] = createSignal('');
   const [clientInfoSubmitted, setClientInfoSubmitted] = createSignal(false);
 
+  // Provider validation
+  const [provider] = createResource(providerUsername, getProviderDetails);
+  const providerNotFound = createMemo(() =>
+    provider.error instanceof ProviderNotFoundError
+  );
+
   // Booking progress state
   const [isBookingSuccess, setIsBookingSuccess] = createSignal(false);
   const [bookingProgress, setBookingProgress] = createSignal(0);
+  const [bookingError, setBookingError] = createSignal<string | null>(null);
 
   // Validation
   const isClientInfoValid = () =>
@@ -174,15 +182,17 @@ export function ProviderBookingForClientPage() {
         }, 800);
       } else {
         stopProgress();
-        alert(result.error || 'Failed to create appointment');
+        console.error('Appointment creation failed:', result.error);
+        setBookingError(result.error || 'Failed to create appointment');
         booking.actions.setSubmitting(false);
         setIsBookingSuccess(false);
       }
     } catch (error) {
+      console.error('Booking error:', error);
       const elapsedMs = Date.now() - startTime;
       taskMetrics.recordTask('booking-appointment', elapsedMs);
       stopProgress();
-      alert('Failed to create appointment');
+      setBookingError(error instanceof Error ? error.message : 'Failed to create appointment');
       booking.actions.setSubmitting(false);
       setIsBookingSuccess(false);
     }
@@ -216,8 +226,23 @@ export function ProviderBookingForClientPage() {
       </HeaderCard>
 
       <Content>
+        {/* Provider not found */}
+        <Show when={providerNotFound()}>
+          <Card class="border border-primary/10 mb-4">
+            <div class="p-6 text-center">
+              <h2 class="text-lg font-semibold text-[#3d2e0a] mb-2">Provider not found</h2>
+              <p class="text-sm text-[#5a4510] mb-4">
+                No provider account exists for "{providerUsername()}".
+              </p>
+              <A href="/" class="text-sm text-[#8B6914] hover:underline">
+                Go to home page
+              </A>
+            </div>
+          </Card>
+        </Show>
+
         {/* Client Info Form — Step 0 */}
-        <Show when={!clientInfoSubmitted()}>
+        <Show when={!providerNotFound() && !clientInfoSubmitted()}>
           <Card class="border border-primary/10 mb-4">
             <div class="p-6">
               <h2 class="text-lg font-semibold text-[#3d2e0a] mb-4">Book for a Client</h2>
@@ -276,7 +301,7 @@ export function ProviderBookingForClientPage() {
         </Show>
 
         {/* Booking flow — steps 1-5, shown after client info submitted */}
-        <Show when={clientInfoSubmitted()}>
+        <Show when={!providerNotFound() && clientInfoSubmitted()}>
           {/* Client info banner */}
           <Show when={!step().showAppointmentConfirmed}>
             <Card class="border border-primary/10 mb-4">
@@ -327,8 +352,23 @@ export function ProviderBookingForClientPage() {
             />
           </Show>
 
+          {/* Slot fetch error */}
+          <Show when={availableSlots.error}>
+            <Card class="border border-red-200 mb-4">
+              <div class="p-4 text-center">
+                <p class="text-sm text-red-600 mb-2">Failed to load available time slots.</p>
+                <button
+                  onClick={() => booking.actions.unselectDuration()}
+                  class="text-sm text-[#8B6914] hover:underline"
+                >
+                  Try again
+                </button>
+              </div>
+            </Card>
+          </Show>
+
           {/* Time Slot Selection */}
-          <Show when={step().showSlotSelection && !availableSlots.loading && booking.state.selectedDuration !== null}>
+          <Show when={step().showSlotSelection && !availableSlots.loading && !availableSlots.error && booking.state.selectedDuration !== null}>
             <TimeSlotSelectionStep
               selectedServiceName={booking.state.selectedService!}
               serviceDescription={selectedServiceData()?.description || ''}
@@ -340,6 +380,15 @@ export function ProviderBookingForClientPage() {
               onEditService={booking.actions.unselectService}
               onEditDuration={booking.actions.unselectDuration}
             />
+          </Show>
+
+          {/* Booking error */}
+          <Show when={bookingError()}>
+            <Card class="border border-red-200 mb-4">
+              <div class="p-4 text-center">
+                <p class="text-sm text-red-600">{bookingError()}</p>
+              </div>
+            </Card>
           </Show>
 
           {/* Confirmation */}

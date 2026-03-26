@@ -238,7 +238,7 @@ export function AdminPage() {
                       </div>
 
                       {/* External Links */}
-                      <div class="py-2 border-t border-[#8B6914]/10 mt-4 text-center">
+                      <div class="py-2 border-t border-[#8B6914]/10 mt-2 text-center">
                         <Show when={data().config.adminSheetId}>
                           <a
                             href={`https://docs.google.com/spreadsheets/d/${data().config.adminSheetId}`}

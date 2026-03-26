@@ -215,7 +215,16 @@ export function AdminPage() {
                           Have potential customers scan this QR code. They'll have to log in to their Google account to sign up.
                         </p>
                       </div>
-                      
+                      {/* Book for a Client */}
+                      <div class="pt-4 border-t border-[#8B6914]/10 mt-4">
+                        <a
+                          href={`/admin/${params.username}/book`}
+                          class="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#8B6914] hover:bg-[#6d5410] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring transition-colors"
+                        >
+                          Book for a Client
+                        </a>
+                      </div>
+
                       {/* Admin Spreadsheet Link */}
                       <Show when={data().config.adminSheetId}>
                         <div class="pt-4 text-center border-t border-[#8B6914]/10 mt-4">

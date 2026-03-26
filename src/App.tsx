@@ -1,5 +1,5 @@
 import { Show } from 'solid-js';
-import { Router, Route, Navigate, useLocation } from '@solidjs/router';
+import { Router, Route, useLocation } from '@solidjs/router';
 import { AuthProvider, useAuth } from './auth/AuthProvider';
 import { BookingProvider } from './stores/bookingStore';
 import { ServicesProvider } from './stores/servicesStore';
@@ -19,6 +19,7 @@ import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsPage } from './pages/TermsPage';
 import { OAuthCallbackPage } from './pages/OAuthCallbackPage';
 import { ProviderSettingsPage } from './pages/ProviderSettingsPage';
+import { LandingPage } from './pages/LandingPage';
 import { DemoIndexPage } from './pages/demo/DemoIndexPage';
 import { ComponentsStatePage } from './pages/demo/ComponentsStatePage';
 import { ProgressButtonDemoPage } from './pages/demo/ProgressButtonDemoPage';
@@ -59,11 +60,6 @@ function AdminPageWrapper() {
 function App() {
   const auth = useAuth();
 
-  // Default route when no provider is in the URL - go to provider signup
-  const getDefaultRoute = () => {
-    return '/admin/create-provider';
-  };
-
   return (
     <BookingProvider>
       <div class="min-h-screen flex flex-col">
@@ -75,7 +71,7 @@ function App() {
             
             <Show when={auth.isAuthenticated()}>
               {/* Default route - redirect to user's provider page */}
-              <Route path="/" component={() => <Navigate href={getDefaultRoute()} />} />
+              <Route path="/" component={LandingPage} />
               
               {/* Provider-specific booking pages - wrap with providers */}
               <Route path="/:username" component={ProviderBookingPageWrapper} />

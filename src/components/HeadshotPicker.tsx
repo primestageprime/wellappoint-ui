@@ -15,6 +15,7 @@ export function HeadshotPicker(props: HeadshotPickerProps) {
   const [previewUrl, setPreviewUrl] = createSignal<string | null>(null);
   const [isUploading, setIsUploading] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
+  const [needsReauth, setNeedsReauth] = createSignal(false);
 
   onMount(async () => {
     try {
@@ -52,11 +53,18 @@ export function HeadshotPicker(props: HeadshotPickerProps) {
   const handleUpload = async (file: File) => {
     setIsUploading(true);
     setError(null);
+    setNeedsReauth(false);
     try {
       const url = await uploadHeadshot(props.username, file);
       props.onHeadshotChanged(url);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Upload failed');
+      const msg = e instanceof Error ? e.message : 'Upload failed';
+      if (msg.includes('REAUTH_REQUIRED')) {
+        setNeedsReauth(true);
+        setError('Your Google permissions need to be updated. Please re-authorize your account.');
+      } else {
+        setError(msg);
+      }
       setPreviewUrl(null);
     } finally {
       setIsUploading(false);
@@ -66,11 +74,18 @@ export function HeadshotPicker(props: HeadshotPickerProps) {
   const handleUseGooglePic = async () => {
     setIsUploading(true);
     setError(null);
+    setNeedsReauth(false);
     try {
       const url = await setHeadshotFromGoogle(props.username);
       props.onHeadshotChanged(url);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to use Google photo');
+      const msg = e instanceof Error ? e.message : 'Failed to use Google photo';
+      if (msg.includes('REAUTH_REQUIRED')) {
+        setNeedsReauth(true);
+        setError('Your Google permissions need to be updated. Please re-authorize your account.');
+      } else {
+        setError(msg);
+      }
     } finally {
       setIsUploading(false);
     }
@@ -151,6 +166,15 @@ export function HeadshotPicker(props: HeadshotPickerProps) {
 
       <Show when={error()}>
         <p class="text-sm text-red-600 mb-4">{error()}</p>
+      </Show>
+
+      <Show when={needsReauth()}>
+        <a
+          href={`/${props.username}/authorize`}
+          class="text-sm text-primary hover:text-primary/80 underline"
+        >
+          Re-authorize with Google
+        </a>
       </Show>
 
       <Show when={props.showSkip && props.onSkip}>

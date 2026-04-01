@@ -60,7 +60,7 @@ export function HeadshotPicker(props: HeadshotPickerProps) {
       props.onHeadshotChanged(url);
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Upload failed';
-      if (msg.includes('REAUTH_REQUIRED')) {
+      if (msg.includes('REAUTH_REQUIRED') || msg.includes('invalid_grant')) {
         setNeedsReauth(true);
         setError('Your Google permissions need to be updated. Please re-authorize your account.');
       } else {
@@ -81,7 +81,7 @@ export function HeadshotPicker(props: HeadshotPickerProps) {
       props.onHeadshotChanged(url);
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to use Google photo';
-      if (msg.includes('REAUTH_REQUIRED')) {
+      if (msg.includes('REAUTH_REQUIRED') || msg.includes('invalid_grant')) {
         setNeedsReauth(true);
         setError('Your Google permissions need to be updated. Please re-authorize your account.');
       } else {

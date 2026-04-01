@@ -19,7 +19,7 @@ import { apiFetch } from "../config/api";
 export function AdminPage() {
   const params = useParams<{ username: string }>();
   const navigate = useNavigate();
-  const { adminData, refetch } = useAdmin();
+  const { adminData, refetch, tokenValid } = useAdmin();
   const [deleteDialogOpen, setDeleteDialogOpen] = createSignal(false);
   const [confirmationText, setConfirmationText] = createSignal("");
   const [isDeleting, setIsDeleting] = createSignal(false);
@@ -202,6 +202,36 @@ export function AdminPage() {
             <h1 class="text-xl font-semibold text-[#3d2e0a]">
               Admin {params.username}
             </h1>
+
+            <Show when={tokenValid() === false}>
+              <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                <p class="text-sm text-amber-800 font-medium mb-2">
+                  Google authorization has expired
+                </p>
+                <p class="text-sm text-amber-700 mb-3">
+                  Some features (headshot upload, calendar access) won't work until you re-authorize.
+                </p>
+                <button
+                  onClick={async () => {
+                    sessionStorage.setItem('reauth_username', params.username);
+                    sessionStorage.setItem('reauth_return_url', window.location.pathname);
+                    try {
+                      const response = await apiFetch('/api/oauth/setup', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                      });
+                      const data = await response.json();
+                      if (data.success && data.authUrl) {
+                        window.location.href = data.authUrl;
+                      }
+                    } catch {}
+                  }}
+                  class="text-sm font-medium text-amber-900 bg-amber-200 hover:bg-amber-300 px-3 py-1.5 rounded transition-colors"
+                >
+                  Re-authorize with Google
+                </button>
+              </div>
+            </Show>
 
             <Show when={adminData.loading}>
               <div class="text-center py-8 text-[#5a4510]">

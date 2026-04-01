@@ -1,6 +1,7 @@
-import { createContext, useContext, JSX, createResource, Resource } from 'solid-js';
+import { createContext, useContext, JSX, createResource, createSignal, Resource, Accessor } from 'solid-js';
 import { useParams } from '@solidjs/router';
 import { apiFetch } from '../config/api';
+import { checkTokenStatus } from '../services/providerService';
 
 // Types for admin data
 export interface AdminConfig {
@@ -49,6 +50,7 @@ interface AdminContextValue {
   adminData: Resource<AdminData | null>;
   username: () => string;
   refetch: () => void;
+  tokenValid: Accessor<boolean | null>;
 }
 
 const AdminContext = createContext<AdminContextValue>();
@@ -183,11 +185,20 @@ export function AdminProvider(props: { children: JSX.Element }) {
   const username = () => params.username as string;
 
   const [adminData, { refetch }] = createResource(username, fetchAdminData);
+  const [tokenValid, setTokenValid] = createSignal<boolean | null>(null);
+
+  // Check token validity asynchronously on load
+  createResource(username, async (u) => {
+    const result = await checkTokenStatus(u);
+    setTokenValid(result.isValid);
+    return result;
+  });
 
   const value: AdminContextValue = {
     adminData,
     username,
     refetch,
+    tokenValid,
   };
 
   return (

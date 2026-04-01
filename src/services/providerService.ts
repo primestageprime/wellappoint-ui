@@ -130,6 +130,22 @@ export async function uploadHeadshot(username: string, file: File): Promise<stri
 }
 
 /**
+ * Check if a provider's Google OAuth token is still valid
+ */
+export async function checkTokenStatus(username: string): Promise<{ isValid: boolean; error?: string }> {
+  const response = await apiFetch(`/api/provider/token/status?username=${encodeURIComponent(username)}`);
+
+  if (!response.ok) {
+    return { isValid: false, error: 'Failed to check token status' };
+  }
+
+  const data = await response.json();
+  return data.success && data.data
+    ? { isValid: data.data.isValid, error: data.data.error }
+    : { isValid: false, error: data.error };
+}
+
+/**
  * Set headshot from provider's Google profile picture
  */
 export async function setHeadshotFromGoogle(username: string): Promise<string> {

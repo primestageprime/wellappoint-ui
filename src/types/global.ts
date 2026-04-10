@@ -113,6 +113,7 @@ export interface Provider {
   headshot: string;
   bio: string;
   specialties: string[];
+  bookingWindowDays?: number;
 }
 
 // ============================================================================

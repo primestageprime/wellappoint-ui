@@ -11,6 +11,7 @@ export interface AdminConfig {
   phone: string;
   headshot?: string;
   minimumAppointmentDelay?: number;
+  bookingWindowDays?: number;
   adminSheetId?: string;
   availabilityCalendarId?: string;
 }
@@ -78,6 +79,7 @@ async function fetchAdminData(username: string): Promise<AdminData | null> {
             phone: providerData.phone || '',
             headshot: providerData.headshot,
             minimumAppointmentDelay: providerData.minimumAppointmentDelayMinutes,
+            bookingWindowDays: providerData.bookingWindowDays,
             adminSheetId: providerData.adminSheetId,
             availabilityCalendarId: providerData.availabilityCalendarId,
           };

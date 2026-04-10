@@ -279,6 +279,12 @@ export function AdminPage() {
                             ? `${data().config.minimumAppointmentDelay} min`
                             : "Not set",
                         },
+                        {
+                          name: "Booking Window",
+                          value: data().config.bookingWindowDays
+                            ? `${data().config.bookingWindowDays} days`
+                            : "14 days (default)",
+                        },
                       ]}
                     />
                     {/* External Links */}

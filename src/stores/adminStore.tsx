@@ -190,11 +190,22 @@ export function AdminProvider(props: { children: JSX.Element }) {
   const [tokenValid, setTokenValid] = createSignal<boolean | null>(null);
 
   // Check token validity asynchronously on load
-  createResource(username, async (u) => {
+  const checkToken = async (u: string) => {
     const result = await checkTokenStatus(u);
     setTokenValid(result.isValid);
     return result;
-  });
+  };
+
+  createResource(username, checkToken);
+
+  // Force re-check if we just completed re-auth (clears stale "invalid" state)
+  if (typeof window !== 'undefined' && sessionStorage.getItem('reauth_success')) {
+    sessionStorage.removeItem('reauth_success');
+    setTimeout(() => {
+      const u = username();
+      if (u) checkToken(u);
+    }, 500);
+  }
 
   const value: AdminContextValue = {
     adminData,

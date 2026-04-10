@@ -40,6 +40,7 @@ export function OAuthCallbackPage() {
     }
 
     setStatus('success');
+    sessionStorage.setItem('reauth_success', 'true');
     setTimeout(() => {
       navigate(returnUrl || `/admin/${username}/headshot`);
     }, 1500);

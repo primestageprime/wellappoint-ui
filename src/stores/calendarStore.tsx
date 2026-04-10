@@ -35,7 +35,8 @@ async function fetchCalendarEvents(username: string, email: string): Promise<Cal
     };
   }
   
-  // Calculate date range (next 2 weeks)
+  // Calculate date range
+  // TODO: Use provider's bookingWindowDays when calendar endpoint is enabled
   const today = new Date();
   const twoWeeksFromNow = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
   

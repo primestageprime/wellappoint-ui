@@ -116,7 +116,7 @@ export function BookingForm(props: BookingFormProps) {
       
       // Start from today - the backend will filter out slots that are too soon based on minimum delay
       const startDate = today.toISOString().split('T')[0]; // Today
-      const endDate = new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]; // 14 days from now
+      const endDate = new Date(today.getTime() + (props.bookingWindowDays ?? 14) * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 
       // Get user email from auth context
       const userEmail = auth.user()?.email;

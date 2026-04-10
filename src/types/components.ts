@@ -31,10 +31,12 @@ export interface AvailabilityListProps {
   onSlotSelect: (slot: AvailableSlot) => void;
   onBack: () => void;
   provider?: string;
+  bookingWindowDays?: number;
 }
 
 export interface BookingFormProps {
   services: BookingService[];
+  bookingWindowDays?: number;
 }
 
 export interface ConfirmationPanelProps {

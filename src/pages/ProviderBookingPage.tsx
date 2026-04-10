@@ -127,10 +127,11 @@ export function ProviderBookingPage() {
       const service = booking.state.selectedService;
       const duration = booking.state.selectedDuration;
       const email = userEmail();
-      const provider = providerUsername();
+      const prov = providerUsername();
+      const windowDays = provider()?.bookingWindowDays ?? 14;
 
       return service && duration && email ?
-        { service, duration, email, provider } : null;
+        { service, duration, email, provider: prov, bookingWindowDays: windowDays } : null;
     },
     async (params) => {
       const startTime = Date.now();
@@ -139,7 +140,8 @@ export function ProviderBookingPage() {
           params.service,
           params.duration,
           params.email,
-          params.provider
+          params.provider,
+          params.bookingWindowDays,
         );
 
         // Record task completion time

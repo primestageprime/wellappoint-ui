@@ -9,7 +9,8 @@ export async function getAvailableSlots(
   service: string,
   duration: number,
   email: string,
-  provider?: string
+  provider?: string,
+  bookingWindowDays: number = 14,
 ): Promise<AvailableSlot[]> {
   try {
 
@@ -20,14 +21,14 @@ export async function getAvailableSlots(
 
     // Format dates as YYYY-MM-DD
     const today = new Date();
-    const twoWeeksFromNow = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
+    const endDate = new Date(Date.now() + bookingWindowDays * 24 * 60 * 60 * 1000);
 
     const params = new URLSearchParams({
       service: String(service),
       duration: String(duration),
       email: String(email),
       start: formatDateToISO(today),
-      end: formatDateToISO(twoWeeksFromNow)
+      end: formatDateToISO(endDate),
     });
     
     if (provider) {

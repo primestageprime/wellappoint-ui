@@ -20,8 +20,8 @@ export function AvailabilityList(props: AvailabilityListProps) {
   // Get available slots
   const userEmail = () => auth.user()?.email || '';
   const [availability] = createResource(
-    () => ({ service: props.service, duration: props.duration, email: userEmail(), provider: props.provider }),
-    ({ service, duration, email, provider }) => getAvailableSlots(service, duration, email, provider)
+    () => ({ service: props.service, duration: props.duration, email: userEmail(), provider: props.provider, bookingWindowDays: props.bookingWindowDays ?? 14 }),
+    ({ service, duration, email, provider, bookingWindowDays }) => getAvailableSlots(service, duration, email, provider, bookingWindowDays)
   );
 
   // Group slots by date and sort them chronologically

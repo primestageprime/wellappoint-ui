@@ -1,8 +1,6 @@
-import { Show, createMemo, createResource, createSignal } from 'solid-js';
+import { Show, createSignal } from 'solid-js';
 import { useAuth } from '../auth/AuthProvider';
-import { useParams, A } from '@solidjs/router';
-import { taskMetrics } from '../utils/taskMetrics';
-import { animateProgress } from '../utils/progressAnimation';
+import { A } from '@solidjs/router';
 import {
   PageFrame,
   HeaderCard,
@@ -20,22 +18,10 @@ import {
   BookingConfirmationStep,
   BookingSuccessStep,
 } from '../components/booking';
-import { useBooking } from '../stores/bookingStore';
-import { useServices } from '../stores/servicesStore';
-import { getAvailableSlots } from '../services/availabilityService';
-import { createAppointment, createBookingRequest } from '../services/bookingService';
-import { getProviderDetails, ProviderNotFoundError } from '../services/providerService';
-import { type BookingService } from '../types/service';
-import { type AvailableSlot } from '../types/global';
-import { groupSlotsByDate } from '../utils/slotFormatting';
+import { useBookingFlow } from '../hooks/useBookingFlow';
 
 export function ProviderBookingForClientPage() {
   const auth = useAuth();
-  const params = useParams();
-  const booking = useBooking();
-  const servicesStore = useServices();
-
-  const providerUsername = () => params.username as string;
 
   // Client info state
   const [clientName, setClientName] = createSignal('');
@@ -43,18 +29,24 @@ export function ProviderBookingForClientPage() {
   const [clientPhone, setClientPhone] = createSignal('');
   const [clientInfoSubmitted, setClientInfoSubmitted] = createSignal(false);
 
-  // Provider validation
-  const [provider] = createResource(providerUsername, getProviderDetails);
-  const providerNotFound = createMemo(() =>
-    provider.error instanceof ProviderNotFoundError
-  );
+  const flow = useBookingFlow({
+    email: clientEmail,
+    buildRequest: (baseRequest) => ({
+      ...baseRequest,
+      userProfile: {
+        name: clientName(),
+        ...(clientPhone().trim() ? { phone: clientPhone().trim() } : {}),
+      },
+    }),
+  });
 
-  // Booking progress state
-  const [isBookingSuccess, setIsBookingSuccess] = createSignal(false);
-  const [bookingProgress, setBookingProgress] = createSignal(0);
-  const [bookingError, setBookingError] = createSignal<string | null>(null);
+  const {
+    providerUsername, providerNotFound, booking, step,
+    uniqueServices, serviceDurations, selectedServiceData,
+    availableSlots, groupedSlots, isBookingSuccess, bookingProgress,
+    bookingError, handleConfirm,
+  } = flow;
 
-  // Validation
   const isClientInfoValid = () =>
     clientName().trim().length > 0 && clientEmail().trim().length > 0;
 
@@ -62,139 +54,6 @@ export function ProviderBookingForClientPage() {
     e.preventDefault();
     if (isClientInfoValid()) {
       setClientInfoSubmitted(true);
-    }
-  };
-
-  // Current step — show client info form first, then booking steps
-  const step = () => booking.currentStep();
-
-  // Services
-  const uniqueServices = createMemo(() => {
-    const services = servicesStore.services();
-    if (!services) return [];
-    const serviceMap = new Map<string, BookingService>();
-    services.forEach(service => {
-      if (!serviceMap.has(service.name)) {
-        serviceMap.set(service.name, service);
-      }
-    });
-    return Array.from(serviceMap.values());
-  });
-
-  const serviceDurations = createMemo(() => {
-    const services = servicesStore.services();
-    const selected = booking.state.selectedService;
-    if (!services || !selected) return [];
-    return services.filter(s => s.name === selected);
-  });
-
-  const selectedServiceData = createMemo(() => {
-    const services = servicesStore.services();
-    const selected = booking.state.selectedService;
-    const duration = booking.state.selectedDuration;
-    if (!services || !selected || !duration) return null;
-    return services.find(s => s.name === selected && s.duration === duration);
-  });
-
-  // Fetch available slots using client email
-  const [availableSlots] = createResource(
-    () => {
-      const service = booking.state.selectedService;
-      const duration = booking.state.selectedDuration;
-      const email = clientEmail();
-      const provider = providerUsername();
-      return service && duration && email
-        ? { service, duration, email, provider }
-        : null;
-    },
-    async (params) => {
-      const startTime = Date.now();
-      try {
-        const result = await getAvailableSlots(
-          params.service,
-          params.duration,
-          params.email,
-          params.provider
-        );
-        const elapsedMs = Date.now() - startTime;
-        taskMetrics.recordTask('loading-time-slots', elapsedMs);
-        return result;
-      } catch (error) {
-        const elapsedMs = Date.now() - startTime;
-        taskMetrics.recordTask('loading-time-slots', elapsedMs);
-        throw error;
-      }
-    }
-  );
-
-  const groupedSlots = createMemo(() => groupSlotsByDate(availableSlots() || []));
-
-  // Build booking request with client info
-  const buildRequest = (slot: AvailableSlot) => {
-    const request = createBookingRequest(
-      booking.state.selectedService!,
-      booking.state.selectedDuration!,
-      slot,
-      clientEmail(),
-      providerUsername(),
-    );
-    return {
-      ...request,
-      userProfile: {
-        name: clientName(),
-        ...(clientPhone().trim() ? { phone: clientPhone().trim() } : {}),
-      },
-    };
-  };
-
-  const handleConfirm = async () => {
-    const slot = booking.state.selectedSlot;
-    if (!slot || !booking.state.selectedService || !booking.state.selectedDuration) {
-      return;
-    }
-
-    booking.actions.setSubmitting(true);
-    setBookingProgress(0);
-
-    const stopProgress = animateProgress(
-      10000,
-      (progress) => setBookingProgress(progress),
-      () => {}
-    );
-
-    const startTime = Date.now();
-
-    try {
-      const bookingRequest = buildRequest(slot);
-      const result = await createAppointment(bookingRequest);
-      const elapsedMs = Date.now() - startTime;
-      taskMetrics.recordTask('booking-appointment', elapsedMs);
-
-      if (result.success) {
-        stopProgress();
-        setBookingProgress(100);
-        booking.actions.setSubmitting(false);
-        setIsBookingSuccess(true);
-        setTimeout(() => {
-          booking.actions.setConfirmed(true);
-          setIsBookingSuccess(false);
-          setBookingProgress(0);
-        }, 800);
-      } else {
-        stopProgress();
-        console.error('Appointment creation failed:', result.error);
-        setBookingError(result.error || 'Failed to create appointment');
-        booking.actions.setSubmitting(false);
-        setIsBookingSuccess(false);
-      }
-    } catch (error) {
-      console.error('Booking error:', error);
-      const elapsedMs = Date.now() - startTime;
-      taskMetrics.recordTask('booking-appointment', elapsedMs);
-      stopProgress();
-      setBookingError(error instanceof Error ? error.message : 'Failed to create appointment');
-      booking.actions.setSubmitting(false);
-      setIsBookingSuccess(false);
     }
   };
 

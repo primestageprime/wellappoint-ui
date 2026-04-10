@@ -1,9 +1,6 @@
-import { Show, createMemo, createResource, createSignal, createEffect } from 'solid-js';
+import { Show, createMemo } from 'solid-js';
 import { useAuth } from '../auth/AuthProvider';
-import { useParams, A } from '@solidjs/router';
-import { useTaskTimer } from '../hooks/useTaskTimer';
-import { taskMetrics } from '../utils/taskMetrics';
-import { animateProgress } from '../utils/progressAnimation';
+import { A } from '@solidjs/router';
 import {
   PageFrame,
   HeaderCard,
@@ -23,220 +20,49 @@ import {
   BookingConfirmationStep,
   BookingSuccessStep,
 } from '../components/booking';
-import { useBooking } from '../stores/bookingStore';
-import { useServices } from '../stores/servicesStore';
 import { useAppointments } from '../hooks/useAppointments';
-import { getAvailableSlots } from '../services/availabilityService';
-import { createAppointment, createBookingRequest } from '../services/bookingService';
-import { getProviderDetails, ProviderNotFoundError } from '../services/providerService';
-import { type BookingService } from '../types/service';
+import { useBookingFlow } from '../hooks/useBookingFlow';
 import { type UserAppointmentsResponse } from '../types/global';
-import { groupSlotsByDate } from '../utils/slotFormatting';
+
+function isAppointmentsResponse(value: unknown): value is UserAppointmentsResponse {
+  return value != null && typeof value === 'object' && !Array.isArray(value) && 'appointments' in value;
+}
 
 export function ProviderBookingPage() {
   const auth = useAuth();
-  const params = useParams();
-  const booking = useBooking();
-  const servicesStore = useServices();
-
-  const providerUsername = () => params.username as string;
   const userEmail = () => auth.user()?.email;
 
-  // Track booking success for progress button animation
-  const [isBookingSuccess, setIsBookingSuccess] = createSignal(false);
-  const [bookingProgress, setBookingProgress] = createSignal(0);
+  const appointments = useAppointments(() => userEmail(), () => flow.providerUsername());
 
-  // Appointments (existing hook)
-  const appointments = useAppointments(() => userEmail(), providerUsername);
+  const flow = useBookingFlow({
+    email: userEmail,
+    onSuccess: () => appointments.refetchAppointments(),
+  });
 
-  // Provider details
-  const [provider] = createResource(providerUsername, getProviderDetails);
+  const {
+    providerUsername, provider, providerNotFound, booking, step,
+    uniqueServices, serviceDurations, selectedServiceData,
+    availableSlots, groupedSlots, isBookingSuccess, bookingProgress,
+    bookingError, handleConfirm,
+  } = flow;
 
-  // Track provider not found
-  const providerNotFound = createMemo(() =>
-    provider.error instanceof ProviderNotFoundError
-  );
-
-  // Use display name from appointments (Preferred Name > Name > email username), fallback to email username
-  const loggedInUsername = createMemo(() => {
+  const appointmentsResponse = createMemo(() => {
     const apts = appointments.appointments();
+    return isAppointmentsResponse(apts) ? apts : null;
+  });
 
-    // Check if we have valid appointments data (not an array, but the UserAppointmentsResponse object)
-    if (apts && typeof apts === 'object' && !Array.isArray(apts) && 'displayName' in apts) {
-      const response = apts as UserAppointmentsResponse;
-      if (response.displayName) {
-        return response.displayName;
-      }
-    }
-    // Fallback to email username while loading or if displayName not available
+  const loggedInUsername = createMemo(() => {
+    const response = appointmentsResponse();
+    if (response?.displayName) return response.displayName;
     return auth.user()?.nickname || auth.user()?.email?.split('@')[0] || '';
   });
 
-  // Check if the logged-in user is the admin for this provider
   const isProviderAdmin = createMemo(() => {
     const user = auth.user();
     if (!user) return false;
-
-    const provider = providerUsername();
     const userUsername = user.nickname || user.email?.split('@')[0];
-
-    return userUsername === provider;
+    return userUsername === providerUsername();
   });
-  
-  // Current step from state machine
-  const step = () => {
-    return booking.currentStep();
-  };
-  
-  // Get unique services (for services list)
-  const uniqueServices = createMemo(() => {
-    const services = servicesStore.services();
-    if (!services) return [];
-    
-    const serviceMap = new Map<string, BookingService>();
-    services.forEach(service => {
-      if (!serviceMap.has(service.name)) {
-        serviceMap.set(service.name, service);
-      }
-    });
-    return Array.from(serviceMap.values());
-  });
-  
-  // Get durations for selected service
-  const serviceDurations = createMemo(() => {
-    const services = servicesStore.services();
-    const selected = booking.state.selectedService;
-    if (!services || !selected) return [];
-    
-    return services.filter(s => s.name === selected);
-  });
-  
-  // Get selected service data
-  const selectedServiceData = createMemo(() => {
-    const services = servicesStore.services();
-    const selected = booking.state.selectedService;
-    const duration = booking.state.selectedDuration;
-    if (!services || !selected || !duration) return null;
-    
-    return services.find(s => s.name === selected && s.duration === duration);
-  });
-  
-  // Fetch available slots when duration is selected
-  const [availableSlots] = createResource(
-    () => {
-      const service = booking.state.selectedService;
-      const duration = booking.state.selectedDuration;
-      const email = userEmail();
-      const prov = providerUsername();
-      const windowDays = provider()?.bookingWindowDays ?? 14;
-
-      return service && duration && email ?
-        { service, duration, email, provider: prov, bookingWindowDays: windowDays } : null;
-    },
-    async (params) => {
-      const startTime = Date.now();
-      try {
-        const result = await getAvailableSlots(
-          params.service,
-          params.duration,
-          params.email,
-          params.provider,
-          params.bookingWindowDays,
-        );
-
-        // Record task completion time
-        const elapsedMs = Date.now() - startTime;
-        taskMetrics.recordTask('loading-time-slots', elapsedMs);
-
-        return result;
-      } catch (error) {
-        // Still record the time even on error
-        const elapsedMs = Date.now() - startTime;
-        taskMetrics.recordTask('loading-time-slots', elapsedMs);
-        throw error;
-      }
-    }
-  );
-  
-  // Group slots by date
-  const groupedSlots = createMemo(() => {
-    const slots = availableSlots();
-    return groupSlotsByDate(slots || []);
-  });
-  
-  // Handle booking confirmation
-  const handleConfirm = async () => {
-    const service = booking.state.selectedService;
-    const duration = booking.state.selectedDuration;
-    const slot = booking.state.selectedSlot;
-    const email = userEmail();
-
-    if (!service || !duration || !slot || !email) {
-      console.error('Missing booking information');
-      return;
-    }
-
-    booking.actions.setSubmitting(true);
-    setBookingProgress(0);
-
-    // Start progress animation
-    const stopProgress = animateProgress(
-      10000, // 10 second estimate
-      (progress) => setBookingProgress(progress),
-      () => {} // onComplete handled by API response
-    );
-
-    const startTime = Date.now();
-
-    try {
-      const bookingRequest = createBookingRequest(
-        service,
-        duration,
-        slot,
-        email,
-        providerUsername()
-      );
-
-      const result = await createAppointment(bookingRequest);
-
-      // Record task completion time
-      const elapsedMs = Date.now() - startTime;
-      taskMetrics.recordTask('booking-appointment', elapsedMs);
-
-      if (result.success) {
-        stopProgress(); // Stop the animation
-        setBookingProgress(100); // Jump to 100%
-        booking.actions.setSubmitting(false);
-        setIsBookingSuccess(true);
-        // Brief delay to show success animation before transitioning to success step
-        setTimeout(() => {
-          booking.actions.setConfirmed(true);
-          // Refetch appointments to show the new one
-          appointments.refetchAppointments();
-          // Reset success state for next booking
-          setIsBookingSuccess(false);
-          setBookingProgress(0);
-        }, 800);
-      } else {
-        stopProgress(); // Stop the animation on error
-        console.error('Appointment creation failed:', result.error);
-        alert(result.error || 'Failed to create appointment');
-        booking.actions.setSubmitting(false);
-        setIsBookingSuccess(false);
-      }
-    } catch (error) {
-      console.error('Booking error:', error);
-      alert('Failed to create appointment');
-
-      // Still record the time even on error
-      const elapsedMs = Date.now() - startTime;
-      taskMetrics.recordTask('booking-appointment', elapsedMs);
-
-      stopProgress(); // Stop the animation on error
-      booking.actions.setSubmitting(false);
-      setIsBookingSuccess(false);
-    }
-  };
 
   return (
     <PageFrame>
@@ -290,24 +116,16 @@ export function ProviderBookingPage() {
         )}
 
         {/* Show appointments if they exist - but not on receipt page (receipt has its own) */}
-        <Show when={!step().showAppointmentConfirmed && appointments.appointments() && typeof appointments.appointments() === 'object' && 'appointments' in appointments.appointments()!}>
-          <AppointmentsList appointments={appointments.appointments() as UserAppointmentsResponse} />
+        <Show when={!step().showAppointmentConfirmed && appointmentsResponse()}>
+          <AppointmentsList appointments={appointmentsResponse()!} />
         </Show>
         
         {/* STEP 1: Choose Service */}
         <Show when={step().showServices}>
           <ServiceSelectionStep
             services={uniqueServices()}
-            appointmentCount={
-              appointments.appointments() && typeof appointments.appointments() === 'object' && 'appointments' in appointments.appointments()!
-                ? (appointments.appointments() as UserAppointmentsResponse).appointments.length
-                : 0
-            }
-            appointmentRequestCap={
-              appointments.appointments() && typeof appointments.appointments() === 'object' && 'appointmentRequestCap' in appointments.appointments()!
-                ? (appointments.appointments() as UserAppointmentsResponse).appointmentRequestCap
-                : 1
-            }
+            appointmentCount={appointmentsResponse()?.appointments.length ?? 0}
+            appointmentRequestCap={appointmentsResponse()?.appointmentRequestCap ?? 1}
             onSelectService={booking.actions.selectService}
           />
         </Show>
@@ -334,8 +152,23 @@ export function ProviderBookingPage() {
           />
         </Show>
         
+        {/* Slot fetch error */}
+        <Show when={availableSlots.error}>
+          <Card class="border border-red-200 mb-4">
+            <div class="p-4 text-center">
+              <p class="text-sm text-red-600 mb-2">Failed to load available time slots.</p>
+              <button
+                onClick={() => booking.actions.unselectDuration()}
+                class="text-sm text-[#8B6914] hover:underline"
+              >
+                Try again
+              </button>
+            </div>
+          </Card>
+        </Show>
+
         {/* STEP 4: Choose Slot - Only show when NOT loading and we have a duration selected */}
-        <Show when={step().showSlotSelection && !availableSlots.loading && booking.state.selectedDuration !== null}>
+        <Show when={step().showSlotSelection && !availableSlots.loading && !availableSlots.error && booking.state.selectedDuration !== null}>
           <TimeSlotSelectionStep
             selectedServiceName={booking.state.selectedService!}
             serviceDescription={selectedServiceData()?.description || ''}
@@ -349,6 +182,15 @@ export function ProviderBookingPage() {
           />
         </Show>
         
+        {/* Booking error */}
+        <Show when={bookingError()}>
+          <Card class="border border-red-200 mb-4">
+            <div class="p-4 text-center">
+              <p class="text-sm text-red-600">{bookingError()}</p>
+            </div>
+          </Card>
+        </Show>
+
         {/* STEP 5: Confirmation & STEP 6: Processing */}
         <Show when={step().showConfirmation || step().showCreatingAppointment}>
           <BookingConfirmationStep
@@ -368,7 +210,7 @@ export function ProviderBookingPage() {
         {/* STEP 7: Success */}
         <Show when={step().showAppointmentConfirmed}>
           <BookingSuccessStep
-            appointments={(appointments.appointments() || undefined) as UserAppointmentsResponse | undefined}
+            appointments={appointmentsResponse() ?? undefined}
             onBookAnother={booking.actions.reset}
           />
         </Show>

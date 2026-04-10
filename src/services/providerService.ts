@@ -14,14 +14,9 @@ export async function getProviderDetails(username: string): Promise<Provider | n
   try {
     const response = await apiFetch(`/api/provider?username=${encodeURIComponent(username)}`);
 
-    // Record task completion time
-    const elapsedMs = Date.now() - startTime;
-    taskMetrics.recordTask('loading-provider-details', elapsedMs);
-
     if (!response.ok) {
       const data = await response.json();
 
-      // Check if this is a provider not found error
       if (data.error === 'PROVIDER_NOT_FOUND') {
         throw new ProviderNotFoundError(username);
       }
@@ -34,16 +29,14 @@ export async function getProviderDetails(username: string): Promise<Provider | n
   } catch (error) {
     console.error('Failed to fetch provider details:', error);
 
-    // Still record the time even on error
-    const elapsedMs = Date.now() - startTime;
-    taskMetrics.recordTask('loading-provider-details', elapsedMs);
-
     // Re-throw ProviderNotFoundError so component can handle it
     if (error instanceof ProviderNotFoundError) {
       throw error;
     }
 
     return null;
+  } finally {
+    taskMetrics.recordTask('loading-provider-details', Date.now() - startTime);
   }
 }
 
@@ -143,9 +136,10 @@ export async function checkTokenStatus(username: string): Promise<{ isValid: boo
   if (!data.success) {
     return { isValid: false, error: data.error };
   }
-  // handleActionResult spreads data.data into the top level,
-  // so isValid lives at data.isValid, not data.data.isValid
-  return { isValid: data.isValid ?? data.data?.isValid ?? false, error: data.error ?? data.data?.error };
+  // handleActionResult spreads object results into the top level,
+  // so isValid lives at data.isValid (with data.data as fallback)
+  const result = data.data ?? data;
+  return { isValid: result.isValid ?? false, error: result.error };
 }
 
 /**

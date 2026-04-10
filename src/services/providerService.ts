@@ -140,9 +140,12 @@ export async function checkTokenStatus(username: string): Promise<{ isValid: boo
   }
 
   const data = await response.json();
-  return data.success && data.data
-    ? { isValid: data.data.isValid, error: data.data.error }
-    : { isValid: false, error: data.error };
+  if (!data.success) {
+    return { isValid: false, error: data.error };
+  }
+  // handleActionResult spreads data.data into the top level,
+  // so isValid lives at data.isValid, not data.data.isValid
+  return { isValid: data.isValid ?? data.data?.isValid ?? false, error: data.error ?? data.data?.error };
 }
 
 /**

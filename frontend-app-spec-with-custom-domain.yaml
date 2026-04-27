@@ -21,7 +21,7 @@ static_sites:
   - key: VITE_API_BASE_URL
     scope: BUILD_TIME
     value: https://api.wellappoint.com
-  error_document: index.html
+  catchall_document: index.html
   github:
     branch: main
     deploy_on_push: true

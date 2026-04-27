@@ -32,12 +32,12 @@ export function ProviderBookingPage() {
   const auth = useAuth();
   const userEmail = () => auth.user()?.email;
 
-  const appointments = useAppointments(() => userEmail(), () => flow.providerUsername());
-
   const flow = useBookingFlow({
     email: userEmail,
     onSuccess: () => appointments.refetchAppointments(),
   });
+
+  const appointments = useAppointments(() => userEmail(), () => flow.providerUsername());
 
   const {
     providerUsername, provider, providerNotFound, booking, step,

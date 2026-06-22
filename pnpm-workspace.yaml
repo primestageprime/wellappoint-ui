@@ -1,3 +1,9 @@
+# Allow native build scripts for these deps in CI (DigitalOcean / Heroku Node buildpack).
+# pnpm >=11 reads `allowBuilds` (map); pnpm 10.x reads `onlyBuiltDependencies` (list).
+# Keep BOTH so installs succeed regardless of the pnpm version the build picks.
+allowBuilds:
+  esbuild: true
+  '@tailwindcss/oxide': true
 onlyBuiltDependencies:
   - esbuild
   - '@tailwindcss/oxide'

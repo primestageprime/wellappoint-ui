@@ -273,6 +273,7 @@ export function AdminPage() {
                         { name: "Title", value: data().config.title },
                         { name: "Email", value: data().config.email },
                         { name: "Phone", value: data().config.phone },
+                        { name: "Location", value: data().config.location },
                         {
                           name: "Min. Delay",
                           value: data().config.minimumAppointmentDelay

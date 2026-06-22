@@ -9,6 +9,7 @@ export interface AdminConfig {
   title: string;
   email: string;
   phone: string;
+  location?: string;
   headshot?: string;
   minimumAppointmentDelay?: number;
   bookingWindowDays?: number;
@@ -77,6 +78,7 @@ async function fetchAdminData(username: string): Promise<AdminData | null> {
             title: providerData.title || '',
             email: providerData.email || '',
             phone: providerData.phone || '',
+            location: providerData.location || '',
             headshot: providerData.headshot,
             minimumAppointmentDelay: providerData.minimumAppointmentDelayMinutes,
             bookingWindowDays: providerData.bookingWindowDays,

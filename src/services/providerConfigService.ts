@@ -3,6 +3,7 @@ import { apiFetch } from "../config/api";
 export interface ProviderConfig {
   name: string;
   title: string;
+  location?: string;
   headshot?: string;
   username: string;
 }
@@ -28,6 +29,7 @@ export async function fetchProviderConfig(
   return {
     name: data.name || username,
     title: data.title || "",
+    location: data.location || "",
     headshot: data.headshot,
     username,
   };

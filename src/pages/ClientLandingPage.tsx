@@ -1,6 +1,7 @@
 // src/pages/ClientLandingPage.tsx
 import { Show, createResource } from "solid-js";
 import { A, useParams } from "@solidjs/router";
+import { MapPin } from "lucide-solid";
 import { fetchProviderConfig } from "../services/providerConfigService";
 
 function Initials(props: { name: string }) {
@@ -75,15 +76,23 @@ export function ClientLandingPage() {
               </Show>
             </div>
 
-            {/* Name & Title */}
-            <h1 class="text-[22px] font-semibold text-[#3d2e0a] m-0 mb-1">
-              {provider().name}
-            </h1>
-            <Show when={provider().title}>
-              <p class="text-[15px] text-[#5a4510] m-0 mb-8">
-                {provider().title}
-              </p>
-            </Show>
+            {/* Name, Title & Location */}
+            <div class="mb-8">
+              <h1 class="text-[22px] font-semibold text-[#3d2e0a] m-0 mb-1">
+                {provider().name}
+              </h1>
+              <Show when={provider().title}>
+                <p class="text-[15px] text-[#5a4510] m-0 mb-1">
+                  {provider().title}
+                </p>
+              </Show>
+              <Show when={provider().location}>
+                <p class="flex items-center justify-center gap-1.5 text-[15px] text-[#5a4510] m-0">
+                  <MapPin class="w-4 h-4 flex-shrink-0" />
+                  <span>{provider().location}</span>
+                </p>
+              </Show>
+            </div>
 
             {/* Book Button */}
             <A

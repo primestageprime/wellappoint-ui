@@ -47,34 +47,33 @@ export function ProviderReauthPage() {
         throw new Error(data.error || 'OAuth setup failed');
       }
 
-      if (data.success && data.error && data.error.includes('Please visit this URL')) {
-        // Extract the URL from the error message
-        const urlMatch = data.error.match(/https:\/\/[^\s]+/);
-        if (urlMatch) {
-          const authUrl = urlMatch[0];
-          setSuccess('Opening OAuth consent screen...');
-          
-          // Open the OAuth URL in a new window
-          const popup = window.open(authUrl, 'oauth', 'width=600,height=600,scrollbars=yes,resizable=yes');
-          
-          if (!popup) {
-            throw new Error('Popup blocked. Please allow popups and try again.');
-          }
+      // Backend returns a structured { success, authUrl, redirectUri }.
+      // Fall back to the legacy shape where the URL was embedded in `error`.
+      const authUrl = data.authUrl ??
+        (typeof data.error === 'string'
+          ? data.error.match(/https:\/\/[^\s]+/)?.[0]
+          : undefined);
 
-          // Poll for the popup to close (user completed OAuth)
-          const checkClosed = setInterval(() => {
-            if (popup.closed) {
-              clearInterval(checkClosed);
-              setSuccess('OAuth completed! Check the callback page for your refresh token.');
-              setIsLoading(false);
-            }
-          }, 1000);
+      if (data.success && authUrl) {
+        setSuccess('Opening OAuth consent screen...');
 
-        } else {
-          throw new Error('Could not extract OAuth URL from response');
+        // Open the OAuth URL in a new window
+        const popup = window.open(authUrl, 'oauth', 'width=600,height=600,scrollbars=yes,resizable=yes');
+
+        if (!popup) {
+          throw new Error('Popup blocked. Please allow popups and try again.');
         }
+
+        // Poll for the popup to close (user completed OAuth)
+        const checkClosed = setInterval(() => {
+          if (popup.closed) {
+            clearInterval(checkClosed);
+            setSuccess('OAuth completed! Check the callback page for your refresh token.');
+            setIsLoading(false);
+          }
+        }, 1000);
       } else {
-        throw new Error('Unexpected response from OAuth setup');
+        throw new Error(data.error || 'Unexpected response from OAuth setup');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'OAuth setup failed');
@@ -211,35 +210,37 @@ export function ProviderReauthPage() {
                 </Button>
               </div>
 
-              {/* Authorization Code Exchange */}
-              <div class="p-4 border rounded-lg bg-yellow-50">
-                <h4 class="font-medium mb-2">Step 1.5: Exchange Authorization Code</h4>
-                <p class="text-sm text-gray-600 mb-3">
-                  If you have an authorization code (starts with "4/"), paste it here to exchange it for a refresh token.
-                </p>
-                
-                <div class="space-y-3">
-                  <div>
-                    <Label for="auth-code">Authorization Code:</Label>
-                    <Input
-                      id="auth-code"
-                      type="text"
-                      value={authCode()}
-                      onInput={(e) => setAuthCode(e.currentTarget.value)}
-                      placeholder="Paste your authorization code here (starts with 4/)..."
-                      class="w-full"
-                    />
+              {/* Authorization Code Exchange — dev-only manual fallback */}
+              {import.meta.env.DEV && (
+                <div class="p-4 border rounded-lg bg-yellow-50">
+                  <h4 class="font-medium mb-2">Step 1.5: Exchange Authorization Code (dev only)</h4>
+                  <p class="text-sm text-gray-600 mb-3">
+                    If you have an authorization code (starts with "4/"), paste it here to exchange it for a refresh token.
+                  </p>
+
+                  <div class="space-y-3">
+                    <div>
+                      <Label for="auth-code">Authorization Code:</Label>
+                      <Input
+                        id="auth-code"
+                        type="text"
+                        value={authCode()}
+                        onInput={(e) => setAuthCode(e.currentTarget.value)}
+                        placeholder="Paste your authorization code here (starts with 4/)..."
+                        class="w-full"
+                      />
+                    </div>
+
+                    <Button
+                      onClick={handleExchangeCode}
+                      disabled={isLoading() || !authCode().trim()}
+                      class="w-full bg-yellow-600 hover:bg-yellow-700 text-white"
+                    >
+                      {isLoading() ? 'Exchanging Code...' : 'Exchange Code for Refresh Token'}
+                    </Button>
                   </div>
-                  
-                  <Button
-                    onClick={handleExchangeCode}
-                    disabled={isLoading() || !authCode().trim()}
-                    class="w-full bg-yellow-600 hover:bg-yellow-700 text-white"
-                  >
-                    {isLoading() ? 'Exchanging Code...' : 'Exchange Code for Refresh Token'}
-                  </Button>
                 </div>
-              </div>
+              )}
 
 
               {/* Step 2: Update Provider */}

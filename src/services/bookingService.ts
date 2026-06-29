@@ -1,5 +1,7 @@
 import type { AvailableSlot } from '../types/global';
 import { apiFetch } from '../config/api';
+import { formatStartForBackend } from '../utils/pacificTime';
+import { formatBackendError } from '../utils/bookingErrors';
 
 export interface BookingRequest {
   service: string;
@@ -32,7 +34,7 @@ export async function createAppointment(bookingData: BookingRequest): Promise<Bo
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+      throw new Error(formatBackendError(errorData, response.status));
     }
 
     const data = await response.json();
@@ -55,16 +57,11 @@ export function createBookingRequest(
   username?: string,
   location: string = 'OFFICE'
 ): BookingRequest {
-  // Convert ISO string to "YYYY-MM-DD HH:mm" format expected by backend
-  // Use local timezone instead of UTC to avoid timezone conversion issues
-  const startDate = new Date(slot.startTime);
-  const year = startDate.getFullYear();
-  const month = String(startDate.getMonth() + 1).padStart(2, '0');
-  const day = String(startDate.getDate()).padStart(2, '0');
-  const hours = String(startDate.getHours()).padStart(2, '0');
-  const minutes = String(startDate.getMinutes()).padStart(2, '0');
-  const formattedStart = `${year}-${month}-${day} ${hours}:${minutes}`;
-  
+  // Convert ISO instant to the "YYYY-MM-DD HH:mm" string the backend expects.
+  // The backend parses this strictly as America/Los_Angeles, so we must emit the
+  // slot's Pacific wall-clock time regardless of the client's local timezone.
+  const formattedStart = formatStartForBackend(slot.startTime);
+
   return {
     service,
     duration,

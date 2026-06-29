@@ -151,12 +151,11 @@ describe('getBookingState', () => {
       assert.strictEqual(result.showAppointmentConfirmed, true);
     });
 
-    // SKIPPED: surfaced when this previously-orphaned suite was first run under
-    // node:test. The implementation (bookingStateMachine.ts) maps
-    // `appointmentConfirmed === false && !isSubmitting` to the `choose_services`
-    // fallback, not `appointment_confirmed`. Test and implementation disagree;
-    // needs a product decision before un-skipping (see also next test).
-    it('should return appointment_confirmed when appointmentConfirmed is false (not submitting)', { skip: 'impl returns choose_services fallback; behavior undecided' }, () => {
+    // A failed submission leaves appointmentConfirmed === false and not
+    // submitting. The user must stay on the confirmation step (where the booking
+    // error is rendered) so they can read it and retry — NOT be reset to the
+    // start of the flow.
+    it('returns confirmation when a submission failed (appointmentConfirmed false, not submitting)', () => {
       const state = createBaseState();
       state.selectedService = 'massage-therapy';
       state.selectedDuration = 60;
@@ -166,14 +165,14 @@ describe('getBookingState', () => {
 
       const result = getBookingState(state);
 
-      assert.strictEqual(result.step, 'appointment_confirmed');
+      assert.strictEqual(result.step, 'confirmation');
       assert.strictEqual(result.showServices, false);
       assert.strictEqual(result.showDurations, false);
       assert.strictEqual(result.showLoadingSlots, false);
       assert.strictEqual(result.showSlotSelection, false);
-      assert.strictEqual(result.showConfirmation, false);
+      assert.strictEqual(result.showConfirmation, true);
       assert.strictEqual(result.showCreatingAppointment, false);
-      assert.strictEqual(result.showAppointmentConfirmed, true);
+      assert.strictEqual(result.showAppointmentConfirmed, false);
     });
   });
 
@@ -206,8 +205,9 @@ describe('getBookingState', () => {
       assert.strictEqual(result.showCreatingAppointment, true);
     });
 
-    // SKIPPED: same test/implementation disagreement as above.
-    it('should handle appointment_confirmed as false (goes to appointment_confirmed state)', { skip: 'impl returns choose_services fallback; behavior undecided' }, () => {
+    // Same intent as above: a failed submission must not bounce the user back to
+    // the start; it stays on confirmation (where the error is shown).
+    it('stays on confirmation when appointmentConfirmed is false', () => {
       const state = createBaseState();
       state.selectedService = 'massage-therapy';
       state.selectedDuration = 60;
@@ -217,8 +217,8 @@ describe('getBookingState', () => {
 
       const result = getBookingState(state);
 
-      assert.strictEqual(result.step, 'appointment_confirmed');
-      assert.strictEqual(result.showAppointmentConfirmed, true);
+      assert.strictEqual(result.step, 'confirmation');
+      assert.strictEqual(result.showConfirmation, true);
     });
   });
 

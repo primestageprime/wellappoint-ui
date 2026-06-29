@@ -199,6 +199,26 @@ export function AuthProvider(props: AuthProviderProps) {
     }
   };
 
+  // React-on-failure: when an API call fails, callers can ask us to re-check the
+  // session. If Auth0 can no longer produce a token (session expired/revoked),
+  // flip to logged-out so the router sends the user to login instead of leaving
+  // them on a dead "logged-in" session.
+  const revalidateSession = async (): Promise<boolean> => {
+    const c = client();
+    if (!c) return false;
+    try {
+      if (await c.isAuthenticated()) {
+        await c.getTokenSilently(); // throws if the session/refresh token is dead
+        return true;
+      }
+    } catch (e) {
+      console.warn("Session revalidation failed; logging out", e);
+    }
+    setIsAuthenticated(false);
+    setUser(null);
+    return false;
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -209,6 +229,7 @@ export function AuthProvider(props: AuthProviderProps) {
         loading,
         error,
         getAccessToken,
+        revalidateSession,
       }}
     >
       <Show when={loading()}>

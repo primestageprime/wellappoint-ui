@@ -7,6 +7,7 @@ import { useServices } from '../stores/servicesStore';
 import { getAvailableSlots } from '../services/availabilityService';
 import { createAppointment, createBookingRequest } from '../services/bookingService';
 import { getProviderDetails, ProviderNotFoundError } from '../services/providerService';
+import { useAuth } from '../auth/AuthProvider';
 import { type BookingService } from '../types/service';
 import { groupSlotsByDate } from '../utils/slotFormatting';
 
@@ -20,6 +21,7 @@ export function useBookingFlow(config: BookingFlowConfig) {
   const params = useParams();
   const booking = useBooking();
   const servicesStore = useServices();
+  const auth = useAuth();
 
   const providerUsername = () => params.username as string;
 
@@ -81,6 +83,10 @@ export function useBookingFlow(config: BookingFlowConfig) {
           params.provider,
           params.bookingWindowDays,
         );
+      } catch (e) {
+        // React-on-failure: a failed availability call may mean the session died.
+        void auth.revalidateSession();
+        throw e;
       } finally {
         taskMetrics.recordTask('loading-time-slots', Date.now() - startTime);
       }
@@ -130,12 +136,16 @@ export function useBookingFlow(config: BookingFlowConfig) {
         console.error('Appointment creation failed:', result.error);
         setBookingError(result.error || 'Failed to create appointment');
         booking.actions.setSubmitting(false);
+        // React-on-failure: a failed call may mean the session died. Re-check it;
+        // if it's gone, this routes the user to login.
+        void auth.revalidateSession();
       }
     } catch (error) {
       console.error('Booking error:', error);
       stopProgress();
       setBookingError(error instanceof Error ? error.message : 'Failed to create appointment');
       booking.actions.setSubmitting(false);
+      void auth.revalidateSession();
     } finally {
       taskMetrics.recordTask('booking-appointment', Date.now() - startTime);
     }

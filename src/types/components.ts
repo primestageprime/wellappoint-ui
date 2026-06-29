@@ -34,11 +34,6 @@ export interface AvailabilityListProps {
   bookingWindowDays?: number;
 }
 
-export interface BookingFormProps {
-  services: BookingService[];
-  bookingWindowDays?: number;
-}
-
 export interface ConfirmationPanelProps {
   service: BookingService;
   selectedSlot: AvailableSlot;

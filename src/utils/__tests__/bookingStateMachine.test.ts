@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { getBookingState, type BookingState } from '../bookingStateMachine';
+import { describe, it } from 'node:test';
+import assert from 'node:assert';
+import { getBookingState, type BookingState } from '../bookingStateMachine.ts';
 
 describe('getBookingState', () => {
   const createBaseState = (): BookingState => ({
@@ -16,14 +17,14 @@ describe('getBookingState', () => {
       const state = createBaseState();
       const result = getBookingState(state);
 
-      expect(result.step).toBe('choose_services');
-      expect(result.showServices).toBe(true);
-      expect(result.showDurations).toBe(false);
-      expect(result.showLoadingSlots).toBe(false);
-      expect(result.showSlotSelection).toBe(false);
-      expect(result.showConfirmation).toBe(false);
-      expect(result.showCreatingAppointment).toBe(false);
-      expect(result.showAppointmentConfirmed).toBe(false);
+      assert.strictEqual(result.step, 'choose_services');
+      assert.strictEqual(result.showServices, true);
+      assert.strictEqual(result.showDurations, false);
+      assert.strictEqual(result.showLoadingSlots, false);
+      assert.strictEqual(result.showSlotSelection, false);
+      assert.strictEqual(result.showConfirmation, false);
+      assert.strictEqual(result.showCreatingAppointment, false);
+      assert.strictEqual(result.showAppointmentConfirmed, false);
     });
   });
 
@@ -34,14 +35,14 @@ describe('getBookingState', () => {
 
       const result = getBookingState(state);
 
-      expect(result.step).toBe('choose_duration');
-      expect(result.showServices).toBe(false);
-      expect(result.showDurations).toBe(true);
-      expect(result.showLoadingSlots).toBe(false);
-      expect(result.showSlotSelection).toBe(false);
-      expect(result.showConfirmation).toBe(false);
-      expect(result.showCreatingAppointment).toBe(false);
-      expect(result.showAppointmentConfirmed).toBe(false);
+      assert.strictEqual(result.step, 'choose_duration');
+      assert.strictEqual(result.showServices, false);
+      assert.strictEqual(result.showDurations, true);
+      assert.strictEqual(result.showLoadingSlots, false);
+      assert.strictEqual(result.showSlotSelection, false);
+      assert.strictEqual(result.showConfirmation, false);
+      assert.strictEqual(result.showCreatingAppointment, false);
+      assert.strictEqual(result.showAppointmentConfirmed, false);
     });
   });
 
@@ -54,14 +55,14 @@ describe('getBookingState', () => {
 
       const result = getBookingState(state);
 
-      expect(result.step).toBe('loading_slots');
-      expect(result.showServices).toBe(false);
-      expect(result.showDurations).toBe(false);
-      expect(result.showLoadingSlots).toBe(true);
-      expect(result.showSlotSelection).toBe(false);
-      expect(result.showConfirmation).toBe(false);
-      expect(result.showCreatingAppointment).toBe(false);
-      expect(result.showAppointmentConfirmed).toBe(false);
+      assert.strictEqual(result.step, 'loading_slots');
+      assert.strictEqual(result.showServices, false);
+      assert.strictEqual(result.showDurations, false);
+      assert.strictEqual(result.showLoadingSlots, true);
+      assert.strictEqual(result.showSlotSelection, false);
+      assert.strictEqual(result.showConfirmation, false);
+      assert.strictEqual(result.showCreatingAppointment, false);
+      assert.strictEqual(result.showAppointmentConfirmed, false);
     });
   });
 
@@ -74,14 +75,14 @@ describe('getBookingState', () => {
 
       const result = getBookingState(state);
 
-      expect(result.step).toBe('choose_slot');
-      expect(result.showServices).toBe(false);
-      expect(result.showDurations).toBe(false);
-      expect(result.showLoadingSlots).toBe(false);
-      expect(result.showSlotSelection).toBe(true);
-      expect(result.showConfirmation).toBe(false);
-      expect(result.showCreatingAppointment).toBe(false);
-      expect(result.showAppointmentConfirmed).toBe(false);
+      assert.strictEqual(result.step, 'choose_slot');
+      assert.strictEqual(result.showServices, false);
+      assert.strictEqual(result.showDurations, false);
+      assert.strictEqual(result.showLoadingSlots, false);
+      assert.strictEqual(result.showSlotSelection, true);
+      assert.strictEqual(result.showConfirmation, false);
+      assert.strictEqual(result.showCreatingAppointment, false);
+      assert.strictEqual(result.showAppointmentConfirmed, false);
     });
   });
 
@@ -96,14 +97,14 @@ describe('getBookingState', () => {
 
       const result = getBookingState(state);
 
-      expect(result.step).toBe('confirmation');
-      expect(result.showServices).toBe(false);
-      expect(result.showDurations).toBe(false);
-      expect(result.showLoadingSlots).toBe(false);
-      expect(result.showSlotSelection).toBe(false);
-      expect(result.showConfirmation).toBe(true);
-      expect(result.showCreatingAppointment).toBe(false);
-      expect(result.showAppointmentConfirmed).toBe(false);
+      assert.strictEqual(result.step, 'confirmation');
+      assert.strictEqual(result.showServices, false);
+      assert.strictEqual(result.showDurations, false);
+      assert.strictEqual(result.showLoadingSlots, false);
+      assert.strictEqual(result.showSlotSelection, false);
+      assert.strictEqual(result.showConfirmation, true);
+      assert.strictEqual(result.showCreatingAppointment, false);
+      assert.strictEqual(result.showAppointmentConfirmed, false);
     });
   });
 
@@ -118,14 +119,14 @@ describe('getBookingState', () => {
 
       const result = getBookingState(state);
 
-      expect(result.step).toBe('creating_appointment');
-      expect(result.showServices).toBe(false);
-      expect(result.showDurations).toBe(false);
-      expect(result.showLoadingSlots).toBe(false);
-      expect(result.showSlotSelection).toBe(false);
-      expect(result.showConfirmation).toBe(false);
-      expect(result.showCreatingAppointment).toBe(true);
-      expect(result.showAppointmentConfirmed).toBe(false);
+      assert.strictEqual(result.step, 'creating_appointment');
+      assert.strictEqual(result.showServices, false);
+      assert.strictEqual(result.showDurations, false);
+      assert.strictEqual(result.showLoadingSlots, false);
+      assert.strictEqual(result.showSlotSelection, false);
+      assert.strictEqual(result.showConfirmation, false);
+      assert.strictEqual(result.showCreatingAppointment, true);
+      assert.strictEqual(result.showAppointmentConfirmed, false);
     });
   });
 
@@ -140,17 +141,21 @@ describe('getBookingState', () => {
 
       const result = getBookingState(state);
 
-      expect(result.step).toBe('appointment_confirmed');
-      expect(result.showServices).toBe(false);
-      expect(result.showDurations).toBe(false);
-      expect(result.showLoadingSlots).toBe(false);
-      expect(result.showSlotSelection).toBe(false);
-      expect(result.showConfirmation).toBe(false);
-      expect(result.showCreatingAppointment).toBe(false);
-      expect(result.showAppointmentConfirmed).toBe(true);
+      assert.strictEqual(result.step, 'appointment_confirmed');
+      assert.strictEqual(result.showServices, false);
+      assert.strictEqual(result.showDurations, false);
+      assert.strictEqual(result.showLoadingSlots, false);
+      assert.strictEqual(result.showSlotSelection, false);
+      assert.strictEqual(result.showConfirmation, false);
+      assert.strictEqual(result.showCreatingAppointment, false);
+      assert.strictEqual(result.showAppointmentConfirmed, true);
     });
 
-    it('should return appointment_confirmed when appointmentConfirmed is false (not submitting)', () => {
+    // A failed submission leaves appointmentConfirmed === false and not
+    // submitting. The user must stay on the confirmation step (where the booking
+    // error is rendered) so they can read it and retry — NOT be reset to the
+    // start of the flow.
+    it('returns confirmation when a submission failed (appointmentConfirmed false, not submitting)', () => {
       const state = createBaseState();
       state.selectedService = 'massage-therapy';
       state.selectedDuration = 60;
@@ -160,14 +165,14 @@ describe('getBookingState', () => {
 
       const result = getBookingState(state);
 
-      expect(result.step).toBe('appointment_confirmed');
-      expect(result.showServices).toBe(false);
-      expect(result.showDurations).toBe(false);
-      expect(result.showLoadingSlots).toBe(false);
-      expect(result.showSlotSelection).toBe(false);
-      expect(result.showConfirmation).toBe(false);
-      expect(result.showCreatingAppointment).toBe(false);
-      expect(result.showAppointmentConfirmed).toBe(true);
+      assert.strictEqual(result.step, 'confirmation');
+      assert.strictEqual(result.showServices, false);
+      assert.strictEqual(result.showDurations, false);
+      assert.strictEqual(result.showLoadingSlots, false);
+      assert.strictEqual(result.showSlotSelection, false);
+      assert.strictEqual(result.showConfirmation, true);
+      assert.strictEqual(result.showCreatingAppointment, false);
+      assert.strictEqual(result.showAppointmentConfirmed, false);
     });
   });
 
@@ -182,8 +187,8 @@ describe('getBookingState', () => {
 
       const result = getBookingState(state);
 
-      expect(result.step).toBe('loading_slots');
-      expect(result.showLoadingSlots).toBe(true);
+      assert.strictEqual(result.step, 'loading_slots');
+      assert.strictEqual(result.showLoadingSlots, true);
     });
 
     it('should prioritize creating_appointment over appointment_confirmed when submitting', () => {
@@ -196,11 +201,13 @@ describe('getBookingState', () => {
 
       const result = getBookingState(state);
 
-      expect(result.step).toBe('creating_appointment');
-      expect(result.showCreatingAppointment).toBe(true);
+      assert.strictEqual(result.step, 'creating_appointment');
+      assert.strictEqual(result.showCreatingAppointment, true);
     });
 
-    it('should handle appointment_confirmed as false (goes to appointment_confirmed state)', () => {
+    // Same intent as above: a failed submission must not bounce the user back to
+    // the start; it stays on confirmation (where the error is shown).
+    it('stays on confirmation when appointmentConfirmed is false', () => {
       const state = createBaseState();
       state.selectedService = 'massage-therapy';
       state.selectedDuration = 60;
@@ -210,8 +217,8 @@ describe('getBookingState', () => {
 
       const result = getBookingState(state);
 
-      expect(result.step).toBe('appointment_confirmed');
-      expect(result.showAppointmentConfirmed).toBe(true);
+      assert.strictEqual(result.step, 'confirmation');
+      assert.strictEqual(result.showConfirmation, true);
     });
   });
 
@@ -219,35 +226,35 @@ describe('getBookingState', () => {
     it('should follow the correct state flow', () => {
       // Start with no selections
       let state = createBaseState();
-      expect(getBookingState(state).step).toBe('choose_services');
+      assert.strictEqual(getBookingState(state).step, 'choose_services');
 
       // Select service
       state.selectedService = 'massage-therapy';
-      expect(getBookingState(state).step).toBe('choose_duration');
+      assert.strictEqual(getBookingState(state).step, 'choose_duration');
 
       // Select duration
       state.selectedDuration = 60;
-      expect(getBookingState(state).step).toBe('choose_slot');
+      assert.strictEqual(getBookingState(state).step, 'choose_slot');
 
       // Start loading slots
       state.isLoadingSlots = true;
-      expect(getBookingState(state).step).toBe('loading_slots');
+      assert.strictEqual(getBookingState(state).step, 'loading_slots');
 
       // Finish loading, select slot
       state.isLoadingSlots = false;
       state.selectedSlot = { date: '2024-01-15', time: '10:00' };
       state.appointmentConfirmed = null; // Initially null for confirmation
-      expect(getBookingState(state).step).toBe('confirmation');
+      assert.strictEqual(getBookingState(state).step, 'confirmation');
 
       // Start submitting (appointmentConfirmed becomes false, not null)
       state.isSubmitting = true;
       state.appointmentConfirmed = false;
-      expect(getBookingState(state).step).toBe('creating_appointment');
+      assert.strictEqual(getBookingState(state).step, 'creating_appointment');
 
       // Appointment confirmed (not submitting anymore)
       state.isSubmitting = false;
       state.appointmentConfirmed = true;
-      expect(getBookingState(state).step).toBe('appointment_confirmed');
+      assert.strictEqual(getBookingState(state).step, 'appointment_confirmed');
     });
   });
 });

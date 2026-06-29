@@ -61,12 +61,15 @@ export function getBookingState(state: BookingState): BookingStateMachineResult 
     step = 'loading_slots';
   } else if (!selectedSlot) {
     step = 'choose_slot';
-  } else if (selectedSlot && appointmentConfirmed === null) {
-    step = 'confirmation';
   } else if (appointmentConfirmed === true) {
     step = 'appointment_confirmed';
   } else {
-    step = 'choose_services'; // fallback
+    // A slot is selected but the appointment is not confirmed yet:
+    // appointmentConfirmed is null initially, or false after a failed
+    // submission. Either way stay on confirmation so the user can read the
+    // booking error (rendered above this step) and retry, rather than being
+    // reset to the start of the flow.
+    step = 'confirmation';
   }
 
   // Return which components should be visible

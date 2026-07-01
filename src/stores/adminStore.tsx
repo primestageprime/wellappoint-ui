@@ -2,6 +2,7 @@ import { createContext, useContext, JSX, createResource, createSignal, Resource,
 import { useParams } from '@solidjs/router';
 import { apiFetch } from '../config/api';
 import { checkTokenStatus } from '../services/providerService';
+import { listProviderAppointments, type ProviderAppointment } from '../services/appointmentService';
 
 // Types for admin data
 export interface AdminConfig {
@@ -46,6 +47,7 @@ export interface AdminData {
   config: AdminConfig;
   services: AdminService[];
   clients: AdminClient[];
+  appointments: ProviderAppointment[];
 }
 
 interface AdminContextValue {
@@ -129,12 +131,21 @@ async function fetchAdminData(username: string): Promise<AdminData | null> {
     } catch (e) {
       console.warn('Failed to fetch clients:', e);
     }
-    
+
+    // Fetch upcoming appointments (each carries an appointmentId for cancel/reschedule)
+    let appointments: ProviderAppointment[] = [];
+    try {
+      appointments = await listProviderAppointments(username);
+    } catch (e) {
+      console.warn('Failed to fetch appointments:', e);
+    }
+
     return {
       username,
       config,
       services,
       clients,
+      appointments,
     };
   } catch (error) {
     console.error('Failed to fetch admin data:', error);

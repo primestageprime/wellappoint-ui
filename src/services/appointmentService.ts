@@ -41,3 +41,57 @@ export async function getUserAppointments(userEmail: string, provider?: string):
     throw new Error('Failed to fetch user appointments');
   }
 }
+
+// --- Provider-facing appointment management (cancel / reschedule) ---
+
+export interface ProviderAppointment {
+  appointmentId: string;
+  service: string;
+  clientEmail: string;
+  startTime: string;
+  endTime: string;
+  date: string;
+  time: string;
+  duration: number;
+}
+
+export async function listProviderAppointments(username: string): Promise<ProviderAppointment[]> {
+  const res = await apiFetch(`/api/appointments?username=${encodeURIComponent(username)}`);
+  if (!res.ok) {
+    throw new Error(`Failed to load appointments (${res.status})`);
+  }
+  const data = await res.json();
+  return (data.appointments ?? []) as ProviderAppointment[];
+}
+
+export async function cancelAppointment(
+  username: string,
+  appointmentId: string,
+  reason?: string,
+): Promise<void> {
+  const res = await apiFetch('/api/appointments/cancel', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, appointmentId, reason }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error ?? `Failed to cancel (${res.status})`);
+  }
+}
+
+export async function rescheduleAppointment(
+  username: string,
+  appointmentId: string,
+  newStart: string,
+): Promise<void> {
+  const res = await apiFetch('/api/appointments/reschedule', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, appointmentId, newStart }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error ?? `Failed to reschedule (${res.status})`);
+  }
+}

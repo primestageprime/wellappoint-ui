@@ -15,6 +15,7 @@ import {
 import { useAdmin } from "../stores/adminStore";
 import { deleteProviderAccount } from "../services/providerService";
 import { apiFetch } from "../config/api";
+import { AdminAppointmentsTable } from "../components/AdminAppointmentsTable";
 
 export function AdminPage() {
   const params = useParams<{ username: string }>();
@@ -334,6 +335,15 @@ export function AdminPage() {
                         )}
                       </For>
                     </Show>
+                  </AdminCard>
+
+                  {/* Upcoming appointments */}
+                  <AdminCard title={`Upcoming Appointments (${data().appointments.length})`}>
+                    <AdminAppointmentsTable
+                      appointments={data().appointments}
+                      username={data().username}
+                      onChanged={refetch}
+                    />
                   </AdminCard>
 
                   {/* Clients */}

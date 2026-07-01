@@ -17,6 +17,7 @@ import { ProviderReauthPage } from './pages/ProviderReauthPage';
 import { ProviderSignupQRPage } from './pages/ProviderSignupQRPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsPage } from './pages/TermsPage';
+import { ManagePage } from './pages/ManagePage';
 import { OAuthCallbackPage } from './pages/OAuthCallbackPage';
 import { ProviderSettingsPage } from './pages/ProviderSettingsPage';
 import { HeadshotSettingsPage } from './pages/HeadshotSettingsPage';
@@ -83,7 +84,8 @@ function App() {
             {/* Public pages - always accessible without authentication */}
             <Route path="/privacy" component={PrivacyPolicyPage} />
             <Route path="/terms" component={TermsPage} />
-            
+            <Route path="/manage/:token" component={ManagePage} />
+
             <Show when={auth.isAuthenticated()}>
               {/* Default route - redirect to user's provider page */}
               <Route path="/" component={LandingPage} />

@@ -56,7 +56,11 @@ export interface ProviderAppointment {
 }
 
 export async function listProviderAppointments(username: string): Promise<ProviderAppointment[]> {
-  const res = await apiFetch(`/api/appointments?username=${encodeURIComponent(username)}`);
+  const res = await apiFetch(
+    `/api/appointments?username=${encodeURIComponent(username)}`,
+    undefined,
+    { auth: true },
+  );
   if (!res.ok) {
     throw new Error(`Failed to load appointments (${res.status})`);
   }
@@ -73,7 +77,7 @@ export async function cancelAppointment(
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, appointmentId, reason }),
-  });
+  }, { auth: true });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.error ?? `Failed to cancel (${res.status})`);
@@ -89,7 +93,7 @@ export async function rescheduleAppointment(
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, appointmentId, newStart }),
-  });
+  }, { auth: true });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.error ?? `Failed to reschedule (${res.status})`);

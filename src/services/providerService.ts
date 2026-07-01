@@ -50,7 +50,7 @@ export async function revokeProviderAccess(username: string): Promise<void> {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ username }),
-  });
+  }, { auth: true });
 
   if (!response.ok) {
     const data = await response.json();
@@ -62,7 +62,11 @@ export async function revokeProviderAccess(username: string): Promise<void> {
  * Export all provider data (profile, services, appointments)
  */
 export async function exportProviderData(username: string): Promise<any> {
-  const response = await apiFetch(`/api/provider/export-data?username=${encodeURIComponent(username)}`);
+  const response = await apiFetch(
+    `/api/provider/export-data?username=${encodeURIComponent(username)}`,
+    undefined,
+    { auth: true },
+  );
 
   if (!response.ok) {
     const data = await response.json();
@@ -78,7 +82,7 @@ export async function exportProviderData(username: string): Promise<any> {
 export async function deleteProviderAccount(username: string): Promise<void> {
   const response = await apiFetch(`/api/provider/delete-account?username=${encodeURIComponent(username)}`, {
     method: 'DELETE',
-  });
+  }, { auth: true });
 
   if (!response.ok) {
     const data = await response.json();
@@ -111,7 +115,7 @@ export async function uploadHeadshot(username: string, file: File): Promise<stri
   const response = await apiFetch('/api/provider/headshot/upload', {
     method: 'POST',
     body: formData,
-  });
+  }, { auth: true });
 
   if (!response.ok) {
     const data = await response.json();
@@ -126,7 +130,11 @@ export async function uploadHeadshot(username: string, file: File): Promise<stri
  * Check if a provider's Google OAuth token is still valid
  */
 export async function checkTokenStatus(username: string): Promise<{ isValid: boolean; error?: string }> {
-  const response = await apiFetch(`/api/provider/token/status?username=${encodeURIComponent(username)}`);
+  const response = await apiFetch(
+    `/api/provider/token/status?username=${encodeURIComponent(username)}`,
+    undefined,
+    { auth: true },
+  );
 
   if (!response.ok) {
     return { isValid: false, error: 'Failed to check token status' };
@@ -150,7 +158,7 @@ export async function setHeadshotFromGoogle(username: string): Promise<string> {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username }),
-  });
+  }, { auth: true });
 
   if (!response.ok) {
     const text = await response.text();

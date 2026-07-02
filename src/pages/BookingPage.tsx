@@ -33,7 +33,8 @@ const convertToAppointmentCardFormat = (appointment: UserAppointment) => ({
   service: appointment.service,
   duration: appointment.duration,
   date: appointment.date,
-  time: appointment.time
+  time: appointment.time,
+  manageToken: appointment.manageToken
 });
 
 export function BookingPage() {

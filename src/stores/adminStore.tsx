@@ -110,7 +110,11 @@ async function fetchAdminData(username: string): Promise<AdminData | null> {
     // Fetch clients
     let clients: AdminClient[] = [];
     try {
-      const clientsResponse = await apiFetch(`/api/clients?username=${username}`);
+      const clientsResponse = await apiFetch(
+        `/api/clients?username=${username}`,
+        undefined,
+        { auth: true },
+      );
       if (clientsResponse.ok) {
         const clientsData = await clientsResponse.json();
         if (clientsData.success && clientsData.data) {

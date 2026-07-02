@@ -6,6 +6,8 @@
  * - On other hosts (e.g., mobile via IP): uses same hostname with backend port
  */
 
+import { getIdTokenRaw } from "../auth/authUtils";
+
 // Vite replaces import.meta.env.VITE_* at build time
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string | undefined;
 const BACKEND_PORT = 8000;
@@ -52,13 +54,28 @@ export function getApiUrl(endpoint: string): string {
 }
 
 /**
- * Wrapper around fetch that automatically uses the correct API base URL
+ * Wrapper around fetch that automatically uses the correct API base URL.
+ *
+ * Pass `{ auth: true }` for provider-authenticated routes: it attaches the
+ * caller's Auth0 ID token as a Bearer credential. Public calls omit it, so they
+ * avoid a token refresh and never leak the provider's identity token.
  */
 export async function apiFetch(
   endpoint: string,
   options?: RequestInit,
+  opts?: { auth?: boolean },
 ): Promise<Response> {
   const url = getApiUrl(endpoint);
+  let finalOptions = options;
+  if (opts?.auth) {
+    const token = await getIdTokenRaw();
+    if (token) {
+      finalOptions = {
+        ...options,
+        headers: { ...options?.headers, Authorization: `Bearer ${token}` },
+      };
+    }
+  }
   console.log("[API] Fetching:", url); // Debug log
-  return fetch(url, options);
+  return fetch(url, finalOptions);
 }

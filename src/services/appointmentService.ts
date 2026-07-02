@@ -12,7 +12,7 @@ export async function getUserAppointments(userEmail: string, provider?: string):
       params.set('provider', provider);
     }
     
-    const response = await apiFetch(`/api/appointments/user?${params}`);
+    const response = await apiFetch(`/api/appointments/user?${params}`, undefined, { auth: true });
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

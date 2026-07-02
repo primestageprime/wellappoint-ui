@@ -120,7 +120,7 @@ export function AdminPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: params.username }),
-      });
+      }, { auth: true });
 
       if (!response.ok) {
         const text = await response.text();
@@ -158,6 +158,8 @@ export function AdminPage() {
     try {
       const response = await apiFetch(
         `/api/provider/export-data?username=${encodeURIComponent(params.username)}`,
+        undefined,
+        { auth: true },
       );
 
       if (!response.ok) {

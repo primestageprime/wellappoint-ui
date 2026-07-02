@@ -13,7 +13,11 @@ import {
   ServiceAdminCard,
 } from "../components/visual";
 import { useAdmin } from "../stores/adminStore";
-import { deleteProviderAccount } from "../services/providerService";
+import {
+  deleteProviderAccount,
+  exportProviderData,
+  revokeProviderAccess,
+} from "../services/providerService";
 import { apiFetch } from "../config/api";
 import { AdminAppointmentsTable } from "../components/AdminAppointmentsTable";
 
@@ -116,32 +120,11 @@ export function AdminPage() {
     setRevokeMessage(null);
 
     try {
-      const response = await apiFetch("/api/provider/revoke-access", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: params.username }),
-      }, { auth: true });
-
-      if (!response.ok) {
-        const text = await response.text();
-        let errorMsg = "Failed to revoke access";
-        try { errorMsg = JSON.parse(text).error || errorMsg; } catch {}
-        throw new Error(errorMsg);
-      }
-
-      const data = await response.json();
-
-      if (data.success) {
-        setRevokeMessage({
-          type: "success",
-          text: data.message || "Access revoked successfully",
-        });
-      } else {
-        setRevokeMessage({
-          type: "error",
-          text: data.error || "Failed to revoke access",
-        });
-      }
+      await revokeProviderAccess(params.username);
+      setRevokeMessage({
+        type: "success",
+        text: "Access revoked successfully",
+      });
     } catch (error) {
       const errorMsg =
         error instanceof Error ? error.message : "Failed to revoke access";
@@ -156,20 +139,7 @@ export function AdminPage() {
     setExportError(null);
 
     try {
-      const response = await apiFetch(
-        `/api/provider/export-data?username=${encodeURIComponent(params.username)}`,
-        undefined,
-        { auth: true },
-      );
-
-      if (!response.ok) {
-        const text = await response.text();
-        let errorMsg = "Failed to export data";
-        try { errorMsg = JSON.parse(text).error || errorMsg; } catch {}
-        throw new Error(errorMsg);
-      }
-
-      const data = await response.json();
+      const data = await exportProviderData(params.username);
 
       if (!data.success) {
         throw new Error(data.error || "Failed to export data");

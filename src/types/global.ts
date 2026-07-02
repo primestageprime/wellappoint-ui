@@ -45,6 +45,7 @@ export interface UserAppointment {
   endTime: string;
   description: string;
   attendees: readonly string[];
+  manageToken?: string;
 }
 
 export interface UserAppointmentsResponse {
@@ -71,6 +72,7 @@ export interface Appointment {
   date: string;
   time: string;
   icon?: JSX.Element;
+  manageToken?: string;
 }
 
 // ============================================================================

@@ -41,7 +41,7 @@ export function ManagePage() {
   const params = useParams();
   const token = () => params.token;
 
-  const [resolved] = createResource(token, resolveManage);
+  const [resolved, { refetch: refetchDetails }] = createResource(token, resolveManage);
   const [view, setView] = createSignal<View>('details');
   const [doneMsg, setDoneMsg] = createSignal('');
   const [busy, setBusy] = createSignal(false);
@@ -87,6 +87,10 @@ export function ManagePage() {
       await rescheduleViaToken(token(), formatStartForBackend(slot.startTime));
       setDoneMsg(`Your appointment has been moved to ${whenLabel(slot.startTime)}.`);
       setView('done');
+      // Refresh the detail card from the backend (calendar = source of truth) so it shows the
+      // new time instead of the stale one. Fire-and-forget: the reschedule already succeeded, so a
+      // refetch hiccup must not surface as a reschedule error.
+      Promise.resolve(refetchDetails()).catch(() => {});
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Reschedule failed');
     } finally {

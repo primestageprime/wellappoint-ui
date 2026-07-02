@@ -13,6 +13,7 @@ import {
   LogoutButton
 } from '../components/visual';
 import { useAuth } from '../auth/AuthProvider';
+import { getIdTokenRaw } from '../auth/authUtils';
 
 export function ProviderReauthPage() {
   const auth = useAuth();
@@ -91,10 +92,12 @@ export function ProviderReauthPage() {
     setError(null);
 
     try {
+      const idToken = await getIdTokenRaw();
       const response = await fetch('/api/provider/reauth', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}),
         },
         body: JSON.stringify({
           username: providerUsername(),

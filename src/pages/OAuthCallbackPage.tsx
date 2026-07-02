@@ -30,7 +30,7 @@ export function OAuthCallbackPage() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, refreshToken: tokenData.refreshToken }),
-    });
+    }, { auth: true });
     const reauthData = await reauthResponse.json();
 
     if (!reauthData.success) {

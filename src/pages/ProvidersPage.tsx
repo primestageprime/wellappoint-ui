@@ -55,7 +55,7 @@ async function deleteProvider(username: string): Promise<{ success: boolean; mes
   try {
     const response = await apiFetch(`/api/providers/${encodeURIComponent(username)}`, {
       method: 'DELETE',
-    });
+    }, { auth: true });
     const data = await response.json();
 
     // Record task completion time

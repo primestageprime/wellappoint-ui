@@ -212,7 +212,7 @@ export function CreateProviderPage() {
           location: location(),
           refreshToken: refreshToken(),
         }),
-      });
+      }, { auth: true });
 
       const data = await response.json();
 

@@ -5,7 +5,7 @@ import { animateProgress } from '../utils/progressAnimation';
 import { useBooking } from '../stores/bookingStore';
 import { useServices } from '../stores/servicesStore';
 import { getAvailableSlots } from '../services/availabilityService';
-import { createAppointment, createBookingRequest } from '../services/bookingService';
+import { createAppointment, createBookingRequest, type BookingRequest } from '../services/bookingService';
 import { getProviderDetails, ProviderNotFoundError } from '../services/providerService';
 import { useAuth } from '../auth/AuthProvider';
 import { type BookingService } from '../types/service';
@@ -13,7 +13,7 @@ import { groupSlotsByDate } from '../utils/slotFormatting';
 
 export interface BookingFlowConfig {
   email: Accessor<string | undefined>;
-  buildRequest?: (baseRequest: ReturnType<typeof createBookingRequest>) => Record<string, unknown>;
+  buildRequest?: (baseRequest: ReturnType<typeof createBookingRequest>) => BookingRequest;
   onSuccess?: () => void;
 }
 

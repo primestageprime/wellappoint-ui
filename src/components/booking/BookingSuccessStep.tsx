@@ -10,7 +10,7 @@ import {
 import { type UserAppointmentsResponse } from '../../types/global';
 
 export interface BookingSuccessStepProps {
-  appointments: UserAppointmentsResponse | null | undefined;
+  appointments?: UserAppointmentsResponse | null;
   onBookAnother: () => void;
 }
 

@@ -142,6 +142,8 @@ export type AuthContextType = {
   login: () => Promise<void>;
   logout: () => void;
   loading: () => boolean;
+  error: () => string | null;
+  getAccessToken: () => Promise<string>;
   // Re-check the Auth0 session on demand. If it has expired/been revoked, flips
   // auth state to logged-out (so the router routes to login). Returns whether
   // the session is still valid.

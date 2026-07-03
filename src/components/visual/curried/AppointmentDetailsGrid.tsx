@@ -2,7 +2,7 @@ import { JSX } from 'solid-js';
 import { VerticallySpacedContent } from '../base/VerticallySpacedContent';
 
 interface AppointmentDetailsGridProps {
-  children: JSX.Element;
+  children?: JSX.Element;
   class?: string;
 }
 

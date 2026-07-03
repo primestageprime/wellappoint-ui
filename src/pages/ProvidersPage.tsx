@@ -240,7 +240,6 @@ export function ProvidersPage() {
 
       {/* Delete Confirmation Modal */}
       <Show when={deleteDialogOpen()}>
-        {console.log('🔴 Show component rendering, deleteDialogOpen:', deleteDialogOpen())}
         <div
           style={{
             "position": "fixed",

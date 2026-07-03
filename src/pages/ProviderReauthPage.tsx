@@ -225,7 +225,6 @@ export function ProviderReauthPage() {
                     <div>
                       <Label for="auth-code">Authorization Code:</Label>
                       <Input
-                        id="auth-code"
                         type="text"
                         value={authCode()}
                         onInput={(e) => setAuthCode(e.currentTarget.value)}

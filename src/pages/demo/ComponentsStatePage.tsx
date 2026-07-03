@@ -112,15 +112,15 @@ export function ComponentsStatePage() {
                 </div>
               </div>
               <div>
-                <p class="text-sm text-muted-foreground mb-2">Small (16px)</p>
+                <p class="text-sm text-muted-foreground mb-2">Small (24px)</p>
                 <div class="flex items-center justify-center p-4 bg-white rounded">
-                  <Spinner size={16} />
+                  <Spinner size="small" />
                 </div>
               </div>
               <div>
-                <p class="text-sm text-muted-foreground mb-2">Large (48px)</p>
+                <p class="text-sm text-muted-foreground mb-2">Large (64px)</p>
                 <div class="flex items-center justify-center p-4 bg-white rounded">
-                  <Spinner size={48} />
+                  <Spinner size="large" />
                 </div>
               </div>
             </div>

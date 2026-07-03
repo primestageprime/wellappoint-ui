@@ -1,5 +1,4 @@
 import { createResource } from 'solid-js';
-import { A } from '@solidjs/router';
 import { Provider } from '../types/provider';
 import { getProviderDetails } from '../services/providerService';
 
@@ -8,7 +7,7 @@ interface ProviderCardProps {
 }
 
 export function ProviderCard(props: ProviderCardProps) {
-  const [provider] = createResource<Provider | null>(
+  const [provider] = createResource<Provider | null, string>(
     () => props.username,
     (username) => getProviderDetails(username)
   );

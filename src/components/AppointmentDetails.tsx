@@ -4,9 +4,6 @@ import {
   AppointmentDetailsGrid,
   SessionDescription
 } from './visual';
-import { Calendar, Globe, Currency } from './visual/icons';
-import { Clock } from 'lucide-solid';
-import { formatFullDate, formatTime } from '../utils/dateUtils';
 import { type BookingService, type AvailableSlot } from '../types/global';
 
 const serviceIcons = {
@@ -32,30 +29,7 @@ export function AppointmentDetails(props: AppointmentDetailsProps) {
           subtitle={props.service.description || ''}
         />
 
-        <AppointmentDetailsGrid
-          details={[
-            {
-              label: 'Date & Time',
-              value: `${formatFullDate(props.selectedSlot.startTime)} at ${formatTime(props.selectedSlot.startTime)}`,
-              icon: <Calendar class="w-5 h-5 text-primary" />
-            },
-            {
-              label: 'Duration',
-              value: `${props.service.duration} minutes`,
-              icon: <Clock class="w-5 h-5 text-primary" />
-            },
-            {
-              label: 'Location',
-              value: props.selectedSlot.location,
-              icon: <Globe class="w-5 h-5 text-primary" />
-            },
-            {
-              label: 'Price',
-              value: `$${props.service.price}`,
-              icon: <Currency class="w-5 h-5 text-primary" />
-            }
-          ]}
-        />
+        <AppointmentDetailsGrid />
 
         <SessionDescription description={props.service?.durationDescription || ''} />
       </div>

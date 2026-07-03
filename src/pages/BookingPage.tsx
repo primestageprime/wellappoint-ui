@@ -49,7 +49,7 @@ export function BookingPage() {
   const [isSubmitting, setIsSubmitting] = createSignal(false);
   const [confirmationError, setConfirmationError] = createSignal<string | null>(null);
   const [, setLoadingAppointments] = createSignal(false);
-  const [provider] = createResource(getProviderDetails);
+  const [provider] = createResource(() => getProviderDetails(''));
   
   // Get user appointments
   const userEmail = () => auth.user()?.email || '';

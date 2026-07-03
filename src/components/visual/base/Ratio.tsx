@@ -1,5 +1,3 @@
-import { JSX } from 'solid-js';
-
 interface RatioProps {
   current: number;
   total: number;

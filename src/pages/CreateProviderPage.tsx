@@ -104,7 +104,7 @@ export function CreateProviderPage() {
     // Fallback to sessionStorage if URL parameter not present
     if (!tokenKey) {
       try {
-        tokenKey = sessionStorage.getItem('oauth_token_key');
+        tokenKey = sessionStorage.getItem('oauth_token_key') ?? undefined;
         if (tokenKey) {
           // Clear the key from sessionStorage after reading
           sessionStorage.removeItem('oauth_token_key');

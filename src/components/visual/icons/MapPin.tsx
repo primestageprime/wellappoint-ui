@@ -1,4 +1,3 @@
-import { JSX } from 'solid-js';
 import { MapPin as MapPinIcon } from 'lucide-solid';
 
 interface MapPinProps {

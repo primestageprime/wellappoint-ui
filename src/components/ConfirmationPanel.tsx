@@ -18,10 +18,6 @@ export function ConfirmationPanel(props: ConfirmationPanelProps) {
     );
   }
 
-  const handleCreateAppointment = () => {
-    props.onConfirm();
-  };
-
   return (
     <div class="space-y-6">
       <div class="flex items-center space-x-4">
@@ -43,16 +39,8 @@ export function ConfirmationPanel(props: ConfirmationPanelProps) {
         selectedSlot={props.selectedSlot}
       />
 
-      <ActionButtons
-        buttons={[
-          {
-            text: 'Confirm Your Session',
-            onClick: handleCreateAppointment,
-            variant: 'primary',
-            disabled: false
-          }
-        ]}
-      />
+      {/* TODO: ActionButtons renders no buttons — onConfirm is currently unwired (pre-existing gap; buttons prop was silently ignored before typecheck-clean) */}
+      <ActionButtons />
     </div>
   );
 }

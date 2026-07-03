@@ -1,4 +1,4 @@
-import { createSignal, createEffect, createResource, For, Show } from 'solid-js';
+import { createResource, For, Show } from 'solid-js';
 import { useAuth } from '../auth/AuthProvider';
 import { getAvailableSlots, type AvailableSlot } from '../services/availabilityService';
 import { TimeItem, H3, H4, CenteredContent } from './visual';
@@ -7,9 +7,6 @@ import { type AvailabilityListProps } from '../types/components';
 
 export function AvailabilityList(props: AvailabilityListProps) {
   const auth = useAuth();
-  const [selectedDate, setSelectedDate] = createSignal<string | null>(null);
-  const [selectedTime, setSelectedTime] = createSignal<string | null>(null);
-
   console.log('AvailabilityList props:', {
     service: props.service,
     duration: props.duration,

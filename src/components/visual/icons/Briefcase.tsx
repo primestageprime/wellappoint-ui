@@ -1,4 +1,3 @@
-import { JSX } from 'solid-js';
 import { Briefcase as BriefcaseIcon } from 'lucide-solid';
 
 interface BriefcaseProps {

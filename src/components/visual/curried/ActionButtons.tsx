@@ -1,7 +1,7 @@
 import { JSX } from 'solid-js';
 
 interface ActionButtonsProps {
-  children: JSX.Element;
+  children?: JSX.Element;
   class?: string;
 }
 

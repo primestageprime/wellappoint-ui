@@ -3,7 +3,6 @@ import {
   useContext,
   createSignal,
   onMount,
-  JSX,
   Show,
 } from "solid-js";
 import { Auth0Client } from "@auth0/auth0-spa-js";
@@ -40,7 +39,7 @@ export function AuthProvider(props: AuthProviderProps) {
   const [user, setUser] = createSignal<UserProfile | null>(null);
   const [loading, setLoading] = createSignal(true);
   const [error, setError] = createSignal<string | null>(null);
-  const [auth0Config, setAuth0Config] = createSignal<any | null>(null);
+  const [, setAuth0Config] = createSignal<any | null>(null);
 
   onMount(async () => {
     try {

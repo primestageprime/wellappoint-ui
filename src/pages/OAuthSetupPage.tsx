@@ -14,7 +14,7 @@ import { useAuth } from '../auth/AuthProvider';
 export function OAuthSetupPage() {
   const auth = useAuth();
   const [isLoading, setIsLoading] = createSignal(false);
-  const [refreshToken, setRefreshToken] = createSignal('');
+  const [refreshToken] = createSignal('');
   const [error, setError] = createSignal<string | null>(null);
   const [success, setSuccess] = createSignal<string | null>(null);
 

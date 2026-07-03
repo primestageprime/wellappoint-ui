@@ -1,4 +1,3 @@
-import { Show } from 'solid-js';
 import {
   BookingConfirmationContainer,
   AppointmentDetailsGrid,
@@ -10,8 +9,6 @@ import {
   PriceDetailItem,
   ActionButtons,
   SecondaryButton,
-  PrimaryButton,
-  LoadingState,
   ProgressButton,
 } from '../visual';
 import { type AvailableSlot } from '../../types/global';

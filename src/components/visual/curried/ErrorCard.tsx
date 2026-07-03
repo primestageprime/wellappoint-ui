@@ -1,4 +1,3 @@
-import { JSX } from 'solid-js';
 import { Card } from './Card';
 
 interface ErrorCardProps {

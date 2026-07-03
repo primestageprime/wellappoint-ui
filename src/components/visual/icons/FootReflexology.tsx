@@ -1,5 +1,3 @@
-import { JSX } from 'solid-js';
-
 interface FootReflexologyProps {
   class?: string;
 }

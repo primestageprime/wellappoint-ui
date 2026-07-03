@@ -1,4 +1,3 @@
-import { JSX } from 'solid-js';
 import { Mail as MailIcon } from 'lucide-solid';
 
 interface MailProps {

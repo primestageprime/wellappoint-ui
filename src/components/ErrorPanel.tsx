@@ -36,16 +36,8 @@ export function ErrorPanel(props: ErrorPanelProps) {
         <p class="text-red-600">{props.error}</p>
       </div>
 
-      <ActionButtons
-        buttons={[
-          {
-            text: 'Try Again',
-            onClick: props.onRetry,
-            variant: 'primary',
-            disabled: false
-          }
-        ]}
-      />
+      {/* TODO: ActionButtons renders no buttons — onRetry is currently unwired (pre-existing gap; buttons prop was silently ignored before typecheck-clean) */}
+      <ActionButtons />
     </div>
   );
 }

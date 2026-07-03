@@ -1,4 +1,3 @@
-import { JSX } from 'solid-js';
 import { User as UserIcon } from 'lucide-solid';
 
 interface ProfilePicProps {

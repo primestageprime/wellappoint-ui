@@ -1,4 +1,4 @@
-import { JSX, Show } from 'solid-js';
+import { Show } from 'solid-js';
 import { Mail, Phone, Briefcase, MapPin } from '../icons';
 import { CenteredContent } from '../base';
 import { ProfilePic, MailLink, PhoneNumber, CenteredIconWithText, ProviderName, ProviderTitle } from './';

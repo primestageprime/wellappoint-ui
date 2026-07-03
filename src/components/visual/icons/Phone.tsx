@@ -1,4 +1,3 @@
-import { JSX } from 'solid-js';
 import { Phone as PhoneIcon } from 'lucide-solid';
 
 interface PhoneProps {

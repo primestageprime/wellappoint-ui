@@ -39,6 +39,7 @@ export function ConfirmationPanel(props: ConfirmationPanelProps) {
         selectedSlot={props.selectedSlot}
       />
 
+      {/* TODO: ActionButtons renders no buttons — onConfirm is currently unwired (pre-existing gap; buttons prop was silently ignored before typecheck-clean) */}
       <ActionButtons />
     </div>
   );

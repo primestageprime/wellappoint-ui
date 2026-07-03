@@ -110,10 +110,22 @@ entire hook if it remains unused.
 `createResource(getProviderDetails)` without a source → SolidJS passes `true`
 as the implicit source, so `getProviderDetails(true)` was called at runtime.
 
-Fix: `createResource(() => getProviderDetails(''))`. **Runtime delta**: URL
-changes from `/api/provider?username=true` to `/api/provider?username=`. Both
-are broken. `BookingPage` appears to be an older page superseded by
-`ProviderBookingPage`. Flagged for reviewer.
+Fix: `createResource(() => getProviderDetails(''))`.
+
+**Runtime delta — real behaviour change on the routed `/booking` page, strictly
+in the fixing direction:**
+
+- **Old** (`username=true`): backend executed the full provider lookup including
+  `providerConfigService.refresh()` (Google Sheets refresh), returned
+  `PROVIDER_NOT_FOUND`, which caused the frontend to re-throw
+  `ProviderNotFoundError`. With no ErrorBoundary in the component tree, this
+  became an uncaught exception during render.
+- **New** (`username=''`): backend returns an early 400, the frontend catches
+  the generic error and returns `null`, `provider()` stays null, and the
+  provider header card is simply skipped — clean render, no exception.
+
+`BookingPage` appears to be an older page superseded by `ProviderBookingPage`.
+Flagged for reviewer.
 
 ### `useBookingFlow.ts` (TS2345 — BookingRequest | Record<string,unknown>)
 

@@ -28,6 +28,7 @@ export function AppointmentsCard(props: AppointmentsCardProps) {
                 date={appointment.date}
                 time={appointment.time}
                 icon={appointment.icon}
+                manageToken={appointment.manageToken}
               />
             )}
           </For>

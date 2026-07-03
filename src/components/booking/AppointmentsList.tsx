@@ -25,6 +25,7 @@ export function AppointmentsList(props: AppointmentsListProps) {
             duration={apt.duration}
             date={apt.date}
             time={apt.time}
+            manageToken={apt.manageToken}
           />
         )}
       </For>

@@ -1,5 +1,5 @@
 import { Clock } from 'lucide-solid';
-import { getUserTimezone, getTimezoneAbbreviation } from '../utils/timezone';
+import { getTimezoneAbbreviation } from '../utils/timezone';
 
 interface TimezoneDisplayProps {
   class?: string;
@@ -10,7 +10,6 @@ interface TimezoneDisplayProps {
  * Helps users understand what timezone they're viewing appointment times in
  */
 export function TimezoneDisplay(props: TimezoneDisplayProps) {
-  const timezone = getUserTimezone();
   const abbreviation = getTimezoneAbbreviation();
 
   return (

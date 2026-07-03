@@ -1,4 +1,4 @@
-import { createEffect, createSignal, onMount } from 'solid-js';
+import { createSignal, onMount } from 'solid-js';
 import { useNavigate, useSearchParams } from '@solidjs/router';
 import { PageFrame, Content } from '../components/visual';
 import { apiFetch } from '../config/api';
@@ -88,7 +88,7 @@ export function OAuthCallbackPage() {
     }
 
     try {
-      console.log('📤 Sending exchange request to backend:', { code: code?.substring(0, 20) + '...', state });
+      console.log('📤 Sending exchange request to backend:', { code: (typeof code === 'string' ? code : String(code ?? '')).substring(0, 20) + '...', state });
 
       // Exchange the code for a token key (stored server-side for Safari compatibility)
       // Include state to help backend determine the correct redirect URI

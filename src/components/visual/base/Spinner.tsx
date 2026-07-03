@@ -11,7 +11,6 @@ interface SpinnerProps {
 
 export function Spinner(props: SpinnerProps) {
   const [progress, setProgress] = createSignal(0);
-  const [elapsed, setElapsed] = createSignal(0);
 
   const sizeMap = {
     small: 24,
@@ -30,7 +29,6 @@ export function Spinner(props: SpinnerProps) {
     const startTime = Date.now();
     const interval = setInterval(() => {
       const elapsedMs = Date.now() - startTime;
-      setElapsed(elapsedMs);
 
       // Calculate progress (0-100), capped at 95% to indicate uncertainty
       const rawProgress = (elapsedMs / duration) * 100;

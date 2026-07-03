@@ -1,5 +1,3 @@
-import { JSX } from 'solid-js';
-import { IconWithTitleAndSubtitle } from '../base/IconWithTitleAndSubtitle';
 import { Clock } from 'lucide-solid';
 
 interface TimeItemProps {

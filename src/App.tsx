@@ -1,6 +1,7 @@
 import { Show } from 'solid-js';
-import { Router, Route, useLocation } from '@solidjs/router';
+import { Router, Route, useLocation, type RouteSectionProps } from '@solidjs/router';
 import { AuthProvider, useAuth } from './auth/AuthProvider';
+import { AppErrorBoundary } from './components/AppErrorBoundary';
 import { BookingProvider } from './stores/bookingStore';
 import { ServicesProvider } from './stores/servicesStore';
 import { CalendarProvider } from './stores/calendarStore';
@@ -42,6 +43,19 @@ function LoginWrapper() {
   return <LoginPage intendedUrl={location.pathname} />;
 }
 
+// Router root layout: wraps the matched route in a page-level error boundary so
+// a render error in one page shows a recoverable fallback instead of tearing
+// down the app shell. Keyed on pathname so navigating to another route remounts
+// the boundary and clears the error.
+function RouteErrorLayout(props: RouteSectionProps) {
+  const location = useLocation();
+  return (
+    <Show when={location.pathname} keyed>
+      <AppErrorBoundary scope="this page">{props.children}</AppErrorBoundary>
+    </Show>
+  );
+}
+
 // Wrapper component for provider-specific booking page
 function ProviderBookingPageWrapper() {
   return (
@@ -80,7 +94,7 @@ function App() {
     <BookingProvider>
       <div class="min-h-screen flex flex-col">
         <div class="flex-1">
-          <Router>
+          <Router root={RouteErrorLayout}>
             {/* Public pages - always accessible without authentication */}
             <Route path="/privacy" component={PrivacyPolicyPage} />
             <Route path="/terms" component={TermsPage} />

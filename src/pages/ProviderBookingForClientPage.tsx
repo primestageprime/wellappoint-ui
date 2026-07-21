@@ -41,7 +41,7 @@ export function ProviderBookingForClientPage() {
   });
 
   const {
-    providerUsername, providerNotFound, booking, step,
+    providerUsername, provider, providerNotFound, booking, step,
     uniqueServices, serviceDurations, selectedServiceData,
     availableSlots, groupedSlots, isBookingSuccess, bookingProgress,
     bookingError, handleConfirm,
@@ -257,6 +257,7 @@ export function ProviderBookingForClientPage() {
               serviceDescription={selectedServiceData()?.description || ''}
               duration={booking.state.selectedDuration!}
               slot={booking.state.selectedSlot!}
+              providerLocation={provider()?.location}
               price={selectedServiceData()?.price || 0}
               isSubmitting={step().showCreatingAppointment}
               isSuccess={isBookingSuccess()}

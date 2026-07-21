@@ -198,6 +198,7 @@ export function ProviderBookingPage() {
             serviceDescription={selectedServiceData()?.description || ''}
             duration={booking.state.selectedDuration!}
             slot={booking.state.selectedSlot!}
+            providerLocation={provider()?.location}
             price={selectedServiceData()?.price || 0}
             isSubmitting={step().showCreatingAppointment}
             isSuccess={isBookingSuccess()}

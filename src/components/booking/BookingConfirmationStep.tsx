@@ -11,14 +11,18 @@ import {
   SecondaryButton,
   ProgressButton,
 } from '../visual';
+import { Show } from 'solid-js';
 import { type AvailableSlot } from '../../types/global';
 import { formatSlotTime } from '../../utils/slotFormatting';
+import { resolveBookingLocation } from '../../utils/bookingLocation';
 
 export interface BookingConfirmationStepProps {
   serviceName: string;
   serviceDescription: string;
   duration: number;
   slot: AvailableSlot;
+  /** Provider's configured address; the slot itself only carries a modality enum. */
+  providerLocation?: string;
   price: number;
   isSubmitting: boolean;
   isSuccess?: boolean;
@@ -42,7 +46,14 @@ export function BookingConfirmationStep(props: BookingConfirmationStepProps) {
         <DescriptionDetailItem value={props.serviceDescription} />
         <TimeSlotDetailItem value={formatSlotTime(props.slot)} />
         <DurationDetailItem value={`${props.duration} minutes`} />
-        <LocationDetailItem value={props.slot?.location || 'Location TBD'} />
+        <Show
+          when={resolveBookingLocation({
+            rawLocation: props.slot?.location,
+            providerLocation: props.providerLocation,
+          })}
+        >
+          {(location) => <LocationDetailItem value={location()} />}
+        </Show>
         <PriceDetailItem value={`$${props.price}`} />
       </AppointmentDetailsGrid>
       
